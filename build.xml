@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="dANN Examples" default="all" basedir=".">
+	<taskdef name="lint4j" classname="com.jutils.lint4j.ant.Lint4jAntTask">
+		<classpath><pathelement location="lib/lint4j.jar"/></classpath>
+	</taskdef>
+    <path id="classpath">
+        <fileset dir="lib" includes="**/*.jar"/>
+        <fileset dir="../java_dann/build/jar" includes="**/dann.jar"/>
+    </path>
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+    <target name="javadoc">
+        <mkdir dir="build/javadoc"/>
+        <delete includeemptydirs="true">
+            <fileset dir="build/javadoc" includes="**/*"/>
+        </delete>
+        <javadoc Private="true" destdir="build/javadoc/" classpathref="classpath">
+            <fileset dir="src/" includes="**/*.java"/>
+        </javadoc>
+    </target>
+	<target name="lint" description="Perform lint checks">
+		<mkdir dir="build/lint"/>
+		<lint4j packages="com.syncleus.*" level="5">
+			<sourcepath>
+				<dirset dir="src">
+					<include name="**/*.java" />
+				</dirset>
+				<pathelement path="src/" />
+			</sourcepath>
+			<classpath>
+				<fileset dir="lib/">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<formatters>
+				<formatter type="text" />
+				<formatter type="xml" toFile="build/lint/all.xml"/>
+			</formatters>
+		</lint4j>
+	</target>
+    <target name="compile">
+        <delete dir="build/classes"/>
+        <mkdir dir="build/classes"/>
+        <javac destdir="build/classes" classpathref="classpath" debug="true">
+            <compilerarg value="-Xlint:deprecation"/>
+            <compilerarg value="-Xlint:unchecked"/>
+            <src path="src/com"/>
+        </javac>
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/dann_examples.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="all">
+        <antcall target="clean"/>
+        <antcall target="javadoc"/>
+        <antcall target="compile"/>
+    </target>
+    <target name="run">
+        <java fork="true" classname="com.syncleus.core.dann.examples.Main">
+            <jvmarg value="-Xmx512m" />
+            <classpath>
+                <path refid="classpath"/>
+                <path location="build/jar/dann_examples.jar"/>
+            </classpath>
+        </java>
+    </target>
+    <target name="run-tests">
+        <java fork="true" classname="com.syncleus.core.dann.examples.test.Test3d">
+            <jvmarg value="-Xmx512m" />
+            <classpath>
+                <path refid="classpath"/>
+                <path location="build/jar/dann_examples.jar"/>
+            </classpath>
+        </java>
+    </target>
+    <target name="profile">
+        <nbprofiledirect>
+            <classpath>
+                <path refid="classpath"/>
+                <path location="build/jar/dann_examples.jar"/>
+            </classpath>
+        </nbprofiledirect>
+        <java fork="true" classname="com.syncleus.core.dann.examples.Main">
+            <jvmarg value="${profiler.info.jvmargs.agent}"/>
+            <jvmarg value="-Xmx512m" />
+            <classpath>
+                <path refid="classpath"/>
+                <path location="build/jar/dann_examples.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>
