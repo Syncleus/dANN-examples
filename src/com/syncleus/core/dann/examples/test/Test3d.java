@@ -22,13 +22,8 @@ package com.syncleus.core.dann.examples.test;
 import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet.GlobalSignalConcentration;
 import com.syncleus.dann.math.visualization.MathFunctionCanvas;
 import com.syncleus.dann.genetics.wavelets.*;
-import com.syncleus.dann.genetics.*;
-import com.sun.j3d.utils.universe.*;
-import com.sun.j3d.utils.geometry.*;
 import javax.media.j3d.*;
-import javax.vecmath.*;
 import javax.swing.*;
-import org.freehep.j3d.plot.*;
 
 public class Test3d extends JFrame
 {
