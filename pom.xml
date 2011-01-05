@@ -15,6 +15,13 @@
 	<name>dANN Example Projects</name>
 	<description>Artificial Intelligence and Artificial Genetics library - Example Projects</description>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>http://ezekiel2.syncleus.com/archiva/repository/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 
 	<build>
 		<resources>
@@ -53,6 +60,18 @@
 	</dependencies>
 
 	<repositories>
+		<repository>
+			<id>snapshots</id>
+			<name>Syncleus Maven Snapshot Respository</name>
+			<url>http://ezekiel2.syncleus.com/archiva/repository/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
 	  <repository>
 		<id>freehep-maven</id>
 		<name>Maven FreeHEP</name>
