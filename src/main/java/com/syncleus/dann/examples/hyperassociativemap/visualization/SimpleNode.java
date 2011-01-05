@@ -16,52 +16,20 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.dann.examples.nci.ui;
-
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiActionRunner;
-import org.junit.*;
+package com.syncleus.dann.examples.hyperassociativemap.visualization;
 
 
-public class TestAboutDialog
+public class SimpleNode
 {
-	private DialogFixture aboutFixture;
+	final int layer;
 
-	@BeforeClass
-	public static void setUpOnce()
+	public SimpleNode(int layer)
 	{
-		FailOnThreadViolationRepaintManager.install();
+		this.layer = layer;
 	}
 
-
-	@Before
-	public void onSetUp()
+	public int getLayer()
 	{
-		AboutDialog aboutDialog = GuiActionRunner.execute(new GuiQuery<AboutDialog>()
-		{
-			protected AboutDialog executeInEDT()
-			{
-				return new AboutDialog(null, false);
-			}
-		});
-
-		aboutFixture = new DialogFixture(aboutDialog);
-		aboutFixture.show();
-	}
-
-	@After
-	public void tearDown()
-	{
-		aboutFixture.cleanUp();
-	}
-
-	@Test
-	public void testDisplays()
-	{
-		aboutFixture.requireVisible();
-		aboutFixture.button("ok button").click();
-		aboutFixture.requireNotVisible();
+		return this.layer;
 	}
 }

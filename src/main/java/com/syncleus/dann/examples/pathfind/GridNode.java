@@ -16,52 +16,57 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.dann.examples.nci.ui;
+package com.syncleus.dann.examples.pathfind;
 
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiActionRunner;
-import org.junit.*;
+import com.syncleus.dann.graph.Weighted;
+import com.syncleus.dann.math.Vector;
 
-
-public class TestAboutDialog
+public class GridNode extends Vector implements Weighted
 {
-	private DialogFixture aboutFixture;
+	private double weight;
 
-	@BeforeClass
-	public static void setUpOnce()
+	public GridNode(int x, int y, double weight)
 	{
-		FailOnThreadViolationRepaintManager.install();
+		super((double)x, (double)y);
+		this.weight = weight;
 	}
 
-
-	@Before
-	public void onSetUp()
+	public double getWeight()
 	{
-		AboutDialog aboutDialog = GuiActionRunner.execute(new GuiQuery<AboutDialog>()
-		{
-			protected AboutDialog executeInEDT()
-			{
-				return new AboutDialog(null, false);
-			}
-		});
-
-		aboutFixture = new DialogFixture(aboutDialog);
-		aboutFixture.show();
+		return this.weight;
 	}
 
-	@After
-	public void tearDown()
+	public int getX()
 	{
-		aboutFixture.cleanUp();
+		return (int) this.getCoordinate(1);
 	}
 
-	@Test
-	public void testDisplays()
+	public int getY()
 	{
-		aboutFixture.requireVisible();
-		aboutFixture.button("ok button").click();
-		aboutFixture.requireNotVisible();
+		return (int) this.getCoordinate(2);
 	}
+
+	@Override
+	public int hashCode()
+	{
+		return (this.getX()*this.getY()) + this.getY();
+	}
+
+	@Override
+	public boolean equals(Object compareToObj)
+	{
+		if(!(compareToObj instanceof GridNode))
+			return false;
+
+		GridNode compareTo = (GridNode) compareToObj;
+		return ((compareTo.getX() == this.getX())&&(compareTo.getY() == this.getY()));
+	}
+
+    /**
+     * Sets the weight value associated with this node.
+     * @param nextWeight the new weight value to set
+     */
+    public void setWeight(double nextWeight) {
+        this.weight = nextWeight;
+    }
 }

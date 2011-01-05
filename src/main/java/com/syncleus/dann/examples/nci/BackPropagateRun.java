@@ -16,52 +16,37 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.dann.examples.nci.ui;
+package com.syncleus.dann.examples.nci;
 
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiActionRunner;
-import org.junit.*;
+import com.syncleus.dann.neural.backprop.BackpropNeuron;
+import org.apache.log4j.Logger;
 
 
-public class TestAboutDialog
+public class BackPropagateRun implements Runnable
 {
-	private DialogFixture aboutFixture;
-
-	@BeforeClass
-	public static void setUpOnce()
-	{
-		FailOnThreadViolationRepaintManager.install();
-	}
-
-
-	@Before
-	public void onSetUp()
-	{
-		AboutDialog aboutDialog = GuiActionRunner.execute(new GuiQuery<AboutDialog>()
+    private BackpropNeuron processor;
+	private final static Logger LOGGER = Logger.getLogger(BackPropagateRun.class);
+    
+    public BackPropagateRun(BackpropNeuron processor)
+    {
+        this.processor = processor;
+    }
+    
+    public void run()
+    {
+		try
 		{
-			protected AboutDialog executeInEDT()
-			{
-				return new AboutDialog(null, false);
-			}
-		});
-
-		aboutFixture = new DialogFixture(aboutDialog);
-		aboutFixture.show();
-	}
-
-	@After
-	public void tearDown()
-	{
-		aboutFixture.cleanUp();
-	}
-
-	@Test
-	public void testDisplays()
-	{
-		aboutFixture.requireVisible();
-		aboutFixture.button("ok button").click();
-		aboutFixture.requireNotVisible();
-	}
+			this.processor.backPropagate();
+		}
+		catch(Exception caught)
+		{
+			LOGGER.error("Exception was caught", caught);
+			throw new RuntimeException("Throwable was caught", caught);
+		}
+		catch(Error caught)
+		{
+			LOGGER.error("Error was caught", caught);
+			throw new Error("Throwable was caught");
+		}
+    }
 }

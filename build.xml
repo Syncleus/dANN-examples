@@ -114,7 +114,7 @@
 		</manifestclasspath>
         <jar destfile="build/jar/dann_examples.jar" basedir="build/classes">
             <manifest>
-                <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+                <attribute name="Main-Class" value="com.syncleus.dann.examples.Main"/>
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Product-Name" value="dANN"/>
 				<attribute name="Package-Title" value="com.syncleus.dann"/>
@@ -139,7 +139,7 @@
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/dann_examples-tests.jar" basedir="build/tests/classes">
             <manifest>
-                <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+                <attribute name="Main-Class" value="com.syncleus.dann.examples.Main"/>
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Product-Name" value="dANN"/>
 				<attribute name="Package-Title" value="com.syncleus.dann"/>
@@ -169,7 +169,7 @@
 		</manifestclasspath>
         <jar destfile="build/jar/dann_examples.jar" basedir="build/classes">
             <manifest>
-                <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+                <attribute name="Main-Class" value="com.syncleus.dann.examples.Main"/>
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Product-Name" value="dANN"/>
 				<attribute name="Package-Title" value="com.syncleus.dann"/>
@@ -193,7 +193,7 @@
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/dann_examples-tests.jar" basedir="build/tests/classes">
             <manifest>
-                <attribute name="Main-Class" value="com.syncleus.core.dann.examples.Main"/>
+                <attribute name="Main-Class" value="com.syncleus.dann.examples.Main"/>
 				<attribute name="Class-Path" value="${manifest.classpath}"/>
 				<attribute name="Product-Name" value="dANN"/>
 				<attribute name="Package-Title" value="com.syncleus.dann"/>
@@ -216,7 +216,7 @@
     </target>
 
     <target name="run" description="run the application after it has been built">
-        <java fork="true" classname="com.syncleus.core.dann.examples.Main">
+        <java fork="true" classname="com.syncleus.dann.examples.Main">
             <jvmarg value="-Xmx512m" />
             <classpath refid="classpath.run"/>
         </java>
@@ -224,7 +224,7 @@
 
 	<!-- TODO remove this target as well as the code it runs -->
     <target name="run-tests" description="this is a temporary target that will be removed, tests some experimental code">
-        <java fork="true" classname="com.syncleus.core.dann.examples.test.Test3d">
+        <java fork="true" classname="com.syncleus.dann.examples.test.Test3d">
             <jvmarg value="-Xmx512m" />
             <classpath refid="classpath.test"/>
         </java>
@@ -238,7 +238,7 @@
                 <path location="build/jar/dann_examples.jar"/>
             </classpath>
         </nbprofiledirect>
-        <java fork="true" classname="com.syncleus.core.dann.examples.Main">
+        <java fork="true" classname="com.syncleus.dann.examples.Main">
             <jvmarg value="${profiler.info.jvmargs.agent}"/>
             <jvmarg value="-Xmx512m" />
             <classpath refid="classpath.run"/>

@@ -16,52 +16,40 @@
  *  Philadelphia, PA 19148                                                     *
  *                                                                             *
  ******************************************************************************/
-package com.syncleus.dann.examples.nci.ui;
+package com.syncleus.dann.examples.nci;
 
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiActionRunner;
-import org.junit.*;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.Callable;
+import org.apache.log4j.Logger;
 
-
-public class TestAboutDialog
+public class SampleRun implements Callable<BufferedImage>
 {
-	private DialogFixture aboutFixture;
-
-	@BeforeClass
-	public static void setUpOnce()
-	{
-		FailOnThreadViolationRepaintManager.install();
-	}
-
-
-	@Before
-	public void onSetUp()
-	{
-		AboutDialog aboutDialog = GuiActionRunner.execute(new GuiQuery<AboutDialog>()
+    private NciBrain brain;
+    private BufferedImage sampleImage;
+	private final static Logger LOGGER = Logger.getLogger(SampleRun.class);
+    
+    public SampleRun(NciBrain brain, BufferedImage sampleImage)
+    {
+        this.brain = brain;
+        this.sampleImage = sampleImage;
+    }
+    
+    public BufferedImage call()
+    {
+		try
 		{
-			protected AboutDialog executeInEDT()
-			{
-				return new AboutDialog(null, false);
-			}
-		});
-
-		aboutFixture = new DialogFixture(aboutDialog);
-		aboutFixture.show();
-	}
-
-	@After
-	public void tearDown()
-	{
-		aboutFixture.cleanUp();
-	}
-
-	@Test
-	public void testDisplays()
-	{
-		aboutFixture.requireVisible();
-		aboutFixture.button("ok button").click();
-		aboutFixture.requireNotVisible();
-	}
+			this.brain.setLearning(false);
+			return this.brain.uncompress(this.brain.compress(sampleImage));
+		}
+		catch(Exception caught)
+		{
+			LOGGER.error("Exception was caught", caught);
+			throw new RuntimeException("Throwable was caught", caught);
+		}
+		catch(Error caught)
+		{
+			LOGGER.error("Error was caught", caught);
+			throw new Error("Throwable was caught");
+		}
+    }
 }
