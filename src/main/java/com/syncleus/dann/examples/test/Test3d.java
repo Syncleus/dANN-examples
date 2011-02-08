@@ -28,89 +28,84 @@ import com.syncleus.dann.math.visualization.MathFunctionCanvas;
 
 public class Test3d extends JFrame
 {
-    private javax.swing.JPanel drawingPanel;
-    //private SimpleUniverse universe = null;
-    private BranchGroup origin = new BranchGroup();
+	private javax.swing.JPanel drawingPanel;
+	//private SimpleUniverse universe = null;
+	private BranchGroup origin = new BranchGroup();
 
+	public Test3d()
+	{
+		this.initComponents();
 
+		Canvas3D canvas = this.createUniverse();
+		try
+		{
+			this.drawingPanel.add(canvas, java.awt.BorderLayout.CENTER);
+		}
+		catch (ArithmeticException caughtException)
+		{
+			System.out.println("Division by 0!");
+		}
+	}
 
-    public Test3d()
-    {
-        this.initComponents();
-
-        Canvas3D canvas = this.createUniverse();
-        try
-        {
-           this.drawingPanel.add(canvas, java.awt.BorderLayout.CENTER);
-        }
-        catch(ArithmeticException caughtException)
-        {
-            System.out.println("Division by 0!");
-        }
-    }
-
-
-
-    private Canvas3D createUniverse()
-    {
-        GlobalSignalConcentration signalX = new GlobalSignalConcentration();
-        GlobalSignalConcentration signalY = new GlobalSignalConcentration();
-        GlobalSignalConcentration signalZ = new GlobalSignalConcentration();
-        SignalProcessingWavelet processor = new SignalProcessingWavelet(/*new Cell(),*/ signalX, signalZ);
-        for(int index = 0;(index < 500)||(processor.getSignals().size() < 3) ;index++)
-        {
+	private Canvas3D createUniverse()
+	{
+		GlobalSignalConcentration signalX = new GlobalSignalConcentration();
+		GlobalSignalConcentration signalY = new GlobalSignalConcentration();
+		GlobalSignalConcentration signalZ = new GlobalSignalConcentration();
+		SignalProcessingWavelet processor = new SignalProcessingWavelet(/*new Cell(),*/signalX, signalZ);
+		for (int index = 0; (index < 500) || (processor.getSignals().size() < 3); index++)
+		{
 			processor = processor.mutate(100000.0, signalX);
 			processor = processor.mutate(100000.0, signalY);
 			processor = processor.mutate(100000.0);
-        }
+		}
 
-        System.out.println("The current equation contains " + processor.getWaveCount() + " waves:");
-        System.out.println(processor.toString());
+		System.out.println("The current equation contains " + processor.getWaveCount() + " waves:");
+		System.out.println(processor.toString());
 
-        processor.preTick();
-        processor.tick();
+		processor.preTick();
+		processor.tick();
 
 		MathFunctionCanvas plotCanvas = new MathFunctionCanvas(
-            processor.getWavelet(),
-            signalX.getId() + "",
-            signalY.getId() + "",
-            -200.0f,
-            200.0f,
-            -200.0f,
-            200.0f,
-            200);
+				processor.getWavelet(),
+				signalX.getId() + "",
+				signalY.getId() + "",
+				-200.0f,
+				200.0f,
+				-200.0f,
+				200.0f,
+				200);
 
-        return plotCanvas;
-    }
+		return plotCanvas;
+	}
 
+	private void initComponents()
+	{
+		this.drawingPanel = new javax.swing.JPanel();
 
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setTitle("Hello Universe");
+		this.drawingPanel.setLayout(new java.awt.BorderLayout());
 
-    private void initComponents()
-    {
-        this.drawingPanel = new javax.swing.JPanel();
+		this.drawingPanel.setPreferredSize(new java.awt.Dimension(250, 250));
+		this.getContentPane().add(this.drawingPanel, java.awt.BorderLayout.CENTER);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Hello Universe");
-        this.drawingPanel.setLayout(new java.awt.BorderLayout());
+		this.pack();
+	}
 
-        this.drawingPanel.setPreferredSize(new java.awt.Dimension(250, 250));
-        this.getContentPane().add(this.drawingPanel, java.awt.BorderLayout.CENTER);
+	public static void main(String[] args)
+	{
+		java.awt.EventQueue.invokeLater(
+				new Runnable()
+				{
 
-        this.pack();
-    }
-
-
-
-    public static void main(String[] args)
-    {
-        java.awt.EventQueue.invokeLater(
-            new Runnable()
-            {
-                public void run()
-                {
-                    for(int index = 0; index < 1; index++)
-                        new Test3d().setVisible(true);
-                }
-            });
-    }
+					public void run()
+					{
+						for (int index = 0; index < 1; index++)
+						{
+							new Test3d().setVisible(true);
+						}
+					}
+				});
+	}
 }

@@ -65,7 +65,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 		{
 			if(iterationsMax <= 0)
 				throw new IllegalArgumentException("iterationsMax must be greater than 0");
-			
+
 			this.population = population;
 			this.iterationsMax = iterationsMax;
 		}
@@ -215,7 +215,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 			if( this.futureWinner.isDone() )
 			{
 				LOGGER.debug("this.futureWinner.isDone() == true");
-				
+
 				try
 				{
 					this.currentWinner = this.futureWinner.get();

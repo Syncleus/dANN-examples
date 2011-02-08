@@ -24,7 +24,7 @@ import java.awt.image.BufferedImage;
 
 public interface BrainListener
 {
-    public void brainFinishedBuffering();
-    public void brainSampleProcessed(BufferedImage finalImage);
-    public void brainTrainingComplete();
+	public void brainFinishedBuffering();
+	public void brainSampleProcessed(BufferedImage finalImage);
+	public void brainTrainingComplete();
 }

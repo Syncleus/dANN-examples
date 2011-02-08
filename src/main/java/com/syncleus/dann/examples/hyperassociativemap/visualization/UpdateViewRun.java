@@ -21,22 +21,23 @@ package com.syncleus.dann.examples.hyperassociativemap.visualization;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.HyperassociativeMap;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.HyperassociativeMapCanvas;
 
-
 public class UpdateViewRun implements Runnable
 {
-    private HyperassociativeMapCanvas view;
+	private HyperassociativeMapCanvas view;
 	private HyperassociativeMap map;
-    
-    public UpdateViewRun(HyperassociativeMapCanvas view, HyperassociativeMap map)
-    {
-        this.view = view;
+
+	public UpdateViewRun(HyperassociativeMapCanvas view, HyperassociativeMap map)
+	{
+		this.view = view;
 		this.map = map;
-    }
-    
-    public void run()
-    {
-		if(!this.map.isAligned())
+	}
+
+	public void run()
+	{
+		if (!this.map.isAligned())
+		{
 			this.map.align();
-        this.view.refresh();
-    }
+		}
+		this.view.refresh();
+	}
 }

@@ -38,7 +38,7 @@ public class FftDemo extends JFrame implements ActionListener
         initComponents();
 
 		this.setResizable(false);
-		
+
 		this.frequencyBars = new JProgressBar[]{frequencyBar1, frequencyBar2,
 												frequencyBar3, frequencyBar4,
 												frequencyBar5, frequencyBar6,
@@ -300,7 +300,7 @@ public class FftDemo extends JFrame implements ActionListener
 			{
 				this.targetDataLine.open(audioFormat);
 				this.targetDataLine.start();
-				
+
 				this.sampleTimer.start();
 
 				this.listenButton.setText("Stop");

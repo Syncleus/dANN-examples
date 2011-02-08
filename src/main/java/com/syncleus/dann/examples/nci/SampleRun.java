@@ -24,32 +24,32 @@ import org.apache.log4j.Logger;
 
 public class SampleRun implements Callable<BufferedImage>
 {
-    private NciBrain brain;
-    private BufferedImage sampleImage;
+	private NciBrain brain;
+	private BufferedImage sampleImage;
 	private final static Logger LOGGER = Logger.getLogger(SampleRun.class);
-    
-    public SampleRun(NciBrain brain, BufferedImage sampleImage)
-    {
-        this.brain = brain;
-        this.sampleImage = sampleImage;
-    }
-    
-    public BufferedImage call()
-    {
+
+	public SampleRun(NciBrain brain, BufferedImage sampleImage)
+	{
+		this.brain = brain;
+		this.sampleImage = sampleImage;
+	}
+
+	public BufferedImage call()
+	{
 		try
 		{
 			this.brain.setLearning(false);
 			return this.brain.uncompress(this.brain.compress(sampleImage));
 		}
-		catch(Exception caught)
+		catch (Exception caught)
 		{
 			LOGGER.error("Exception was caught", caught);
 			throw new RuntimeException("Throwable was caught", caught);
 		}
-		catch(Error caught)
+		catch (Error caught)
 		{
 			LOGGER.error("Error was caught", caught);
 			throw new Error("Throwable was caught");
 		}
-    }
+	}
 }

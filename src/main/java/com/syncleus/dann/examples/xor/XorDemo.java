@@ -50,16 +50,16 @@ public class XorDemo
 	private static FullyConnectedFeedforwardBrain brain;
 	private static String saveLocation = "default.dann";
 	private final static Logger LOGGER = Logger.getLogger(XorDemo.class);
-			
+
 	public static void main(String args[])
 	{
 		try
 		{
 			if( args.length > 0 )
 				saveLocation = args[0];
-			
+
 			inReader = new BufferedReader(new InputStreamReader(System.in));
-			
+
 			//Adjust the learning rate
 			double learningRate = 0.0175;
 			ActivationFunction activationFunction = new SineActivationFunction();
@@ -160,7 +160,7 @@ public class XorDemo
 			throw new Error("Throwable was caught");
 		}
 	}
-	
+
 	private static void save() throws IOException, ClassNotFoundException
 	{
 		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(saveLocation));
@@ -181,7 +181,7 @@ public class XorDemo
 		LOGGER.debug("File Saved");
 		System.out.println("File Saved");
 	}
-	
+
 	private static void load() throws IOException, ClassNotFoundException
 	{
 		ObjectInputStream in = null;
@@ -194,7 +194,7 @@ public class XorDemo
 			LOGGER.warn("the specified file does not exist!", caught);
 			return;
 		}
-		
+
 		try
 		{
 			brain = (FullyConnectedFeedforwardBrain) in.readObject();
@@ -211,155 +211,161 @@ public class XorDemo
 		LOGGER.debug("File Loaded");
 		System.out.println("File Loaded");
 	}
-	
+
 	private static void propogateOutput()
 	{
 		brain.propagate();
 	}
-	
+
 	private static void backPropogateTraining()
 	{
 		brain.backPropagate();
 	}
-	
+
 	private static void setCurrentInput(double[] inputToSet)
 	{
 		inputA.setInput(inputToSet[0]);
 		inputB.setInput(inputToSet[1]);
 		inputC.setInput(inputToSet[2]);
 	}
-	
+
 	private static void testOutput()
 	{
-        double[] curInput = {0, 0, 0};
-        setCurrentInput(curInput);
-        propogateOutput();
-        double[] curOutput;
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-		  
-        curInput[0] = 1;
+		double[] curInput =
+		{
+			0, 0, 0
+		};
+		setCurrentInput(curInput);
+		propogateOutput();
+		double[] curOutput;
+		System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
+
+		curInput[0] = 1;
 		curInput[1] = 0;
 		curInput[2] = 0;
-        setCurrentInput(curInput);
-        propogateOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-		  
-        curInput[0] = 0;
+		setCurrentInput(curInput);
+		propogateOutput();
+		System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
+
+		curInput[0] = 0;
 		curInput[1] = 1;
 		curInput[2] = 0;
-        setCurrentInput(curInput);
-        propogateOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-		  
-        curInput[0] = 0;
+		setCurrentInput(curInput);
+		propogateOutput();
+		System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
+
+		curInput[0] = 0;
 		curInput[1] = 0;
 		curInput[2] = 1;
-        setCurrentInput(curInput);
-        propogateOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-		  
-        curInput[0] = 1;
+		setCurrentInput(curInput);
+		propogateOutput();
+		System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
+
+		curInput[0] = 1;
 		curInput[1] = 1;
 		curInput[2] = 0;
-        setCurrentInput(curInput);
-        propogateOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-		  
-        curInput[0] = 0;
+		setCurrentInput(curInput);
+		propogateOutput();
+		System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
+
+		curInput[0] = 0;
 		curInput[1] = 1;
 		curInput[2] = 1;
-        setCurrentInput(curInput);
-        propogateOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-		  
-        curInput[0] = 1;
+		setCurrentInput(curInput);
+		propogateOutput();
+		System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
+
+		curInput[0] = 1;
 		curInput[1] = 0;
 		curInput[2] = 1;
-        setCurrentInput(curInput);
-        propogateOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
-		  
-        curInput[0] = 1;
+		setCurrentInput(curInput);
+		propogateOutput();
+		System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
+
+		curInput[0] = 1;
 		curInput[1] = 1;
 		curInput[2] = 1;
-        setCurrentInput(curInput);
-        propogateOutput();
-        System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
+		setCurrentInput(curInput);
+		propogateOutput();
+		System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 	}
-	
+
 	private static void train(int count)
 	{
-        for(int lcv = 0; lcv < count; lcv++)
-        {
-            double[] curInput = {0, 0, 0};
-            double curTrain = -1;
-            setCurrentInput(curInput);
-            propogateOutput();
-            output.setDesired(curTrain);
-            backPropogateTraining();
-				
-            curInput[0] = 1;
+		for (int lcv = 0; lcv < count; lcv++)
+		{
+			double[] curInput =
+			{
+				0, 0, 0
+			};
+			double curTrain = -1;
+			setCurrentInput(curInput);
+			propogateOutput();
+			output.setDesired(curTrain);
+			backPropogateTraining();
+
+			curInput[0] = 1;
 			curInput[1] = 0;
 			curInput[2] = 0;
-            curTrain = 1;
-            setCurrentInput(curInput);
-            propogateOutput();
-            output.setDesired(curTrain);
-            backPropogateTraining();
-				
-            curInput[0] = 0;
+			curTrain = 1;
+			setCurrentInput(curInput);
+			propogateOutput();
+			output.setDesired(curTrain);
+			backPropogateTraining();
+
+			curInput[0] = 0;
 			curInput[1] = 1;
 			curInput[2] = 0;
-            curTrain = 1;
-            setCurrentInput(curInput);
-            propogateOutput();
-            output.setDesired(curTrain);
-            backPropogateTraining();
-				
-            curInput[0] = 0;
+			curTrain = 1;
+			setCurrentInput(curInput);
+			propogateOutput();
+			output.setDesired(curTrain);
+			backPropogateTraining();
+
+			curInput[0] = 0;
 			curInput[1] = 0;
 			curInput[2] = 1;
-            curTrain = 1;
-            setCurrentInput(curInput);
-            propogateOutput();
-            output.setDesired(curTrain);
-            backPropogateTraining();
-				
-            curInput[0] = 1;
+			curTrain = 1;
+			setCurrentInput(curInput);
+			propogateOutput();
+			output.setDesired(curTrain);
+			backPropogateTraining();
+
+			curInput[0] = 1;
 			curInput[1] = 1;
 			curInput[2] = 0;
-            curTrain = -1;
-            setCurrentInput(curInput);
-            propogateOutput();
-            output.setDesired(curTrain);
-            backPropogateTraining();
-				
-            curInput[0] = 0;
+			curTrain = -1;
+			setCurrentInput(curInput);
+			propogateOutput();
+			output.setDesired(curTrain);
+			backPropogateTraining();
+
+			curInput[0] = 0;
 			curInput[1] = 1;
 			curInput[2] = 1;
-            curTrain = -1;
-            setCurrentInput(curInput);
-            propogateOutput();
-            output.setDesired(curTrain);
-            backPropogateTraining();
-				
-            curInput[0] = 1;
+			curTrain = -1;
+			setCurrentInput(curInput);
+			propogateOutput();
+			output.setDesired(curTrain);
+			backPropogateTraining();
+
+			curInput[0] = 1;
 			curInput[1] = 0;
 			curInput[2] = 1;
-            curTrain = -1;
-            setCurrentInput(curInput);
-            propogateOutput();
-            output.setDesired(curTrain);
-            backPropogateTraining();
-				
-            curInput[0] = 1;
+			curTrain = -1;
+			setCurrentInput(curInput);
+			propogateOutput();
+			output.setDesired(curTrain);
+			backPropogateTraining();
+
+			curInput[0] = 1;
 			curInput[1] = 1;
 			curInput[2] = 1;
-            curTrain = -1;
-            setCurrentInput(curInput);
-            propogateOutput();
-            output.setDesired(curTrain);
-            backPropogateTraining();
-        }
+			curTrain = -1;
+			setCurrentInput(curInput);
+			propogateOutput();
+			output.setDesired(curTrain);
+			backPropogateTraining();
+		}
 	}
 }

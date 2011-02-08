@@ -58,7 +58,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
         {
             LOGGER.warn("Could not set the UI to native look and feel", caught);
         }
-		
+
         initComponents();
 
 		this.iterationsSpinner.setValue(INITIAL_ITERATIONS);

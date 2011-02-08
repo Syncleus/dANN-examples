@@ -28,7 +28,7 @@ import com.syncleus.dann.math.Vector;
 public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopulation
 {
 	private final Vector cities[];
-	
+
 	public TravellingSalesmanPopulation(final Vector cities[], final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage)
 	{
 		super(mutationDeviation, crossoverPercentage, dieOffPercentage);
@@ -37,7 +37,7 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
 			throw new IllegalArgumentException("cities can not be null");
 		if(cities.length < 4)
 			throw new IllegalArgumentException("cities must have atleast 4 elements");
-		
+
 		this.cities = cities.clone();
 	}
 
@@ -49,7 +49,7 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
 			throw new IllegalArgumentException("cities can not be null");
 		if(cities.length < 4)
 			throw new IllegalArgumentException("cities must have atleast 4 elements");
-		
+
 		this.cities = cities.clone();
 	}
 
@@ -65,7 +65,7 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
 	{
 		if(!(chromosome instanceof TravellingSalesmanChromosome))
 			throw new IllegalArgumentException("Chromosome must be a TravellingSalesmanChromosome");
-		
+
 		return new TravellingSalesmanFitnessFunction((TravellingSalesmanChromosome)chromosome, this.cities);
 	}
 

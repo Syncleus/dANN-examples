@@ -62,11 +62,12 @@ public class GridNode extends Vector implements Weighted
 		return ((compareTo.getX() == this.getX())&&(compareTo.getY() == this.getY()));
 	}
 
-    /**
-     * Sets the weight value associated with this node.
-     * @param nextWeight the new weight value to set
-     */
-    public void setWeight(double nextWeight) {
-        this.weight = nextWeight;
-    }
+	/**
+	 * Sets the weight value associated with this node.
+	 * @param nextWeight the new weight value to set
+	 */
+	public void setWeight(double nextWeight)
+	{
+		this.weight = nextWeight;
+	}
 }

@@ -20,11 +20,12 @@ package com.syncleus.dann.examples.nci;
 
 public class BusyException extends Exception
 {
-    public BusyException() {
-    }
-
-    public BusyException(String msg)
+	public BusyException()
 	{
-        super(msg);
-    }
+	}
+
+	public BusyException(String msg)
+	{
+		super(msg);
+	}
 }

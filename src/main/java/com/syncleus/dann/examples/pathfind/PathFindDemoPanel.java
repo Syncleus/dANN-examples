@@ -35,388 +35,383 @@ import com.syncleus.dann.graph.search.pathfinding.HeuristicPathCost;
  */
 public class PathFindDemoPanel extends JPanel
 {
+	private double[][] gridWeights;
+	private AbstractGridCanvas gridCanvas;
+	private int w;
+	private int h;
+	private WeightedGrid grid;
+	private PathFindControlPanel controlPanel;
+	private List<SimpleWeightedUndirectedEdge<GridNode>> path;
+	private GridNode endNode;
+	private GridNode startNode;
+	private double paintWeight = 0;
+	private static final double INF = Double.POSITIVE_INFINITY;
+	private static final double MAX_NONINFINITE_CELL_WEIGHT = 12.0;
+	private static final int DEFAULT_NODE_SIZE = 24;
+	private static final int DEFAULT_EDGE_SIZE = 8;
+	private static final int DEFAULT_GRID_SIZE = 18;
+	private static final double MIN_GRID_WEIGHT = 1.0;
+	private static final double INITIAL_GRID_WEIGHT = MIN_GRID_WEIGHT;
+	private static final double PAINT_WEIGHTS[] =
+	{
+		1, 2, 4, 6, 8, 10, INF
+	};
 
-    private double[][] gridWeights;
-    private AbstractGridCanvas gridCanvas;
-    private int w;
-    private int h;
-    private WeightedGrid grid;
-    private PathFindControlPanel controlPanel;
-    private List<SimpleWeightedUndirectedEdge<GridNode>> path;
-    private GridNode endNode;
-    private GridNode startNode;
-    private double paintWeight = 0;
+	/** Distance heuristic used by the AStarPathFinding algorithm. */
+	private static class DistanceHeuristic implements HeuristicPathCost<GridNode>
+	{
 
-    private static final double INF = Double.POSITIVE_INFINITY;
-    private static final double MAX_NONINFINITE_CELL_WEIGHT = 12.0;
-    private static final int DEFAULT_NODE_SIZE = 24;
-    private static final int DEFAULT_EDGE_SIZE = 8;
-    private static final int DEFAULT_GRID_SIZE = 18;
-    private static final double MIN_GRID_WEIGHT = 1.0;
-    private static final double INITIAL_GRID_WEIGHT = MIN_GRID_WEIGHT;
+		public double getHeuristicPathCost(final GridNode begin, final GridNode end)
+		{
+			return begin.calculateRelativeTo(end).getDistance();
+		}
 
-    private static final double PAINT_WEIGHTS [] =
-    {
-        1, 2, 4, 6, 8, 10, INF
-    };
+		public boolean isOptimistic()
+		{
+			return true;
+		}
 
-    /** Distance heuristic used by the AStarPathFinding algorithm. */
-    private static class DistanceHeuristic implements HeuristicPathCost<GridNode>
-    {
+		public boolean isConsistent()
+		{
+			return true;
+		}
+	}
 
-        public double getHeuristicPathCost(final GridNode begin, final GridNode end)
-        {
-            return begin.calculateRelativeTo(end).getDistance();
-        }
+	/**
+	 * A panel that provides buttons for each of the drawable "weights".
+	 */
+	private class DrawingPanel extends JPanel
+	{
 
-        public boolean isOptimistic()
-        {
-            return true;
-        }
+		private class PaintButton extends JToggleButton implements ActionListener
+		{
 
-        public boolean isConsistent()
-        {
-            return true;
-        }
-    }
+			private static final int BUTTON_BORDER_SIZE = 4;
+			private final double weight;
 
-    /**
-     * A panel that provides buttons for each of the drawable "weights".
-     */
-    private class DrawingPanel extends JPanel
-    {
+			public PaintButton(final double drawWeight)
+			{
+				super("  ");
+				this.weight = drawWeight;
+				setForeground(getColor(weight));
+				addActionListener(this);
+			}
 
-        private class PaintButton extends JToggleButton implements ActionListener
-        {
+			@Override
+			public void paint(final Graphics g1)
+			{
+				super.paint(g1);
+				final int b = BUTTON_BORDER_SIZE;
+				Graphics2D g = (Graphics2D) g1;
+				g.setColor(getColor(weight));
+				g.fillRect(b, b, getWidth() - b * 2, getHeight() - b * 2);
+			}
 
-            private static final int BUTTON_BORDER_SIZE = 4;
-            private final double weight;
+			public double getWeight()
+			{
+				return weight;
+			}
 
-            public PaintButton(final double drawWeight)
-            {
-                super("  ");
-                this.weight = drawWeight;
-                setForeground(getColor(weight));
-                addActionListener(this);
-            }
+			@Override
+			public void actionPerformed(final ActionEvent e)
+			{
+				if (isSelected())
+				{
+					paintWeight = weight;
+					unpopOthers(this);
+				}
+			}
+		}
+		private final List<PaintButton> paintButtons = new LinkedList();
 
-            @Override
-            public void paint(final Graphics g1)
-            {
-                super.paint(g1);
-                final int b = BUTTON_BORDER_SIZE;
-                Graphics2D g = (Graphics2D) g1;
-                g.setColor(getColor(weight));
-                g.fillRect(b, b, getWidth() - b * 2, getHeight() - b * 2);
-            }
+		public DrawingPanel(final double[] paintWeights)
+		{
+			super(new FlowLayout(FlowLayout.LEFT));
 
-            public double getWeight()
-            {
-                return weight;
-            }
+			for (double d : paintWeights)
+			{
+				final PaintButton pb = new PaintButton(d);
+				paintButtons.add(pb);
+				add(pb);
+			}
 
-            @Override
-            public void actionPerformed(final ActionEvent e)
-            {
-                if (isSelected())
-                {
-                    paintWeight = weight;
-                    unpopOthers(this);
-                }
-            }
-        }
+		}
 
-        private final List<PaintButton> paintButtons = new LinkedList();
+		protected void unpopOthers(final PaintButton otherThan)
+		{
+			for (PaintButton pb : paintButtons)
+			{
+				if (pb != otherThan)
+				{
+					pb.setSelected(false);
+				}
+			}
+		}
 
-        public DrawingPanel(final double[] paintWeights)
-        {
-            super(new FlowLayout(FlowLayout.LEFT));
+		public List<PaintButton> getPaintButtons()
+		{
+			return paintButtons;
+		}
+	}
 
-            for (double d : paintWeights)
-            {
-                final PaintButton pb = new PaintButton(d);
-                paintButtons.add(pb);
-                add(pb);
-            }
+	private class PathFindControlPanel extends JTabbedPane
+	{
 
-        }
+		public PathFindControlPanel()
+		{
+			super();
 
-        protected void unpopOthers(final PaintButton otherThan)
-        {
-            for (PaintButton pb : paintButtons)
-            {
-                if (pb != otherThan)
-                {
-                    pb.setSelected(false);
-                }
-            }
-        }
+			addTab("Edit", new DrawingPanel(PAINT_WEIGHTS));
+			addTab("Start Position", new JLabel("Click a start position"));
+			addTab("Stop Position", new JLabel("Click a stop position"));
+			//addTab("Settings", new SettingsPanel());
 
-        public List<PaintButton> getPaintButtons()
-        {
-            return paintButtons;
-        }
+		}
+	}
 
-    }
+	/**
+	 * Creates a new Swing component with an empty square grid of size width*width.
+	 * @param width number of grid nodes wide and high
+	 */
+	public PathFindDemoPanel(final int width)
+	{
+		super(new BorderLayout());
 
-    private class PathFindControlPanel extends JTabbedPane
-    {
+		reinit(width);
 
-        public PathFindControlPanel()
-        {
-            super();
+	}
 
-            addTab("Edit", new DrawingPanel(PAINT_WEIGHTS));
-            addTab("Start Position", new JLabel("Click a start position"));
-            addTab("Stop Position", new JLabel("Click a stop position"));
-            //addTab("Settings", new SettingsPanel());
+	/**
+	 * Reconstructs the grid and the panel (and its components) with new grid dimensions.
+	 * @param nextWidth the width and height (square) dimensions of the grid to (re-)initialize.
+	 */
+	protected void reinit(final int nextWidth)
+	{
+		removeAll();
 
-        }
-    }
+		this.w = nextWidth;
+		this.h = nextWidth;
 
-    /**
-     * Creates a new Swing component with an empty square grid of size width*width.
-     * @param width number of grid nodes wide and high
-     */
-    public PathFindDemoPanel(final int width)
-    {
-        super(new BorderLayout());
+		gridWeights = new double[h][];
+		for (int i = 0; i < h; i++)
+		{
+			gridWeights[i] = new double[w];
+		}
 
-        reinit(width);
+		grid = new WeightedGrid(gridWeights);
+		grid.setAll(INITIAL_GRID_WEIGHT);
 
-    }
+		startNode = grid.getNode(0, 0);
+		endNode = grid.getNode(w - 1, h - 1);
 
-    /**
-     * Reconstructs the grid and the panel (and its components) with new grid dimensions.
-     * @param nextWidth the width and height (square) dimensions of the grid to (re-)initialize.
-     */
-    protected void reinit(final int nextWidth)
-    {
-        removeAll();
+		updatePath();
 
-        this.w = nextWidth;
-        this.h = nextWidth;
+		controlPanel = new PathFindControlPanel();
+		add(controlPanel, BorderLayout.NORTH);
 
-        gridWeights = new double[h][];
-        for (int i = 0; i < h; i++)
-        {
-            gridWeights[i] = new double[w];
-        }
+		gridCanvas = new AbstractGridCanvas(grid, path, DEFAULT_NODE_SIZE, DEFAULT_EDGE_SIZE)
+		{
 
-        grid = new WeightedGrid(gridWeights);
-        grid.setAll(INITIAL_GRID_WEIGHT);
+			private boolean mouseDown = false;
 
-        startNode = grid.getNode(0, 0);
-        endNode = grid.getNode(w - 1, h - 1);
+			public boolean isMouseDown()
+			{
+				return mouseDown;
+			}
 
-        updatePath();
+			@Override
+			public Color getNodeColor(final GridNode node)
+			{
+				return getColor(node.getWeight());
+			}
 
-        controlPanel = new PathFindControlPanel();
-        add(controlPanel, BorderLayout.NORTH);
+			@Override
+			protected Color getEdgeColor(final WeightedBidirectedEdge<GridNode> edge)
+			{
+				return getColor(edge.getWeight());
+			}
 
-        gridCanvas = new AbstractGridCanvas(grid, path, DEFAULT_NODE_SIZE, DEFAULT_EDGE_SIZE)
-        {
-            private boolean mouseDown = false;
+			protected void paintCells()
+			{
+				final int is = controlPanel.getSelectedIndex();
 
-            public boolean isMouseDown()
-            {
-                return mouseDown;
-            }
+				if (mouseDown)
+				{
+					if (is == 0)
+					{
+						if (getTouchedNode() != null)
+						{
+							getTouchedNode().setWeight(paintWeight);
+							updatePath();
+						}
+						else if (getTouchedEdge() != null)
+						{
+							getTouchedEdge().setWeight(paintWeight);
+							updatePath();
+						}
+					}
+				}
 
-            @Override
-            public Color getNodeColor(final GridNode node)
-            {
-                return getColor(node.getWeight());
-            }
+			}
 
-            @Override
-            protected Color getEdgeColor(final WeightedBidirectedEdge<GridNode> edge)
-            {
-                return getColor(edge.getWeight());
-            }
+			@Override
+			public void mouseDragged(final MouseEvent e)
+			{
+				super.mouseDragged(e);
+				paintCells();
+			}
 
-            protected void paintCells()
-            {
-                final int is = controlPanel.getSelectedIndex();
+			@Override
+			public void mouseMoved(final MouseEvent e)
+			{
+				super.mouseMoved(e);
+				paintCells();
+			}
 
-                if (mouseDown)
-                {
-                    if (is == 0)
-                    {
-                        if (getTouchedNode() != null)
-                        {
-                            getTouchedNode().setWeight(paintWeight);
-                            updatePath();
-                        }
-                        else if (getTouchedEdge() != null)
-                        {
-                            getTouchedEdge().setWeight(paintWeight);
-                            updatePath();
-                        }
-                    }
-                }
+			@Override
+			public void mousePressed(final MouseEvent e)
+			{
+				super.mousePressed(e);
+				mouseDown = true;
+			}
 
-            }
+			@Override
+			public void mouseReleased(final MouseEvent e)
+			{
+				super.mouseReleased(e);
+				mouseDown = false;
+			}
 
-            @Override
-            public void mouseDragged(final MouseEvent e)
-            {
-                super.mouseDragged(e);
-                paintCells();
-            }
+			@Override
+			public void mouseClicked(final MouseEvent e)
+			{
+				int is = controlPanel.getSelectedIndex();
 
-            @Override
-            public void mouseMoved(final MouseEvent e)
-            {
-                super.mouseMoved(e);
-                paintCells();
-            }
+				GridNode touchedNode = getTouchedNode();
 
-            @Override
-            public void mousePressed(final MouseEvent e)
-            {
-                super.mousePressed(e);
-                mouseDown = true;
-            }
+				//starting position
+				if (is == 1)
+				{
+					if (touchedNode != null)
+					{
+						if (getTouchedNode() != endNode)
+						{
+							startNode = touchedNode;
+							updatePath();
+						}
+						else
+						{
+							warnDifferentLocations();
+						}
+					}
+				} //ending position
+				else if (is == 2)
+				{
+					if (touchedNode != null)
+					{
+						if (touchedNode != startNode)
+						{
+							endNode = touchedNode;
+							updatePath();
+						}
+						else
+						{
+							warnDifferentLocations();
+						}
+					}
+				} //paint the map
 
-            @Override
-            public void mouseReleased(final MouseEvent e)
-            {
-                super.mouseReleased(e);
-                mouseDown = false;
-            }
+				mouseDown = true;
+				paintCells();
+				mouseDown = false;
+			}
 
-            @Override
-            public void mouseClicked(final MouseEvent e)
-            {
-                int is = controlPanel.getSelectedIndex();
-
-                GridNode touchedNode = getTouchedNode();
-
-                //starting position
-                if (is == 1)
-                {
-                    if (touchedNode != null)
-                    {
-                        if (getTouchedNode() != endNode)
-                        {
-                            startNode = touchedNode;
-                            updatePath();
-                        }
-                        else
-                        {
-                            warnDifferentLocations();
-                        }
-                    }
-                } //ending position
-                else if (is == 2)
-                {
-                    if (touchedNode != null)
-                    {
-                        if (touchedNode != startNode)
-                        {
-                            endNode = touchedNode;
-                            updatePath();
-                        }
-                        else
-                        {
-                            warnDifferentLocations();
-                        }
-                    }
-                } //paint the map
-
-                mouseDown = true;
-                paintCells();
-                mouseDown = false;
-            }
-
-            private void warnDifferentLocations()
-            {
-                JOptionPane.showMessageDialog(this, "Start and stop locations must be different");
-            }
-        };
+			private void warnDifferentLocations()
+			{
+				JOptionPane.showMessageDialog(this, "Start and stop locations must be different");
+			}
+		};
 
 
-        add(new JScrollPane(gridCanvas), BorderLayout.CENTER);
+		add(new JScrollPane(gridCanvas), BorderLayout.CENTER);
 
-    }
+	}
 
-    /**
-     * Returns a color associated with a specific weight value.  This is used to draw a grayscale gradient for the grid's weights.
-     * @param weight value
-     * @return a color value
-     */
-    public Color getColor(final double weight)
-    {
-        if (weight == MIN_GRID_WEIGHT)
-        {
-            return Color.WHITE;
-        }
-        if (weight == Double.POSITIVE_INFINITY)
-        {
-            return Color.BLACK;
-        }
-        else if (weight < MAX_NONINFINITE_CELL_WEIGHT)
-        {
-            float ii = 1f - (float) (weight / MAX_NONINFINITE_CELL_WEIGHT) / 2f;
-            return new Color(ii, ii, ii);
-        }
-        return Color.WHITE;
-    }
+	/**
+	 * Returns a color associated with a specific weight value.  This is used to draw a grayscale gradient for the grid's weights.
+	 * @param weight value
+	 * @return a color value
+	 */
+	public Color getColor(final double weight)
+	{
+		if (weight == MIN_GRID_WEIGHT)
+		{
+			return Color.WHITE;
+		}
+		if (weight == Double.POSITIVE_INFINITY)
+		{
+			return Color.BLACK;
+		}
+		else if (weight < MAX_NONINFINITE_CELL_WEIGHT)
+		{
+			float ii = 1f - (float) (weight / MAX_NONINFINITE_CELL_WEIGHT) / 2f;
+			return new Color(ii, ii, ii);
+		}
+		return Color.WHITE;
+	}
 
-    /**
-     * Updates the path when the starting or ending node changes, or when the AStarPathFinder parameters are changed.
-     */
-    protected void updatePath()
-    {
-        AstarPathFinder<GridNode, SimpleWeightedUndirectedEdge<GridNode>> pathFinder = new AstarPathFinder<GridNode, SimpleWeightedUndirectedEdge<GridNode>>(grid, new DistanceHeuristic());
-        path = pathFinder.getBestPath(startNode, endNode);
-        if (gridCanvas != null)
-        {
-            gridCanvas.setPath(path);
-        }
-    }
+	/**
+	 * Updates the path when the starting or ending node changes, or when the AStarPathFinder parameters are changed.
+	 */
+	protected void updatePath()
+	{
+		AstarPathFinder<GridNode, SimpleWeightedUndirectedEdge<GridNode>> pathFinder = new AstarPathFinder<GridNode, SimpleWeightedUndirectedEdge<GridNode>>(grid, new DistanceHeuristic());
+		path = pathFinder.getBestPath(startNode, endNode);
+		if (gridCanvas != null)
+		{
+			gridCanvas.setPath(path);
+		}
+	}
 
-    /**
-     * Entrypoint.
-     * @param args (not presently used)
-     */
-    public static void main(final String[] args)
-    {
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
+	/**
+	 * Entrypoint.
+	 * @param args (not presently used)
+	 */
+	public static void main(final String[] args)
+	{
+		java.awt.EventQueue.invokeLater(new Runnable()
+		{
 
-            public void run()
-            {
-                JFrame jf = new JFrame("dANN Path Finding Demo");
-                jf.getContentPane().add(new PathFindDemoPanel(DEFAULT_GRID_SIZE));
-                jf.addWindowListener(new WindowAdapter()
-                {
+			public void run()
+			{
+				JFrame jf = new JFrame("dANN Path Finding Demo");
+				jf.getContentPane().add(new PathFindDemoPanel(DEFAULT_GRID_SIZE));
+				jf.addWindowListener(new WindowAdapter()
+				{
 
-                    @Override
-                    public void windowClosing(final WindowEvent e)
-                    {
-                        System.exit(0);
-                    }
-                });
-                jf.setVisible(true);
-                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					@Override
+					public void windowClosing(final WindowEvent e)
+					{
+						System.exit(0);
+					}
+				});
+				jf.setVisible(true);
+				jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-            }
-        }
-        );
-    }
+			}
+		});
+	}
 
-    static
-    {
+	static
+	{
 
-        // Install the look and feel
-        try
-        {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }
-        catch (Exception e)
-        {
-        }
-    }
+		// Install the look and feel
+		try
+		{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e)
+		{
+		}
+	}
 }

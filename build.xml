@@ -128,7 +128,7 @@
 				<attribute name="Implementation-Version" value="2.0"/>
             </manifest>
         </jar>
-		
+
         <mkdir dir="build/tests/classes"/>
         <javac destdir="build/tests/classes" classpathref="classpath.build.tests" debug="true">
             <compilerarg value="-Xlint:deprecation"/>

@@ -27,43 +27,47 @@ import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.Hyperas
 
 public class ViewBrain extends JDialog implements ActionListener, KeyListener
 {
-    private HyperassociativeMapCanvas brainVisual;
-    private ExecutorService executor = Executors.newFixedThreadPool(1);
-    private FutureTask<Void> lastRun;
 
-    public ViewBrain(Frame parent, HyperassociativeMapCanvas brainVisual)
-    {
-        super(parent, false);
-        
-        initComponents();
-        
-        this.brainVisual = brainVisual;
-        
-        this.add(this.brainVisual);
-        this.brainVisual.setLocation(0, 0);
-        this.brainVisual.setSize(800, 600);
-        this.brainVisual.setVisible(true);
-        
-        this.setSize(800,600);
-        
-        this.brainVisual.refresh();
-        
-        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual),null);
-        this.executor.execute(this.lastRun);
-        
-        new Timer(100, this).start();
+	private HyperassociativeMapCanvas brainVisual;
+	private ExecutorService executor = Executors.newFixedThreadPool(1);
+	private FutureTask<Void> lastRun;
+
+	public ViewBrain(Frame parent, HyperassociativeMapCanvas brainVisual)
+	{
+		super(parent, false);
+
+		initComponents();
+
+		this.brainVisual = brainVisual;
+
+		this.add(this.brainVisual);
+		this.brainVisual.setLocation(0, 0);
+		this.brainVisual.setSize(800, 600);
+		this.brainVisual.setVisible(true);
+
+		this.setSize(800, 600);
+
+		this.brainVisual.refresh();
+
+		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual), null);
+		this.executor.execute(this.lastRun);
+
+		new Timer(100, this).start();
 
 		this.addKeyListener(this);
 		this.brainVisual.addKeyListener(this);
-    }
-
+	}
 
 	public void keyPressed(KeyEvent e)
 	{
-		if(e.getKeyCode() == KeyEvent.VK_R)
+		if (e.getKeyCode() == KeyEvent.VK_R)
+		{
 			this.brainVisual.getHyperassociativeMap().reset();
-		if(e.getKeyCode() == KeyEvent.VK_L)
+		}
+		if (e.getKeyCode() == KeyEvent.VK_L)
+		{
 			this.brainVisual.getHyperassociativeMap().resetLearning();
+		}
 	}
 
 	public void keyReleased(KeyEvent e)
@@ -73,20 +77,22 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener
 	public void keyTyped(KeyEvent e)
 	{
 	}
-    
-    
-    public void actionPerformed(ActionEvent evt)
-    {
-        if((this.lastRun != null)&&(this.lastRun.isDone() == false))
-            return;
-        
-        if(this.isVisible() == false)
-            return;
-        
-        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual),null);
-        this.executor.execute(this.lastRun);
-    }
 
+	public void actionPerformed(ActionEvent evt)
+	{
+		if ((this.lastRun != null) && (this.lastRun.isDone() == false))
+		{
+			return;
+		}
+
+		if (this.isVisible() == false)
+		{
+			return;
+		}
+
+		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual), null);
+		this.executor.execute(this.lastRun);
+	}
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -106,9 +112,6 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
 }

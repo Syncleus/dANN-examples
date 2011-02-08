@@ -23,15 +23,15 @@ import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.Hyperas
 
 public class UpdateViewRun implements Runnable
 {
-    private HyperassociativeMapCanvas view;
-    
-    public UpdateViewRun(HyperassociativeMapCanvas view)
-    {
-        this.view = view;
-    }
-    
-    public void run()
-    {
-        this.view.refresh();
-    }
+	private HyperassociativeMapCanvas view;
+
+	public UpdateViewRun(HyperassociativeMapCanvas view)
+	{
+		this.view = view;
+	}
+
+	public void run()
+	{
+		this.view.refresh();
+	}
 }

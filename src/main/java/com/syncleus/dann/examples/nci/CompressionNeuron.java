@@ -23,7 +23,6 @@ import com.syncleus.dann.neural.*;
 import com.syncleus.dann.neural.activation.*;
 import com.syncleus.dann.neural.backprop.*;
 
-
 /**
  * <!-- Author: Jeffrey Phillips Freeman -->
  * @author Jeffrey Phillips Freeman
@@ -31,38 +30,36 @@ import com.syncleus.dann.neural.backprop.*;
  */
 public final class CompressionNeuron extends AbstractBackpropNeuron implements Serializable
 {
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    protected byte input = 0;
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    protected boolean inputSet = false;
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 1.0
+	 */
+	protected byte input = 0;
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 1.0
+	 */
+	protected boolean inputSet = false;
 
+	/**
+	 * Creates a new instance of InputNeuron<BR>
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 1.0
+	 */
+	public CompressionNeuron(Brain brain)
+	{
+		super(brain);
+	}
 
-
-    /**
-     * Creates a new instance of InputNeuron<BR>
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    public CompressionNeuron(Brain brain)
-    {
-        super(brain);
-    }
-    
-    /**
-     * Creates a new instance of InputNeuron<BR>
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    public CompressionNeuron(Brain brain, ActivationFunction activationFunction)
-    {
-        super(brain, activationFunction);
-    }
+	/**
+	 * Creates a new instance of InputNeuron<BR>
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 1.0
+	 */
+	public CompressionNeuron(Brain brain, ActivationFunction activationFunction)
+	{
+		super(brain, activationFunction);
+	}
 
 	public CompressionNeuron(Brain brain, double learningRate)
 	{
@@ -74,64 +71,60 @@ public final class CompressionNeuron extends AbstractBackpropNeuron implements S
 		super(brain, activationFunction, learningRate);
 	}
 
+	/**
+	 * This method sets the current input on the neuron.<BR>
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 1.0
+	 * @param inputToSet The value to set the current input to.
+	 */
+	public void setInput(byte inputToSet)
+	{
+		this.input = inputToSet;
+		this.inputSet = true;
+	}
 
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 1.0
+	 */
+	public void unsetInput()
+	{
+		this.inputSet = false;
+	}
 
-    /**
-     * This method sets the current input on the neuron.<BR>
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     * @param inputToSet The value to set the current input to.
-     */
-    public void setInput(byte inputToSet)
-    {
-        this.input = inputToSet;
-        this.inputSet = true;
-    }
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 1.0
+	 */
+	public byte getChannelOutput()
+	{
+		return (byte) Math.ceil(super.getOutput() * 127.5);
+	}
 
-
-
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    public void unsetInput()
-    {
-        this.inputSet = false;
-    }
-
-
-
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    public byte getChannelOutput()
-    {
-        return (byte) Math.ceil(super.getOutput() * 127.5);
-    }
-
-
-
-    /**
-     * <!-- Author: Jeffrey Phillips Freeman -->
-     * @since 1.0
-     */
-    private double getDoubleInput()
-    {
-        return ((double) this.input) / 127.5;
-    }
+	/**
+	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @since 1.0
+	 */
+	private double getDoubleInput()
+	{
+		return ((double) this.input) / 127.5;
+	}
 
 	@Override
 	public void tick()
 	{
-        if (this.inputSet == false)
-            super.tick();
+		if (this.inputSet == false)
+		{
+			super.tick();
+		}
 		else
 		{
 			// TODO we shouldnt be calling setOutput, try getting rid of the protected in the parent and instead make some abstracts
-            this.setOutput(this.getDoubleInput());
-            for (Synapse current : this.getBrain().getTraversableEdges(this))
-                current.setInput(this.getOutput());
+			this.setOutput(this.getDoubleInput());
+			for (Synapse current : this.getBrain().getTraversableEdges(this))
+			{
+				current.setInput(this.getOutput());
+			}
 		}
 	}
 }

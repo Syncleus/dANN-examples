@@ -23,14 +23,13 @@ import java.awt.*;
 
 public class AboutDialog extends JDialog
 {
-
-    public AboutDialog(Frame parent, boolean modal)
+	public AboutDialog(Frame parent, boolean modal)
 	{
-        super(parent, modal);
-        initComponents();
-    }
+		super(parent, modal);
+		initComponents();
+	}
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -105,8 +104,6 @@ public class AboutDialog extends JDialog
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 	this.setVisible(false);
 }//GEN-LAST:event_jButton1ActionPerformed
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -114,5 +111,4 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
-
 }

@@ -23,32 +23,32 @@ import org.apache.log4j.Logger;
 
 public class TrainRun implements Runnable
 {
-    private NciBrain brain;
-    private BufferedImage trainImage;
+	private NciBrain brain;
+	private BufferedImage trainImage;
 	private final static Logger LOGGER = Logger.getLogger(TrainRun.class);
-    
-    public TrainRun(NciBrain brain, BufferedImage trainImage)
-    {
-        this.brain = brain;
-        this.trainImage = trainImage;
-    }
-    
-    public void run()
-    {
+
+	public TrainRun(NciBrain brain, BufferedImage trainImage)
+	{
+		this.brain = brain;
+		this.trainImage = trainImage;
+	}
+
+	public void run()
+	{
 		try
 		{
 			this.brain.setLearning(true);
 			this.brain.test(trainImage);
 		}
-		catch(Exception caught)
+		catch (Exception caught)
 		{
 			LOGGER.error("Exception was caught", caught);
 			throw new RuntimeException("Throwable was caught", caught);
 		}
-		catch(Error caught)
+		catch (Error caught)
 		{
 			LOGGER.error("Error was caught", caught);
 			throw new Error("Throwable was caught");
 		}
-    }
+	}
 }

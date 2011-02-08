@@ -26,139 +26,174 @@ import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.Hyperas
 
 public class ViewMap extends JFrame implements ActionListener, WindowListener, KeyListener {
 
-    private HyperassociativeMapCanvas mapVisual;
-    private LayeredHyperassociativeMap associativeMap;
-    private final ExecutorService executor;
-    private FutureTask<Void> lastRun;
+	private HyperassociativeMapCanvas mapVisual;
+	private LayeredHyperassociativeMap associativeMap;
+	private final ExecutorService executor;
+	private FutureTask<Void> lastRun;
 
-    public ViewMap() {
-        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        this.associativeMap = new LayeredHyperassociativeMap(8, executor);
+	public ViewMap()
+	{
+		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		this.associativeMap = new LayeredHyperassociativeMap(8, executor);
 
+		try
+		{
+			this.mapVisual = new HyperassociativeMapCanvas(this.associativeMap, 0.07F);
+			initComponents();
 
-        try {
-            this.mapVisual = new HyperassociativeMapCanvas(this.associativeMap, 0.07F);
-            initComponents();
+			this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, associativeMap), null);
+			this.executor.execute(this.lastRun);
 
-            this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, associativeMap), null);
-            this.executor.execute(this.lastRun);
+			this.mapVisual.setFocusTraversalKeysEnabled(false);
+			this.mapVisual.addKeyListener(this);
+			this.addKeyListener(this);
 
-            this.mapVisual.setFocusTraversalKeysEnabled(false);
-            this.mapVisual.addKeyListener(this);
-            this.addKeyListener(this);
+			new Timer(100, this).start();
 
-            new Timer(100, this).start();
-            
-        this.mapVisual.setLocation(0, 0);
-        this.mapVisual.setSize(800, 600);
-        this.mapVisual.setVisible(true);
-        this.mapVisual.refresh();
+			this.mapVisual.setLocation(0, 0);
+			this.mapVisual.setSize(800, 600);
+			this.mapVisual.setVisible(true);
+			this.mapVisual.refresh();
 
-        } catch (ComponentUnavailableException e) {
-            this.add(e.newPanel());
-        }
+		}
+		catch (ComponentUnavailableException e)
+		{
+			this.add(e.newPanel());
+		}
 
-        this.addWindowListener(this);
-        this.setFocusTraversalKeysEnabled(false);
+		this.addWindowListener(this);
+		this.setFocusTraversalKeysEnabled(false);
 
-        this.setSize(800, 600);
+		this.setSize(800, 600);
 
-    }
+	}
 
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_R) {
-            this.associativeMap.reset();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_L) {
-            this.associativeMap.resetLearning();
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            if (this.associativeMap.getEquilibriumDistance() < 1.0) {
-                this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 1.1);
-            } else {
-                this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() + 1.0);
-            }
-            this.associativeMap.resetLearning();
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            if (this.associativeMap.getEquilibriumDistance() < 2.0) {
-                this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 0.9);
-            } else {
-                this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() - 1.0);
-            }
-            this.associativeMap.resetLearning();
-        }
-    }
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.getKeyCode() == KeyEvent.VK_R)
+		{
+			this.associativeMap.reset();
+		}
+		if (e.getKeyCode() == KeyEvent.VK_L)
+		{
+			this.associativeMap.resetLearning();
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_UP)
+		{
+			if (this.associativeMap.getEquilibriumDistance() < 1.0)
+			{
+				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 1.1);
+			}
+			else
+			{
+				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() + 1.0);
+			}
+			this.associativeMap.resetLearning();
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+		{
+			if (this.associativeMap.getEquilibriumDistance() < 2.0)
+			{
+				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 0.9);
+			}
+			else
+			{
+				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() - 1.0);
+			}
+			this.associativeMap.resetLearning();
+		}
+	}
 
-    public void keyReleased(KeyEvent e) {
-    }
+	public void keyReleased(KeyEvent e)
+	{
+	}
 
-    public void keyTyped(KeyEvent e) {
-    }
+	public void keyTyped(KeyEvent e)
+	{
+	}
 
-    public void windowClosing(WindowEvent e) {
-        this.executor.shutdown();
-    }
+	public void windowClosing(WindowEvent e)
+	{
+		this.executor.shutdown();
+	}
 
-    public void windowClosed(WindowEvent e) {
-    }
+	public void windowClosed(WindowEvent e)
+	{
+	}
 
-    public void windowOpened(WindowEvent e) {
-    }
+	public void windowOpened(WindowEvent e)
+	{
+	}
 
-    public void windowIconified(WindowEvent e) {
-    }
+	public void windowIconified(WindowEvent e)
+	{
+	}
 
-    public void windowDeiconified(WindowEvent e) {
-    }
+	public void windowDeiconified(WindowEvent e)
+	{
+	}
 
-    public void windowActivated(WindowEvent e) {
-    }
+	public void windowActivated(WindowEvent e)
+	{
+	}
 
-    public void windowDeactivated(WindowEvent e) {
-    }
+	public void windowDeactivated(WindowEvent e)
+	{
+	}
 
-    public void actionPerformed(ActionEvent evt) {
-        if ((this.lastRun != null) && (this.lastRun.isDone() == false)) {
-            return;
-        }
+	public void actionPerformed(ActionEvent evt)
+	{
+		if ((this.lastRun != null) && (this.lastRun.isDone() == false))
+		{
+			return;
+		}
 
-        if (this.isVisible() == false) {
-            return;
-        }
+		if (this.isVisible() == false)
+		{
+			return;
+		}
 
-        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, this.associativeMap), null);
-        this.executor.execute(this.lastRun);
-    }
+		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, this.associativeMap), null);
+		this.executor.execute(this.lastRun);
+	}
 
-    private static boolean checkClasses() {
-        try {
-            Class.forName("javax.media.j3d.NativePipeline");
-        } catch (ClassNotFoundException caughtException) {
-            System.out.println("java3D library isnt in classpath!");
-            return false;
-        }
+	private static boolean checkClasses()
+	{
+		try
+		{
+			Class.forName("javax.media.j3d.NativePipeline");
+		}
+		catch (ClassNotFoundException caughtException)
+		{
+			System.out.println("java3D library isnt in classpath!");
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    public static void main(String args[]) throws Exception {
-        //check that the java3D drivers are present
-        if (!checkClasses()) {
-            return;
-        }
+	public static void main(String args[]) throws Exception
+	{
+		//check that the java3D drivers are present
+		if (!checkClasses())
+		{
+			return;
+		}
 
-        System.out.println("controls:");
-        System.out.println("R: reset");
-        System.out.println("L: reset learing curve");
-        System.out.println("up arrow: increase Equilibrium");
-        System.out.println("down arrow: decrease Equilibrium");
+		System.out.println("controls:");
+		System.out.println("R: reset");
+		System.out.println("L: reset learing curve");
+		System.out.println("up arrow: increase Equilibrium");
+		System.out.println("down arrow: decrease Equilibrium");
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new ViewMap().setVisible(true);
-            }
-        });
-    }
+		java.awt.EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				new ViewMap().setVisible(true);
+			}
+		});
+	}
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -181,5 +216,5 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
     }//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    // </editor-fold>
+	// </editor-fold>
 }
