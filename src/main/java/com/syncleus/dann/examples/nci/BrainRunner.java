@@ -22,9 +22,12 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
-import java.util.concurrent.*;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.HyperassociativeMap;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.LayeredBrainHyperassociativeMap;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 import org.apache.log4j.Logger;
 
 public class BrainRunner implements Runnable
@@ -50,7 +53,7 @@ public class BrainRunner implements Runnable
 	public BrainRunner(BrainListener listener, File[] trainingFiles, double compression, int xSize, int ySize, boolean extraConnectivity)
 	{
 		this.listener = listener;
-		this.trainingFiles = (File[]) trainingFiles.clone();
+		this.trainingFiles = trainingFiles.clone();
 		this.compression = compression;
 		this.xSize = xSize;
 		this.ySize = ySize;
@@ -126,6 +129,7 @@ public class BrainRunner implements Runnable
 		this.sampleFile = null;
 	}
 
+	@Override
 	public void run()
 	{
 		ExecutorService executor = null;

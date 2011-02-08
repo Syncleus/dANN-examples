@@ -18,9 +18,7 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.xor;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.concurrent.*;
 import com.syncleus.dann.neural.InputNeuron;
 import com.syncleus.dann.neural.OutputNeuron;
 import com.syncleus.dann.neural.activation.ActivationFunction;
@@ -28,6 +26,17 @@ import com.syncleus.dann.neural.activation.SineActivationFunction;
 import com.syncleus.dann.neural.backprop.InputBackpropNeuron;
 import com.syncleus.dann.neural.backprop.OutputBackpropNeuron;
 import com.syncleus.dann.neural.backprop.brain.FullyConnectedFeedforwardBrain;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 

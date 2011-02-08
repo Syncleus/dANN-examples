@@ -18,10 +18,20 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.colormap;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.concurrent.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.Timer;
+import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 
 public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, WindowListener
@@ -49,7 +59,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 
     public ColorMapDemo()
 	{
-		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());;
+		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         try
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -70,35 +80,43 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 		this.color1d = (new ColorMap1dCallable(INITIAL_ITERATIONS, INITIAL_LEARNING_RATE, 500)).call();
     }
 
+	@Override
 	public void windowClosing(WindowEvent e)
 	{
 		this.executor.shutdown();
 	}
 
+	@Override
 	public void windowClosed(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void windowOpened(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void windowIconified(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void windowDeiconified(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void windowActivated(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void windowDeactivated(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent evt)
 	{
 		if(this.callable1d != null)
@@ -176,7 +194,6 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 			this.trainDisplayButton.setEnabled(true);
 		}
 	}
-
 
 	@Override
 	public void paint(Graphics graphics)
@@ -379,6 +396,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 		{
 			java.awt.EventQueue.invokeLater(new Runnable()
 			{
+				@Override
 				public void run()
 				{
 					try

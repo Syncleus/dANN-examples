@@ -40,6 +40,7 @@ public class TestAboutDialog
 	{
 		AboutDialog aboutDialog = GuiActionRunner.execute(new GuiQuery<AboutDialog>()
 		{
+			@Override
 			protected AboutDialog executeInEDT()
 			{
 				return new AboutDialog(null, false);

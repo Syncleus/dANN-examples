@@ -34,6 +34,7 @@ public class SampleRun implements Callable<BufferedImage>
 		this.sampleImage = sampleImage;
 	}
 
+	@Override
 	public BufferedImage call()
 	{
 		try

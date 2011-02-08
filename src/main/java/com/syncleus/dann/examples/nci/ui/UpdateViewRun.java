@@ -30,6 +30,7 @@ public class UpdateViewRun implements Runnable
 		this.view = view;
 	}
 
+	@Override
 	public void run()
 	{
 		this.view.refresh();

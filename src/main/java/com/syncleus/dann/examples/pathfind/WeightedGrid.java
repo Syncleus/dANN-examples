@@ -18,12 +18,19 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.pathfind;
 
-import java.util.*;
 import com.syncleus.dann.graph.AbstractBidirectedAdjacencyGraph;
 import com.syncleus.dann.graph.SimpleWeightedUndirectedEdge;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * A 2D mesh with individual weights for nodes and edges.  Each node is linked to its four neighbors by weighted undirected edges.
+ * A 2D mesh with individual weights for nodes and edges.
+ * Each node is linked to its four neighbors by weighted undirected edges.
  * @author seh
  */
 public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, SimpleWeightedUndirectedEdge<GridNode>>
@@ -35,8 +42,10 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
 	private final Map<GridNode, Set<GridNode>> neighborNodes = new HashMap<GridNode, Set<GridNode>>();
 
 	/**
-	 * Initialize the grid with a 2D array of nodeweights specified as double's.
-	 * @param nodeWeights the 2D array of nodeweights.  the dimensions of the array specify the dimensions of the constructed grid.
+	 * Initialize the grid with a 2D array of node-weights specified as
+	 * <code>double</code>'s.
+	 * @param nodeWeights the 2D array of node-weights. The dimensions of the
+	 *   array specify the dimensions of the constructed grid.
 	 */
 	public WeightedGrid(final double[][] nodeWeights)
 	{
@@ -147,10 +156,11 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
 	}
 
 	/**
-	 * Since all edges are traversible, this is the same as getEdges(node).
+	 * Since all edges are traversable, this is the same as getEdges(node).
 	 * @param node the node to find edges surrounding it
 	 * @return all traversable edges
 	 */
+	@Override
 	public Set<SimpleWeightedUndirectedEdge<GridNode>> getTraversableEdges(final GridNode node)
 	{
 		return this.getAdjacentEdges(node);
@@ -171,13 +181,15 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
 	 * @param node the node to find edges surrounding it
 	 * @return all edges surrounding it
 	 */
+	@Override
 	public Set<SimpleWeightedUndirectedEdge<GridNode>> getInEdges(final GridNode node)
 	{
 		return this.getAdjacentEdges(node);
 	}
 
 	/**
-	 * Gets the number of edges surrounding a specific node (which are both incoming and outgoing), which should range from 2 to 4.
+	 * Gets the number of edges surrounding a specific node (which are both
+	 * incoming and outgoing), which should range from 2 to 4.
 	 * @param node the node to find edges surrounding it
 	 * @return number of edges surrounding it
 	 */
@@ -187,7 +199,8 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
 	}
 
 	/**
-	 * Gets the number of edges surrounding a specific node (which are both incoming and outgoing), which should range from 2 to 4.
+	 * Gets the number of edges surrounding a specific node (which are both
+	 * incoming and outgoing), which should range from 2 to 4.
 	 * @param node the node to find edges surrounding it
 	 * @return number of edges surrounding it
 	 */
@@ -212,6 +225,7 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
 	 * @param node to find neighbors surrounding it
 	 * @return list of nodes that can be traversed into
 	 */
+	@Override
 	public List<GridNode> getAdjacentNodes(final GridNode node)
 	{
 		return Collections.unmodifiableList(new ArrayList<GridNode>(this.neighborNodes.get(node)));
@@ -222,6 +236,7 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
 	 * @param node to find neighbors surrounding it
 	 * @return list of nodes that can be traversed into
 	 */
+	@Override
 	public List<GridNode> getTraversableNodes(final GridNode node)
 	{
 		return this.getAdjacentNodes(node);
@@ -249,7 +264,8 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
 	 * @param firstY y coordinate of 1st grid location
 	 * @param secondX x coordinate of 2nd grid location
 	 * @param secondY y coordinate of 2nd grid location
-	 * @return the specific edge in the grid between the two points, or null if such edge is non-existent
+	 * @return the specific edge in the grid between the two points, or
+	 *   <code>null</code> if such edge is non-existent
 	 */
 	public SimpleWeightedUndirectedEdge<GridNode> getEdgeBetween(final int firstX, final int firstY, final int secondX, final int secondY)
 	{

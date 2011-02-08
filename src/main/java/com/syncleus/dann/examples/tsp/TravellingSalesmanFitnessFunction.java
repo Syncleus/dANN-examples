@@ -45,6 +45,7 @@ public class TravellingSalesmanFitnessFunction extends AbstractGeneticAlgorithmF
 		this.cities = cities.clone();
 	}
 
+	@Override
 	public TravellingSalesmanChromosome getChromosome()
 	{
 		return ((TravellingSalesmanChromosome)(super.getChromosome()));
@@ -61,6 +62,7 @@ public class TravellingSalesmanFitnessFunction extends AbstractGeneticAlgorithmF
 	 * both equally as fit it will return 0.
 	 * @since 2.0
 	 */
+	@Override
 	public int compareTo(TravellingSalesmanFitnessFunction compareWith)
 	{
 		if(this.totalDistance < compareWith.totalDistance)
@@ -77,6 +79,7 @@ public class TravellingSalesmanFitnessFunction extends AbstractGeneticAlgorithmF
 	 *
 	 * @since 2.0
 	 */
+	@Override
 	public synchronized void process()
 	{
 		final SortedSet<AbstractValueGene> sortedGenes = this.getChromosome().getSortedGenes();

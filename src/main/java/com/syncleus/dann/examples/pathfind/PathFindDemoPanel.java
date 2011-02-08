@@ -18,18 +18,34 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.pathfind;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import java.util.LinkedList;
 import java.util.List;
 import com.syncleus.dann.graph.SimpleWeightedUndirectedEdge;
 import com.syncleus.dann.graph.WeightedBidirectedEdge;
 import com.syncleus.dann.graph.search.pathfinding.AstarPathFinder;
 import com.syncleus.dann.graph.search.pathfinding.HeuristicPathCost;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JToggleButton;
+import javax.swing.UIManager;
 
 /**
- * Demonstrates Path Finding across a Weighted Grid.  The Grid's node and edge weights can be adjusted by clicking.
+ * Demonstrates Path Finding across a Weighted Grid.
+ * The Grid's node and edge weights can be adjusted by clicking.
  * The start and stop positions of the path to be found can also be specified.
  * @author seh
  */
@@ -57,20 +73,24 @@ public class PathFindDemoPanel extends JPanel
 		1, 2, 4, 6, 8, 10, INF
 	};
 
-	/** Distance heuristic used by the AStarPathFinding algorithm. */
+	/**
+	 * Distance heuristic used by the AStarPathFinding algorithm.
+	 */
 	private static class DistanceHeuristic implements HeuristicPathCost<GridNode>
 	{
-
+		@Override
 		public double getHeuristicPathCost(final GridNode begin, final GridNode end)
 		{
 			return begin.calculateRelativeTo(end).getDistance();
 		}
 
+		@Override
 		public boolean isOptimistic()
 		{
 			return true;
 		}
 
+		@Override
 		public boolean isConsistent()
 		{
 			return true;
@@ -170,7 +190,8 @@ public class PathFindDemoPanel extends JPanel
 	}
 
 	/**
-	 * Creates a new Swing component with an empty square grid of size width*width.
+	 * Creates a new Swing component with an empty square grid of size
+	 * width*width.
 	 * @param width number of grid nodes wide and high
 	 */
 	public PathFindDemoPanel(final int width)
@@ -178,12 +199,13 @@ public class PathFindDemoPanel extends JPanel
 		super(new BorderLayout());
 
 		reinit(width);
-
 	}
 
 	/**
-	 * Reconstructs the grid and the panel (and its components) with new grid dimensions.
-	 * @param nextWidth the width and height (square) dimensions of the grid to (re-)initialize.
+	 * Reconstructs the grid and the panel (and its components) with new grid
+	 * dimensions.
+	 * @param nextWidth the width and height (square) dimensions of the grid to
+	 *   (re-)initialize.
 	 */
 	protected void reinit(final int nextWidth)
 	{
@@ -211,7 +233,6 @@ public class PathFindDemoPanel extends JPanel
 
 		gridCanvas = new AbstractGridCanvas(grid, path, DEFAULT_NODE_SIZE, DEFAULT_EDGE_SIZE)
 		{
-
 			private boolean mouseDown = false;
 
 			public boolean isMouseDown()
@@ -332,13 +353,12 @@ public class PathFindDemoPanel extends JPanel
 			}
 		};
 
-
 		add(new JScrollPane(gridCanvas), BorderLayout.CENTER);
-
 	}
 
 	/**
-	 * Returns a color associated with a specific weight value.  This is used to draw a grayscale gradient for the grid's weights.
+	 * Returns a color associated with a specific weight value.
+	 * This is used to draw a gray-scale gradient for the grid's weights.
 	 * @param weight value
 	 * @return a color value
 	 */
@@ -361,7 +381,8 @@ public class PathFindDemoPanel extends JPanel
 	}
 
 	/**
-	 * Updates the path when the starting or ending node changes, or when the AStarPathFinder parameters are changed.
+	 * Updates the path when the starting or ending node changes, or when the
+	 * AStarPathFinder parameters are changed.
 	 */
 	protected void updatePath()
 	{
@@ -381,7 +402,7 @@ public class PathFindDemoPanel extends JPanel
 	{
 		java.awt.EventQueue.invokeLater(new Runnable()
 		{
-
+			@Override
 			public void run()
 			{
 				JFrame jf = new JFrame("dANN Path Finding Demo");
@@ -404,7 +425,6 @@ public class PathFindDemoPanel extends JPanel
 
 	static
 	{
-
 		// Install the look and feel
 		try
 		{

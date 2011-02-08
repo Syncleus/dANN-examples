@@ -18,9 +18,12 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.tsp;
 
-import java.util.*;
 import com.syncleus.dann.genetics.AbstractValueGene;
 import com.syncleus.dann.genetics.GeneticAlgorithmChromosome;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome implements Cloneable
 {
@@ -60,17 +63,18 @@ public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome imp
 	public SortedSet<AbstractValueGene> getSortedGenes()
 	{
 		TreeSet<AbstractValueGene> sortedGenes = new TreeSet<AbstractValueGene>(new Comparator<AbstractValueGene>()
-							{
-								public int compare(AbstractValueGene gene1, AbstractValueGene gene2)
-								{
-									if( gene1.getValue().doubleValue() < gene2.getValue().doubleValue() )
-										return -1;
-									else if( gene1.getValue().doubleValue() > gene2.getValue().doubleValue() )
-										return 1;
-									else
-										return 0;
-								}
-							});
+				{
+					@Override
+					public int compare(AbstractValueGene gene1, AbstractValueGene gene2)
+					{
+						if( gene1.getValue().doubleValue() < gene2.getValue().doubleValue() )
+							return -1;
+						else if( gene1.getValue().doubleValue() > gene2.getValue().doubleValue() )
+							return 1;
+						else
+							return 0;
+					}
+				});
 
 		sortedGenes.addAll(this.getGenes());
 
@@ -103,6 +107,7 @@ public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome imp
 	 * @return A copy of the current object with potential mutations.
 	 * @since 2.0
 	 */
+	@Override
 	public TravellingSalesmanChromosome mutate(double deviation)
 	{
 		TravellingSalesmanChromosome mutated = (TravellingSalesmanChromosome)super.mutate(deviation);

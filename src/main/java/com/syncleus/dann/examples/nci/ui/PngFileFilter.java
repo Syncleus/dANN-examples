@@ -23,6 +23,7 @@ import java.io.FileFilter;
 
 public class PngFileFilter implements FileFilter
 {
+	@Override
 	public boolean accept(File pathname)
 	{
 		return pathname.getAbsolutePath().toLowerCase().endsWith(".png");

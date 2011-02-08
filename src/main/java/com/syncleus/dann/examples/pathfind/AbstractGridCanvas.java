@@ -18,15 +18,24 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.pathfind;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import com.syncleus.dann.graph.BidirectedEdge;
+import com.syncleus.dann.graph.SimpleWeightedUndirectedEdge;
+import com.syncleus.dann.graph.WeightedBidirectedEdge;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.LinkedList;
 import java.util.List;
-import com.syncleus.dann.graph.*;
+import javax.swing.JPanel;
 
 /**
- * Displays a WeightedGrid as a Swing component, with support for hiliting individual nodes and edges (borders between nodes).
+ * Displays a WeightedGrid as a Swing component, with support for highlighting
+ * individual nodes and edges (borders between nodes).
  * @author seh
  */
 public abstract class AbstractGridCanvas extends JPanel implements MouseListener, MouseMotionListener
@@ -39,18 +48,27 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 	private GridNode touchedNode = null;
 	private SimpleWeightedUndirectedEdge<GridNode> touchedEdge = null;
 	private final int selectedThickness;
-	/** Number of times smaller that the drawn path is than nodes (which it runs through). */
+	/**
+	 * Number of times smaller that the drawn path is than nodes which it runs
+	 * through.
+	 */
 	private final int pathFraction = 4;
-	/** Number of times smaller that the drawn border hiliting is than nodes and edges (which it surrounds). */
+	/**
+	 * Number of times smaller that the drawn border highlighting is than nodes
+	 * and edges which it surrounds.
+	 */
 	private final int borderFraction = 4;
 	private static final Color PATH_COLOR = new Color(0.5f, 0f, 0f);
 
 	/**
-	 * Constructs a Swing component representing a grid and a path according to pixel-sizing parameters.
+	 * Constructs a Swing component representing a grid and a path according to
+	 * pixel-sizing parameters.
 	 * @param shownGrid  the grid displayed by this component
-	 * @param initialPath the initial path displayed by this component, which may be null
+	 * @param initialPath the initial path displayed by this component, which
+	 *   may be null
 	 * @param initialNodeSize size (in pixels) of each displayed node square
-	 * @param initialEdgeSize size (in pixels) of the width or height of each edge surrounding each node square
+	 * @param initialEdgeSize size (in pixels) of the width or height of each
+	 *   edge surrounding each node square
 	 */
 	public AbstractGridCanvas(final WeightedGrid shownGrid, final List<SimpleWeightedUndirectedEdge<GridNode>> initialPath, final int initialNodeSize, final int initialEdgeSize)
 	{
@@ -61,7 +79,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 		this.edgeSize = initialEdgeSize;
 		this.path = initialPath;
 		this.pathThickness = Math.max(1, nodeSize / pathFraction);
-		this.selectedThickness = (int) Math.max(1, Math.min(edgeSize, nodeSize) / borderFraction);
+		this.selectedThickness = Math.max(1, Math.min(edgeSize, nodeSize) / borderFraction);
 
 		int pw = grid.getWidth() * nodeSize + (grid.getWidth() + 1) * edgeSize;
 		int ph = grid.getHeight() * nodeSize + (grid.getHeight() + 1) * edgeSize;

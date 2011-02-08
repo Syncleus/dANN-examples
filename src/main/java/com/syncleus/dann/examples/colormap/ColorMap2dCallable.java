@@ -18,15 +18,17 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.colormap;
 
-import java.awt.*;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import com.syncleus.dann.math.Vector;
 import com.syncleus.dann.neural.Synapse;
-import com.syncleus.dann.neural.som.*;
+import com.syncleus.dann.neural.som.SomInputNeuron;
+import com.syncleus.dann.neural.som.SomNeuron;
+import com.syncleus.dann.neural.som.SomOutputNeuron;
 import com.syncleus.dann.neural.som.brain.ExponentialDecaySomBrain;
+import java.awt.Color;
 import org.apache.log4j.Logger;
 
 public class ColorMap2dCallable implements Callable<Color[][]>
@@ -50,6 +52,7 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 		this.height = height;
 	}
 
+	@Override
 	public Color[][] call()
 	{
 		try
@@ -136,8 +139,6 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 		return iterations;
 	}
 
-
-
 	/**
 	 * @return the learningRate
 	 */
@@ -145,8 +146,6 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 	{
 		return learningRate;
 	}
-
-
 
 	/**
 	 * @return the width
@@ -156,8 +155,6 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 		return width;
 	}
 
-
-
 	/**
 	 * @return the height
 	 */
@@ -165,8 +162,6 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 	{
 		return height;
 	}
-
-
 
 	/**
 	 * @return the progress

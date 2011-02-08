@@ -19,9 +19,7 @@
 package com.syncleus.dann.examples.nci.ui;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -31,6 +29,13 @@ import com.syncleus.dann.ComponentUnavailableException;
 import com.syncleus.dann.examples.nci.BrainListener;
 import com.syncleus.dann.examples.nci.BrainRunner;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.HyperassociativeMapCanvas;
+import java.awt.Component;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 
 public class NciDemo extends JFrame implements ActionListener, BrainListener
@@ -48,8 +53,8 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
 	private BufferedImage finalImage;
 	private ImagePanel finalImagePanel = new ImagePanel();
 	private boolean processing = false;
-	int trainingRemaining;
-	int currentTrainingCycles = 100000;
+	private int trainingRemaining;
+	private int currentTrainingCycles = 100000;
 	private ViewBrain viewBrain;
 	private final static Logger LOGGER = Logger.getLogger(NciDemo.class);
 
@@ -83,6 +88,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
 		new Timer(250, this).start();
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent evt) {
 
 		if (this.trainingRemaining > 0) {
@@ -351,7 +357,7 @@ private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) 
 	JFileChooser chooser = new JFileChooser();
 	FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
 	chooser.setFileFilter(filter);
-	chooser.setFileSelectionMode(chooser.FILES_ONLY);
+	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	chooser.setMultiSelectionEnabled(false);
 	chooser.setVisible(true);
 	if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -371,7 +377,7 @@ private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) 
 
 private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainingDirectorySelectActionPerformed
 	JFileChooser chooser = new JFileChooser();
-	chooser.setFileSelectionMode(chooser.DIRECTORIES_ONLY);
+	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	chooser.setMultiSelectionEnabled(false);
 	chooser.setVisible(true);
 	if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {

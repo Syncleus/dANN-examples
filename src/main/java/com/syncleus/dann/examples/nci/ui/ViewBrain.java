@@ -18,12 +18,17 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.nci.ui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.concurrent.*;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.HyperassociativeMapCanvas;
-
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+import javax.swing.JDialog;
+import javax.swing.Timer;
 
 public class ViewBrain extends JDialog implements ActionListener, KeyListener
 {
@@ -58,6 +63,7 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener
 		this.brainVisual.addKeyListener(this);
 	}
 
+	@Override
 	public void keyPressed(KeyEvent e)
 	{
 		if (e.getKeyCode() == KeyEvent.VK_R)
@@ -70,14 +76,17 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener
 		}
 	}
 
+	@Override
 	public void keyReleased(KeyEvent e)
 	{
 	}
 
+	@Override
 	public void keyTyped(KeyEvent e)
 	{
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent evt)
 	{
 		if ((this.lastRun != null) && (this.lastRun.isDone() == false))

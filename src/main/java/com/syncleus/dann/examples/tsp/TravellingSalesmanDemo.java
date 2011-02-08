@@ -18,14 +18,20 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.tsp;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Random;
-import java.util.concurrent.*;
 import com.syncleus.dann.math.Vector;
+import java.awt.Graphics;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import javax.swing.JFrame;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.Timer;
+import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 
 public class TravellingSalesmanDemo extends JFrame implements ActionListener
@@ -70,6 +76,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 			this.iterationsMax = iterationsMax;
 		}
 
+		@Override
 		public TravellingSalesmanChromosome call()
 		{
 			try
@@ -206,6 +213,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 		return points;
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent evt)
 	{
 		if((this.futureWinner != null)&&(this.populationCallable != null))

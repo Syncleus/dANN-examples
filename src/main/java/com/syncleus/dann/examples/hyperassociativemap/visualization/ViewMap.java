@@ -18,11 +18,19 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.hyperassociativemap.visualization;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.util.concurrent.*;
 import com.syncleus.dann.ComponentUnavailableException;
 import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.HyperassociativeMapCanvas;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+import javax.swing.JFrame;
+import javax.swing.Timer;
 
 public class ViewMap extends JFrame implements ActionListener, WindowListener, KeyListener {
 
@@ -68,6 +76,7 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 
 	}
 
+	@Override
 	public void keyPressed(KeyEvent e)
 	{
 		if (e.getKeyCode() == KeyEvent.VK_R)
@@ -104,43 +113,53 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 		}
 	}
 
+	@Override
 	public void keyReleased(KeyEvent e)
 	{
 	}
 
+	@Override
 	public void keyTyped(KeyEvent e)
 	{
 	}
 
+	@Override
 	public void windowClosing(WindowEvent e)
 	{
 		this.executor.shutdown();
 	}
 
+	@Override
 	public void windowClosed(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void windowOpened(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void windowIconified(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void windowDeiconified(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void windowActivated(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void windowDeactivated(WindowEvent e)
 	{
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent evt)
 	{
 		if ((this.lastRun != null) && (this.lastRun.isDone() == false))
@@ -188,6 +207,7 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 
 		java.awt.EventQueue.invokeLater(new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				new ViewMap().setVisible(true);

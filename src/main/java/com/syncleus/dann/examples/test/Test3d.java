@@ -21,10 +21,10 @@ package com.syncleus.dann.examples.test;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
-import javax.swing.*;
 import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet;
 import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet.GlobalSignalConcentration;
 import com.syncleus.dann.math.visualization.MathFunctionCanvas;
+import javax.swing.JFrame;
 
 public class Test3d extends JFrame
 {
@@ -98,7 +98,7 @@ public class Test3d extends JFrame
 		java.awt.EventQueue.invokeLater(
 				new Runnable()
 				{
-
+					@Override
 					public void run()
 					{
 						for (int index = 0; index < 1; index++)

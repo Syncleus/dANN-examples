@@ -61,6 +61,7 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
 		this.addAll(initialChromosomes(cities.length, populationSize));
 	}
 
+	@Override
 	protected TravellingSalesmanFitnessFunction packageChromosome(final GeneticAlgorithmChromosome chromosome)
 	{
 		if(!(chromosome instanceof TravellingSalesmanChromosome))
@@ -82,6 +83,7 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
 		return returnValue;
 	}
 
+	@Override
 	public final TravellingSalesmanChromosome getWinner()
 	{
 		GeneticAlgorithmChromosome winner = super.getWinner();

@@ -18,8 +18,16 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.hyperassociativemap.visualization;
 
-import java.util.*;
-import com.syncleus.dann.graph.*;
+import com.syncleus.dann.graph.AbstractBidirectedAdjacencyGraph;
+import com.syncleus.dann.graph.BidirectedEdge;
+import com.syncleus.dann.graph.ImmutableUndirectedEdge;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class SimpleGraph extends AbstractBidirectedAdjacencyGraph<SimpleNode, BidirectedEdge<SimpleNode>>
 {
@@ -73,6 +81,7 @@ public class SimpleGraph extends AbstractBidirectedAdjacencyGraph<SimpleNode, Bi
 		return this.nodes[layer][index];
 	}
 
+	@Override
 	public Set<SimpleNode> getNodes()
 	{
 		return Collections.unmodifiableSet(this.nodeSet);
@@ -84,11 +93,13 @@ public class SimpleGraph extends AbstractBidirectedAdjacencyGraph<SimpleNode, Bi
 		return Collections.unmodifiableSet(this.edges);
 	}
 
+	@Override
 	public Set<BidirectedEdge<SimpleNode>> getAdjacentEdges(SimpleNode node)
 	{
 		return Collections.unmodifiableSet(this.neighborEdges.get(node));
 	}
 
+	@Override
 	public Set<BidirectedEdge<SimpleNode>> getTraversableEdges(SimpleNode node)
 	{
 		return this.getAdjacentEdges(node);
@@ -99,6 +110,7 @@ public class SimpleGraph extends AbstractBidirectedAdjacencyGraph<SimpleNode, Bi
 		return this.getAdjacentEdges(node);
 	}
 
+	@Override
 	public Set<BidirectedEdge<SimpleNode>> getInEdges(SimpleNode node)
 	{
 		return this.getAdjacentEdges(node);
@@ -119,11 +131,13 @@ public class SimpleGraph extends AbstractBidirectedAdjacencyGraph<SimpleNode, Bi
 		return this.neighborNodes.get(leftNode).contains(rightNode);
 	}
 
+	@Override
 	public List<SimpleNode> getAdjacentNodes(SimpleNode node)
 	{
 		return Collections.unmodifiableList(new ArrayList<SimpleNode>(this.neighborNodes.get(node)));
 	}
 
+	@Override
 	public List<SimpleNode> getTraversableNodes(SimpleNode node)
 	{
 		return this.getAdjacentNodes(node);

@@ -19,12 +19,12 @@
 package com.syncleus.dann.examples.nci;
 
 import java.io.Serializable;
-import com.syncleus.dann.neural.*;
-import com.syncleus.dann.neural.activation.*;
-import com.syncleus.dann.neural.backprop.*;
+import com.syncleus.dann.neural.Brain;
+import com.syncleus.dann.neural.Synapse;
+import com.syncleus.dann.neural.activation.ActivationFunction;
+import com.syncleus.dann.neural.backprop.AbstractBackpropNeuron;
 
 /**
- * <!-- Author: Jeffrey Phillips Freeman -->
  * @author Jeffrey Phillips Freeman
  * @since 1.0
  */
@@ -34,12 +34,12 @@ public final class CompressionNeuron extends AbstractBackpropNeuron implements S
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
-	protected byte input = 0;
+	private byte input = 0;
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
-	protected boolean inputSet = false;
+	private boolean inputSet = false;
 
 	/**
 	 * Creates a new instance of InputNeuron<BR>

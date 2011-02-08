@@ -18,12 +18,20 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.fft;
 
-import javax.sound.sampled.*;
-import javax.swing.*;
-import java.awt.*;
+import com.syncleus.dann.dataprocessing.signal.transform.CooleyTukeyFastFourierTransformer;
+import com.syncleus.dann.dataprocessing.signal.transform.DiscreteFourierTransform;
+import com.syncleus.dann.dataprocessing.signal.transform.FastFourierTransformer;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import com.syncleus.dann.dataprocessing.signal.transform.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.TargetDataLine;
+import javax.swing.JFrame;
+import javax.swing.JProgressBar;
+import javax.swing.Timer;
 
 public class FftDemo extends JFrame implements ActionListener
 {
@@ -322,6 +330,7 @@ public class FftDemo extends JFrame implements ActionListener
 		}
 	}//GEN-LAST:event_listenButtonActionPerformed
 
+	@Override
 	public void actionPerformed(ActionEvent evt)
 	{
 		if(this.transformer.getBlockSize()*2 <= this.targetDataLine.available())
@@ -335,7 +344,6 @@ public class FftDemo extends JFrame implements ActionListener
 				final int signalBytesIndex = signalIndex * 2;
 				signal[signalIndex] = bytesToDouble(signalBytes[signalBytesIndex], signalBytes[signalBytesIndex+1]);
 			}
-
 
 			final DiscreteFourierTransform transform = this.transformer.transform(signal);
 			final double maximumFrequency = transform.getMaximumFrequency();
@@ -351,7 +359,6 @@ public class FftDemo extends JFrame implements ActionListener
 	private double bytesToDouble(byte... data)
 	{
 		return ((double) (((short)data[1])<<8) + ((short)data[0])) / ((double)Short.MAX_VALUE);
-
 	}
 
 	private AudioFormat getAudioFormat()
@@ -370,6 +377,7 @@ public class FftDemo extends JFrame implements ActionListener
         java.awt.EventQueue.invokeLater(
 			new Runnable()
 			{
+				@Override
 				public void run()
 				{
 					new FftDemo().setVisible(true);

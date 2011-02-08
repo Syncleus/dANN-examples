@@ -18,8 +18,8 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.nci.ui;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Frame;
+import javax.swing.JDialog;
 
 public class AboutDialog extends JDialog
 {

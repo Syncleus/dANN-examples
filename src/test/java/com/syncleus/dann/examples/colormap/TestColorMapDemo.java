@@ -42,6 +42,7 @@ public class TestColorMapDemo
 	{
 		ColorMapDemo colorMapDemo = GuiActionRunner.execute(new GuiQuery<ColorMapDemo>()
 		{
+			@Override
 			protected ColorMapDemo executeInEDT()
 			{
 				return new ColorMapDemo();

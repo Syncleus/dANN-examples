@@ -40,6 +40,7 @@ public class TestFftDemo
 	{
 		FftDemo fftDemo = GuiActionRunner.execute(new GuiQuery<FftDemo>()
 		{
+			@Override
 			protected FftDemo executeInEDT()
 			{
 				return new FftDemo();

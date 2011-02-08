@@ -18,16 +18,23 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.nci;
 
+import com.syncleus.dann.neural.InputNeuron;
+import com.syncleus.dann.neural.OutputNeuron;
+import com.syncleus.dann.neural.Synapse;
+import com.syncleus.dann.neural.activation.ActivationFunction;
+import com.syncleus.dann.neural.activation.SineActivationFunction;
+import com.syncleus.dann.neural.backprop.BackpropNeuron;
+import com.syncleus.dann.neural.backprop.InputBackpropNeuron;
+import com.syncleus.dann.neural.backprop.OutputBackpropNeuron;
+import com.syncleus.dann.neural.backprop.SimpleBackpropNeuron;
+import com.syncleus.dann.neural.backprop.SimpleInputBackpropNeuron;
+import com.syncleus.dann.neural.backprop.SimpleOutputBackpropNeuron;
+import com.syncleus.dann.neural.backprop.brain.AbstractFullyConnectedFeedforwardBrain;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Set;
-import com.syncleus.dann.neural.*;
-import com.syncleus.dann.neural.activation.*;
-import com.syncleus.dann.neural.backprop.*;
-import com.syncleus.dann.neural.backprop.brain.*;
 
 /**
- * <!-- Author: Jeffrey Phillips Freeman -->
  * @author Jeffrey Phillips Freeman
  * @since 1.0
  */
@@ -47,7 +54,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 
 	/**
 	 * creates an instance of NciBrain.<BR>
-	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @author Jeffrey Phillips Freeman
 	 * @param compression A value between 0.0 (inclusive) and 1.0 (exclusive)
 	 *		which represents the % of compression.
 	 */
@@ -82,6 +89,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 				}
 	}
 
+	@Override
 	protected BackpropNeuron createNeuron(int layer, int index)
 	{
 		if( layer == 0 )
@@ -98,8 +106,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 			return new SimpleBackpropNeuron(this, this.activationFunction, this.learningRate);
 	}
 
-
-
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
@@ -108,8 +114,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	{
 		return this.actualCompression;
 	}
-
-
 
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
@@ -120,8 +124,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 		return this.learning;
 	}
 
-
-
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
@@ -130,8 +132,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	{
 		this.learning = learningToSet;
 	}
-
-
 
 	public double getAverageWeight()
 	{
@@ -159,8 +159,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 		return weightSum / weightCount;
 	}
 
-
-
 	public double getAverageAbsoluteWeight()
 	{
 		double weightSum = 0.0;
@@ -187,8 +185,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 		return weightSum / weightCount;
 	}
 
-
-
 	public BufferedImage test(BufferedImage originalImage)
 	{
 		int[] originalRgbArray = new int[xSize * ySize];
@@ -204,7 +200,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 				{
 
 
-					int channel = (int) (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
+					int channel = (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
 					double input = (((double) channel) / 127.5) - 1.0;
 
 					this.inputNeurons[xIndex][yIndex][rgbIndex].setInput(input);
@@ -219,10 +215,8 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 			this.compressionInputsSet = false;
 		}
 
-
 		//propogate the output
 		this.propagate();
-
 
 		if (this.learning == false)
 		{
@@ -244,7 +238,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 
 						int channel = (int)((output + 1.0d) * 127.5d);
 
-						rgbCurrent |= (((int) channel) & 0x000000FF) << (rgbIndex * 8);
+						rgbCurrent |= (channel & 0x000000FF) << (rgbIndex * 8);
 					}
 					finalRgbArray[xSize * yIndex + (xIndex)] = rgbCurrent;
 				}
@@ -259,8 +253,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 		//all done
 		return null;
 	}
-
-
 
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
@@ -279,9 +271,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 				int rgbCurrent = originalRgbArray[yIndex * xSize + xIndex];
 				for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
 				{
-
-
-					int channel = (int) (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
+					int channel = (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
 					double input = (((double) channel) / 127.5) - 1.0;
 
 					this.inputNeurons[xIndex][yIndex][rgbIndex].setInput(input);
@@ -295,7 +285,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 			this.compressionInputsSet = false;
 		}
 
-
 		//propogate the output
 		this.propagate();
 
@@ -306,8 +295,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 
 		return compressedData;
 	}
-
-
 
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
@@ -341,7 +328,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 
 					int channel = (int)((output + 1.0d) * 127.5d);
 
-					rgbCurrent |= (((int) channel) & 0x000000FF) << (rgbIndex * 8);
+					rgbCurrent |= (channel & 0x000000FF) << (rgbIndex * 8);
 				}
 				finalRgbArray[xSize * yIndex + (xIndex)] = rgbCurrent;
 			}

@@ -18,12 +18,15 @@
  ******************************************************************************/
 package com.syncleus.dann.examples;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
-/** Runs dANN demos from a console menu.
- *  @author Jeffrey Phillips Freeman
+/**
+ * Runs dANN demos from a console menu.
+ * @author Jeffrey Phillips Freeman
  */
 public class Main
 {
