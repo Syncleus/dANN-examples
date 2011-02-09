@@ -25,11 +25,13 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome implements Cloneable
+public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome
 {
+	private static final double MAX_DEVIATION = 10.0;
+
 	public TravellingSalesmanChromosome(final int cityCount)
 	{
-		super(cityCount, 10.0);
+		super(cityCount, MAX_DEVIATION);
 	}
 
 	public int getCityOrder(final int cityIndex)
@@ -37,9 +39,9 @@ public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome imp
 		if( cityIndex >= this.getGeneCount())
 			throw new IllegalArgumentException("cityIndex is out of bounds");
 
-		SortedSet<AbstractValueGene> sortedGenes = this.getSortedGenes();
+		final SortedSet<AbstractValueGene> sortedGenes = this.getSortedGenes();
 
-		AbstractValueGene cityGene = this.getGenes().get(cityIndex);
+		final AbstractValueGene cityGene = this.getGenes().get(cityIndex);
 		int cityOrder = 0;
 		for(AbstractValueGene sortedGene : sortedGenes)
 		{
@@ -60,21 +62,23 @@ public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome imp
 		return citiesOrder;
 	}
 
+	private static class AbstractValueGeneComparator implements Comparator<AbstractValueGene>
+	{
+		@Override
+		public int compare(final AbstractValueGene gene1, final AbstractValueGene gene2)
+		{
+			if( gene1.getValue().doubleValue() < gene2.getValue().doubleValue() )
+				return -1;
+			else if( gene1.getValue().doubleValue() > gene2.getValue().doubleValue() )
+				return 1;
+			else
+				return 0;
+		}
+	}
+
 	public SortedSet<AbstractValueGene> getSortedGenes()
 	{
-		TreeSet<AbstractValueGene> sortedGenes = new TreeSet<AbstractValueGene>(new Comparator<AbstractValueGene>()
-				{
-					@Override
-					public int compare(final AbstractValueGene gene1, final AbstractValueGene gene2)
-					{
-						if( gene1.getValue().doubleValue() < gene2.getValue().doubleValue() )
-							return -1;
-						else if( gene1.getValue().doubleValue() > gene2.getValue().doubleValue() )
-							return 1;
-						else
-							return 0;
-					}
-				});
+		final SortedSet<AbstractValueGene> sortedGenes = new TreeSet<AbstractValueGene>(new AbstractValueGeneComparator());
 
 		sortedGenes.addAll(this.getGenes());
 
@@ -90,10 +94,10 @@ public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome imp
 	@Override
 	public TravellingSalesmanChromosome clone()
 	{
-			TravellingSalesmanChromosome copy = (TravellingSalesmanChromosome) super.clone();
+		final TravellingSalesmanChromosome copy = (TravellingSalesmanChromosome) super.clone();
 //			copy.sortedGenes.clear();
 //			copy.sortedGenes.addAll(copy.getGenes());
-			return copy;
+		return copy;
 	}
 
 	/**
@@ -110,7 +114,7 @@ public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome imp
 	@Override
 	public TravellingSalesmanChromosome mutate(final double deviation)
 	{
-		TravellingSalesmanChromosome mutated = (TravellingSalesmanChromosome)super.mutate(deviation);
+		final TravellingSalesmanChromosome mutated = (TravellingSalesmanChromosome)super.mutate(deviation);
 //		mutated.sortedGenes.clear();
 //		mutated.sortedGenes.addAll(mutated.getGenes());
 		return mutated;

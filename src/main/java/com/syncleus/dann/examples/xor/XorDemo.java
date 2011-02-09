@@ -34,11 +34,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
-
 
 /**
  * An example main class that shows using dANN to solve an XOR problem. An XOR
@@ -75,19 +75,19 @@ public final class XorDemo
 			inReader = new BufferedReader(new InputStreamReader(System.in));
 
 			//Adjust the learning rate
-			ActivationFunction activationFunction = new SineActivationFunction();
+			final ActivationFunction activationFunction = new SineActivationFunction();
 
 			final int cores = Runtime.getRuntime().availableProcessors();
-			ThreadPoolExecutor executer = new ThreadPoolExecutor(cores+1, cores*2, KEEP_ALIVE_TIME, TimeUnit.SECONDS, new LinkedBlockingQueue());
+			final ThreadPoolExecutor executer = new ThreadPoolExecutor(cores+1, cores*2, KEEP_ALIVE_TIME, TimeUnit.SECONDS, new LinkedBlockingQueue());
 			try
 			{
 				brain = new FullyConnectedFeedforwardBrain(new int[] {INPUTS, INPUTS, 1}, LEARNING_RATE, activationFunction, executer);
-				ArrayList<InputNeuron> inputs = new ArrayList<InputNeuron>(brain.getInputNeurons());
+				final List<InputNeuron> inputs = new ArrayList<InputNeuron>(brain.getInputNeurons());
 				for (int ii = 0; ii < INPUTS; ii++)
 				{
 					input[ii] = (InputBackpropNeuron) inputs.get(ii);
 				}
-				ArrayList<OutputNeuron> outputs = new ArrayList<OutputNeuron>(brain.getOutputNeurons());
+				final List<OutputNeuron> outputs = new ArrayList<OutputNeuron>(brain.getOutputNeurons());
 				output = (OutputBackpropNeuron) outputs.get(0);
 
 				//now that we have created the neural network lets put it to use.
@@ -110,11 +110,11 @@ public final class XorDemo
 						received = true;
 						try
 						{
-							String lastInput = inReader.readLine();
-							if( lastInput != null)
-								currentCommand = lastInput.toLowerCase().toCharArray()[0];
-							else
+							final String lastInput = inReader.readLine();
+							if( lastInput == null)
 								currentCommand = 'q';
+							else
+								currentCommand = lastInput.toLowerCase().toCharArray()[0];
 						}
 						catch(ArrayIndexOutOfBoundsException caughtException)
 						{
@@ -171,13 +171,13 @@ public final class XorDemo
 		catch(Error caught)
 		{
 			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught");
+			throw new Error("Throwable was caught", caught);
 		}
 	}
 
 	private static void save() throws IOException, ClassNotFoundException
 	{
-		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(saveLocation));
+		final ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(saveLocation));
 		try
 		{
 			out.writeObject(brain);
@@ -199,10 +199,10 @@ public final class XorDemo
 
 	private static void load() throws IOException, ClassNotFoundException
 	{
-		ObjectInputStream in = null;
+		ObjectInputStream inStream = null;
 		try
 		{
-			in = new ObjectInputStream(new FileInputStream(saveLocation));
+			inStream = new ObjectInputStream(new FileInputStream(saveLocation));
 		}
 		catch(FileNotFoundException caught)
 		{
@@ -212,16 +212,16 @@ public final class XorDemo
 
 		try
 		{
-			brain = (FullyConnectedFeedforwardBrain) in.readObject();
-			output = (OutputBackpropNeuron) in.readObject();
+			brain = (FullyConnectedFeedforwardBrain) inStream.readObject();
+			output = (OutputBackpropNeuron) inStream.readObject();
 			for (int ii = 0; ii < INPUTS; ii++)
 			{
-				input[ii] = (InputBackpropNeuron) in.readObject();
+				input[ii] = (InputBackpropNeuron) inStream.readObject();
 			}
 		}
 		finally
 		{
-			in.close();
+			inStream.close();
 		}
 
 		LOGGER.debug("File Loaded");
@@ -254,7 +254,6 @@ public final class XorDemo
 		};
 		setCurrentInput(curInput);
 		propogateOutput();
-		double[] curOutput;
 		System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 
 		curInput[0] = 1;

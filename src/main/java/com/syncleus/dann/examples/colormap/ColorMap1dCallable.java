@@ -54,7 +54,7 @@ public final class ColorMap1dCallable implements Callable<Color[]>
 		try
 		{
 			//initialize brain
-			ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain
+			final ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain
 					= new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(COLOR_CHANNELS, 1, getIterations(), getLearningRate());
 
 			//create the output latice
@@ -73,17 +73,17 @@ public final class ColorMap1dCallable implements Callable<Color[]>
 			}
 
 			//pull the output weight vectors
-			Map<Vector, double[]> outputWeightVectors = brain.getOutputWeightVectors();
+			final Map<Vector, double[]> outputWeightVectors = brain.getOutputWeightVectors();
 
 			//construct the color array
 			Color[] colorPositions = new Color[getWidth()];
 			for(Entry<Vector, double[]> weightVector : outputWeightVectors.entrySet())
 			{
-				Vector currentPoint = weightVector.getKey();
-				double[] currentVector = weightVector.getValue();
+				final Vector currentPoint = weightVector.getKey();
+				final double[] currentVector = weightVector.getValue();
 
 				//convert the current Vector to a color.
-				Color currentColor = new Color((float)currentVector[0], (float)currentVector[1], (float)currentVector[2]);
+				final Color currentColor = new Color((float)currentVector[0], (float)currentVector[1], (float)currentVector[2]);
 
 				//add the current color to the colorPositions
 				colorPositions[(int)Math.floor(currentPoint.getCoordinate(1))] = currentColor;
@@ -100,7 +100,7 @@ public final class ColorMap1dCallable implements Callable<Color[]>
 		catch(Error caught)
 		{
 			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught");
+			throw new Error("Throwable was caught", caught);
 		}
 	}
 

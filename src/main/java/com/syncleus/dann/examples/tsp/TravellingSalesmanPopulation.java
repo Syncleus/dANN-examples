@@ -86,7 +86,7 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
 	@Override
 	public final TravellingSalesmanChromosome getWinner()
 	{
-		GeneticAlgorithmChromosome winner = super.getWinner();
+		final GeneticAlgorithmChromosome winner = super.getWinner();
 		assert(winner instanceof TravellingSalesmanChromosome);
 		return (TravellingSalesmanChromosome) winner;
 	}

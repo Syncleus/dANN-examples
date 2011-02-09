@@ -34,8 +34,9 @@ import javax.swing.Timer;
 
 public class ViewMap extends JFrame implements ActionListener, WindowListener, KeyListener
 {
-	private HyperassociativeMapCanvas mapVisual;
-	private LayeredHyperassociativeMap associativeMap;
+	private static final float NODE_RADIUS = 0.07F;
+	private final HyperassociativeMapCanvas mapVisual;
+	private final LayeredHyperassociativeMap associativeMap;
 	private final ExecutorService executor;
 	private FutureTask<Void> lastRun;
 
@@ -44,30 +45,31 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		this.associativeMap = new LayeredHyperassociativeMap(8, executor);
 
+		HyperassociativeMapCanvas myMapVisual = null;
 		try
 		{
-			this.mapVisual = new HyperassociativeMapCanvas(this.associativeMap, 0.07F);
+			myMapVisual = new HyperassociativeMapCanvas(this.associativeMap, NODE_RADIUS);
 			initComponents();
 
-			this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, associativeMap), null);
+			this.lastRun = new FutureTask<Void>(new UpdateViewRun(myMapVisual, associativeMap), null);
 			this.executor.execute(this.lastRun);
 
-			this.mapVisual.setFocusTraversalKeysEnabled(false);
-			this.mapVisual.addKeyListener(this);
+			myMapVisual.setFocusTraversalKeysEnabled(false);
+			myMapVisual.addKeyListener(this);
 			this.addKeyListener(this);
 
 			new Timer(100, this).start();
 
-			this.mapVisual.setLocation(0, 0);
-			this.mapVisual.setSize(800, 600);
-			this.mapVisual.setVisible(true);
-			this.mapVisual.refresh();
-
+			myMapVisual.setLocation(0, 0);
+			myMapVisual.setSize(800, 600);
+			myMapVisual.setVisible(true);
+			myMapVisual.refresh();
 		}
-		catch (ComponentUnavailableException e)
+		catch (ComponentUnavailableException exc)
 		{
-			this.add(e.newPanel());
+			this.add(exc.newPanel());
 		}
+		this.mapVisual = myMapVisual;
 
 		this.addWindowListener(this);
 		this.setFocusTraversalKeysEnabled(false);
@@ -116,11 +118,13 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 	@Override
 	public void keyReleased(final KeyEvent evt)
 	{
+		// unused
 	}
 
 	@Override
 	public void keyTyped(final KeyEvent evt)
 	{
+		// unused
 	}
 
 	@Override
@@ -132,31 +136,37 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 	@Override
 	public void windowClosed(final WindowEvent evt)
 	{
+		// unused
 	}
 
 	@Override
 	public void windowOpened(final WindowEvent evt)
 	{
+		// unused
 	}
 
 	@Override
 	public void windowIconified(final WindowEvent evt)
 	{
+		// unused
 	}
 
 	@Override
 	public void windowDeiconified(final WindowEvent evt)
 	{
+		// unused
 	}
 
 	@Override
 	public void windowActivated(final WindowEvent evt)
 	{
+		// unused
 	}
 
 	@Override
 	public void windowDeactivated(final WindowEvent evt)
 	{
+		// unused
 	}
 
 	@Override
@@ -191,7 +201,7 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 		return true;
 	}
 
-	public static void main(final String[] args) throws Exception
+	public static void main(final String[] args)
 	{
 		//check that the java3D drivers are present
 		if (!checkClasses())

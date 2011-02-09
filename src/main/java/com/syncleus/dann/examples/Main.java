@@ -49,15 +49,12 @@ public final class Main
 
 			LOGGER.info("program started...");
 
-			BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
+			final BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
 
-			String[] newArgs = (args.length <= 1 ? new String[0] : new String[args.length - 1]);
+			final String[] newArgs = new String[Math.max(0, args.length - 1)];
 			if (args.length > 1)
 			{
-				for (int index = 1; index < args.length; index++)
-				{
-					newArgs[index - 1] = args[index];
-				}
+				System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 			}
 
 			String selectorArg = null;
@@ -92,8 +89,6 @@ public final class Main
 				{
 					com.syncleus.dann.examples.fft.FftDemo.main(newArgs);
 				}
-
-				return;
 			}
 
 			System.out.println("dANN Example Sets");

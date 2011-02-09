@@ -35,11 +35,22 @@ import javax.swing.Timer;
 
 public class FftDemo extends JFrame implements ActionListener
 {
-	private AudioFormat audioFormat;
-	private TargetDataLine targetDataLine;
-	private FastFourierTransformer transformer;
+	/**
+	 * The sample rate in Hz.
+	 * Common values: 8000, 11025, 16000, 22050, 44100
+	 */
+	private static final float AUDIO_SAMPLE_RATE = 8000.0F;
+	/** The sample size in bits. */
+	private static final int AUDIO_SAMPLE_SIZE = 16;
+	private static final int AUDIO_CHANNELS = 1;
+	private static final boolean AUDIO_SIGNED = true;
+	private static final boolean AUDIO_BIG_ENDIAN = false;
+
+	private final AudioFormat audioFormat;
+	private final TargetDataLine targetDataLine;
+	private final FastFourierTransformer transformer;
 	private final JProgressBar[] frequencyBars;
-	private Timer sampleTimer = new Timer(100, this);
+	private final Timer sampleTimer = new Timer(100, this);
 
     public FftDemo()
 	{
@@ -63,22 +74,24 @@ public class FftDemo extends JFrame implements ActionListener
 		//set the colors as a fradient from blue to red
 		for(int index = 0; index < this.frequencyBars.length; index++)
 		{
-			float colorPercent = ((float)index) / ((float)(this.frequencyBars.length-1));
-			this.frequencyBars[index].setForeground(new Color(colorPercent, 0f, 1f - colorPercent));
+			final float colorPercent = ((float)index) / ((float)(this.frequencyBars.length-1));
+			this.frequencyBars[index].setForeground(new Color(colorPercent, 0.0f, 1.0f - colorPercent));
 			this.frequencyBars[index].setMaximum(1024);
 		}
 
-		this.audioFormat = getAudioFormat();
-		DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
+		this.audioFormat = createAudioFormat();
+		final DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
+		TargetDataLine myTargetDataLine = null;
 		try
 		{
-			this.targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
+			myTargetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
 		}
 		catch(LineUnavailableException caughtException)
 		{
 			System.out.println("Line unavailible, exiting...");
 			System.exit(0);
 		}
+		this.targetDataLine = myTargetDataLine;
 
 		this.transformer = new CooleyTukeyFastFourierTransformer(1024, 8000);
     }
@@ -304,16 +317,7 @@ public class FftDemo extends JFrame implements ActionListener
 	{//GEN-HEADEREND:event_listenButtonActionPerformed
 		try
 		{
-			if(!this.targetDataLine.isOpen())
-			{
-				this.targetDataLine.open(audioFormat);
-				this.targetDataLine.start();
-
-				this.sampleTimer.start();
-
-				this.listenButton.setText("Stop");
-			}
-			else
+			if(this.targetDataLine.isOpen())
 			{
 				this.sampleTimer.stop();
 
@@ -321,6 +325,15 @@ public class FftDemo extends JFrame implements ActionListener
 				this.targetDataLine.close();
 
 				this.listenButton.setText("Listen");
+			}
+			else
+			{
+				this.targetDataLine.open(audioFormat);
+				this.targetDataLine.start();
+
+				this.sampleTimer.start();
+
+				this.listenButton.setText("Stop");
 			}
 		}
 		catch(LineUnavailableException caughtException)
@@ -350,26 +363,20 @@ public class FftDemo extends JFrame implements ActionListener
 			final double bandSize = maximumFrequency/((double)this.frequencyBars.length);
 			for(int frequencyBarIndex = 0; frequencyBarIndex < this.frequencyBars.length; frequencyBarIndex++)
 			{
-				double bandPower = transform.getBandGeometricMean(((double)frequencyBarIndex)*bandSize, ((double)frequencyBarIndex+1)*bandSize);
-				this.frequencyBars[frequencyBarIndex].setValue((int) (bandPower*500.0));
+				final double bandPower = transform.getBandGeometricMean(((double)frequencyBarIndex) * bandSize, ((double)frequencyBarIndex + 1) * bandSize);
+				this.frequencyBars[frequencyBarIndex].setValue((int) (bandPower * 500.0));
 			}
 		}
 	}
 
 	private double bytesToDouble(final byte... data)
 	{
-		return ((double) (((short)data[1])<<8) + ((short)data[0])) / ((double)Short.MAX_VALUE);
+		return ((double) (((short)data[1]) << 8) + ((short)data[0])) / ((double)Short.MAX_VALUE);
 	}
 
-	private AudioFormat getAudioFormat()
+	private static AudioFormat createAudioFormat()
 	{
-		//8000,11025,16000,22050,44100
-		float sampleRate = 8000.0F;
-		int sampleSizeInBits = 16;
-		int channels = 1;
-		boolean signed = true;
-		boolean bigEndian = false;
-		return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+		return new AudioFormat(AUDIO_SAMPLE_RATE, AUDIO_SAMPLE_SIZE, AUDIO_CHANNELS, AUDIO_SIGNED, AUDIO_BIG_ENDIAN);
 	}
 
     public static void main(final String[] args)

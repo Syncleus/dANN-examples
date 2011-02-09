@@ -18,7 +18,6 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.nci;
 
-import java.io.Serializable;
 import com.syncleus.dann.neural.Brain;
 import com.syncleus.dann.neural.Synapse;
 import com.syncleus.dann.neural.activation.ActivationFunction;
@@ -28,7 +27,7 @@ import com.syncleus.dann.neural.backprop.AbstractBackpropNeuron;
  * @author Jeffrey Phillips Freeman
  * @since 1.0
  */
-public final class CompressionNeuron extends AbstractBackpropNeuron implements Serializable
+public final class CompressionNeuron extends AbstractBackpropNeuron
 {
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
@@ -113,11 +112,7 @@ public final class CompressionNeuron extends AbstractBackpropNeuron implements S
 	@Override
 	public void tick()
 	{
-		if (!this.inputSet)
-		{
-			super.tick();
-		}
-		else
+		if (this.inputSet)
 		{
 			// TODO we shouldnt be calling setOutput, try getting rid of the protected in the parent and instead make some abstracts
 			this.setOutput(this.getDoubleInput());
@@ -125,6 +120,10 @@ public final class CompressionNeuron extends AbstractBackpropNeuron implements S
 			{
 				current.setInput(this.getOutput());
 			}
+		}
+		else
+		{
+			super.tick();
 		}
 	}
 }

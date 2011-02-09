@@ -58,7 +58,7 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 		try
 		{
 			//initialize brain
-			ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain
+			final ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain
 					= new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(ColorMap1dCallable.COLOR_CHANNELS, 2, getIterations(), getLearningRate());
 
 			//create the output latice
@@ -83,14 +83,14 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 			}
 
 			//pull the output weight vectors
-			Map<Vector, double[]> outputWeightVectors = brain.getOutputWeightVectors();
+			final Map<Vector, double[]> outputWeightVectors = brain.getOutputWeightVectors();
 
 			//construct the color array
 			Color[][] colorPositions = new Color[getWidth()][getHeight()];
 			for(Entry<Vector, double[]> weightVector : outputWeightVectors.entrySet())
 			{
-				Vector currentPoint = weightVector.getKey();
-				double[] currentVector = weightVector.getValue();
+				final Vector currentPoint = weightVector.getKey();
+				final double[] currentVector = weightVector.getValue();
 
 				//convert the current Vector to a color.
 				if( (float)currentVector[0] < 0f )
@@ -108,7 +108,7 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 					LOGGER.warn("Incorrect blue compoent: " + currentVector[1]);
 					currentVector[2] *= -1f;
 				}
-				Color currentColor = new Color((float)currentVector[0], (float)currentVector[1], (float)currentVector[2]);
+				final Color currentColor = new Color((float)currentVector[0], (float)currentVector[1], (float)currentVector[2]);
 
 				//add the current color to the colorPositions
 				colorPositions[(int)Math.floor(currentPoint.getCoordinate(1))][(int)Math.floor(currentPoint.getCoordinate(2))] = currentColor;
@@ -125,7 +125,7 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 		catch(Error caught)
 		{
 			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught");
+			throw new Error("Throwable was caught", caught);
 		}
 	}
 

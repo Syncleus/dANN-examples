@@ -22,6 +22,7 @@ public class BusyException extends Exception
 {
 	public BusyException()
 	{
+		super();
 	}
 
 	public BusyException(final String msg)

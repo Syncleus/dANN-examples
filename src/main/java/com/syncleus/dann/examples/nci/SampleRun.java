@@ -24,9 +24,9 @@ import org.apache.log4j.Logger;
 
 public class SampleRun implements Callable<BufferedImage>
 {
-	private NciBrain brain;
-	private BufferedImage sampleImage;
 	private static final Logger LOGGER = Logger.getLogger(SampleRun.class);
+	private final NciBrain brain;
+	private final BufferedImage sampleImage;
 
 	public SampleRun(final NciBrain brain, final BufferedImage sampleImage)
 	{
@@ -50,7 +50,7 @@ public class SampleRun implements Callable<BufferedImage>
 		catch (Error caught)
 		{
 			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught");
+			throw new Error("Throwable was caught", caught);
 		}
 	}
 }

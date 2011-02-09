@@ -50,7 +50,7 @@ public class GridNode extends Vector implements Weighted
 	@Override
 	public int hashCode()
 	{
-		return (this.getX()*this.getY()) + this.getY();
+		return (this.getX() * this.getY()) + this.getY();
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class GridNode extends Vector implements Weighted
 		if(!(compareToObj instanceof GridNode))
 			return false;
 
-		GridNode compareTo = (GridNode) compareToObj;
+		final GridNode compareTo = (GridNode) compareToObj;
 		return ((compareTo.getX() == this.getX())&&(compareTo.getY() == this.getY()));
 	}
 

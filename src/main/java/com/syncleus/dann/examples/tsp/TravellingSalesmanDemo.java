@@ -94,7 +94,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 			catch(Error caught)
 			{
 				LOGGER.error("Error was caught", caught);
-				throw new Error("Throwable was caught");
+				throw new Error("Throwable was caught", caught);
 			}
 		}
 
@@ -145,8 +145,8 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 		{
 			for(Vector city : this.cities)
 			{
-				int currentX = (int) city.getCoordinate(1);
-				int currentY = (int) city.getCoordinate(2);
+				final int currentX = (int) city.getCoordinate(1);
+				final int currentY = (int) city.getCoordinate(2);
 
 				graphics.fillArc((currentX + MAP_X) - 5, (currentY + MAP_Y) - 5, 10, 10, 0, 360);
 			}
@@ -154,8 +154,8 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 
 		if((this.cities != null) && (this.currentWinner != null))
 		{
-			int[] ordering = this.currentWinner.getCitiesOrder();
-			Vector[] orderedPoints = new Vector[ordering.length];
+			final int[] ordering = this.currentWinner.getCitiesOrder();
+			final Vector[] orderedPoints = new Vector[ordering.length];
 			for(int cityIndex = 0; cityIndex < this.cities.length; cityIndex++)
 			{
 				orderedPoints[ordering[cityIndex]] = this.cities[cityIndex];
@@ -203,11 +203,11 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 		if(cityCount < 4)
 			throw new IllegalArgumentException("cityCount must have atleast 4 elements");
 
-		HashSet<Vector> pointsSet = new HashSet<Vector>();
+		final HashSet<Vector> pointsSet = new HashSet<Vector>();
 		while(pointsSet.size() < cityCount)
 			pointsSet.add(new Vector(new double[]{RANDOM.nextDouble() * MAP_WIDTH, RANDOM.nextDouble() * MAP_HEIGHT}));
 
-		Vector[] points = new Vector[cityCount];
+		final Vector[] points = new Vector[cityCount];
 		pointsSet.toArray(points);
 
 		return points;
@@ -216,7 +216,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 	@Override
 	public void actionPerformed(final ActionEvent evt)
 	{
-		if((this.futureWinner != null)&&(this.populationCallable != null))
+		if((this.futureWinner != null) && (this.populationCallable != null))
 		{
 			this.progressBar.setValue(this.populationCallable.getIterations());
 
@@ -231,7 +231,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 				catch(Exception caught)
 				{
 					LOGGER.error("futureWinner threw an unexpected exception", caught);
-					throw new AssertionError("futureWinner threw an unexpected exception");
+					throw new Error("futureWinner threw an unexpected exception", caught);
 				}
 				this.populationCallable = null;
 				this.futureWinner = null;

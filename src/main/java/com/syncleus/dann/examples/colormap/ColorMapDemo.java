@@ -80,40 +80,53 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 		this.color1d = (new ColorMap1dCallable(INITIAL_ITERATIONS, INITIAL_LEARNING_RATE, 500)).call();
     }
 
+	/** @inheritDoc */
 	@Override
-	public void windowClosing(final WindowEvent e)
+	public void windowClosing(final WindowEvent evt)
 	{
 		this.executor.shutdown();
 	}
 
+	/** @inheritDoc */
 	@Override
-	public void windowClosed(final WindowEvent e)
+	public void windowClosed(final WindowEvent evt)
 	{
+		// unused
 	}
 
+	/** @inheritDoc */
 	@Override
-	public void windowOpened(final WindowEvent e)
+	public void windowOpened(final WindowEvent evt)
 	{
+		// unused
 	}
 
+	/** @inheritDoc */
 	@Override
-	public void windowIconified(final WindowEvent e)
+	public void windowIconified(final WindowEvent evt)
 	{
+		// unused
 	}
 
+	/** @inheritDoc */
 	@Override
-	public void windowDeiconified(final WindowEvent e)
+	public void windowDeiconified(final WindowEvent evt)
 	{
+		// unused
 	}
 
+	/** @inheritDoc */
 	@Override
-	public void windowActivated(final WindowEvent e)
+	public void windowActivated(final WindowEvent evt)
 	{
+		// unused
 	}
 
+	/** @inheritDoc */
 	@Override
-	public void windowDeactivated(final WindowEvent e)
+	public void windowDeactivated(final WindowEvent evt)
 	{
+		// unused
 	}
 
 	@Override
@@ -204,24 +217,24 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 		{
 			for(int colorIndex = 0; colorIndex < this.color1d.length; colorIndex++)
 			{
-				Color color = this.color1d[colorIndex];
+				final Color color = this.color1d[colorIndex];
 				graphics.setColor(color);
 				graphics.drawLine(25+colorIndex, 125, 25+colorIndex, 150);
 			}
 		}
 		else if(this.color2d != null)
 		{
-			Graphics2D  graphics2d = (Graphics2D) graphics;
+			final Graphics2D graphics2d = (Graphics2D) graphics;
 
 			for(int colorXIndex = 0; colorXIndex < this.color2d.length; colorXIndex++)
 			{
 				for(int colorYIndex = 0; colorYIndex < this.color2d[colorXIndex].length; colorYIndex++)
 				{
-					Color color = this.color2d[colorXIndex][colorYIndex];
+					final Color color = this.color2d[colorXIndex][colorYIndex];
 					graphics2d.setColor(color);
-					int xPos = colorXIndex*10;
-					int yPos = colorYIndex*10;
-					graphics2d.fillRect(25+xPos, 125+yPos, 10, 10);
+					final int xPos = colorXIndex * 10;
+					final int yPos = colorYIndex * 10;
+					graphics2d.fillRect(25 + xPos, 125 + yPos, 10, 10);
 				}
 			}
 		}
@@ -350,8 +363,8 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 
 	private void trainDisplayButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trainDisplayButtonActionPerformed
 	{//GEN-HEADEREND:event_trainDisplayButtonActionPerformed
-		int iterations = this.iterationsModel.getNumber().intValue();
-		double learningRate = this.learningRateModel.getNumber().doubleValue();
+		final int iterations = this.iterationsModel.getNumber().intValue();
+		final double learningRate = this.learningRateModel.getNumber().doubleValue();
 
 		if( this.dimentionalityComboBox.getSelectedIndex() == 0 )
 		{
@@ -368,9 +381,9 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 		}
 		else
 		{
-			if(this.future1d != null)
+			if (this.future1d != null)
 				this.future1d.cancel(true);
-			if(this.future2d != null)
+			if (this.future2d != null)
 				this.future2d.cancel(true);
 
 			this.callable1d = null;
@@ -386,7 +399,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 
 	private void aboutMenuItemMouseReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_aboutMenuItemMouseReleased
 	{//GEN-HEADEREND:event_aboutMenuItemMouseReleased
-        AboutDialog about = new AboutDialog(this, true);
+        final AboutDialog about = new AboutDialog(this, true);
         about.setVisible(true);
 	}//GEN-LAST:event_aboutMenuItemMouseReleased
 

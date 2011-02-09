@@ -23,9 +23,9 @@ import org.apache.log4j.Logger;
 
 public class TrainRun implements Runnable
 {
-	private NciBrain brain;
-	private BufferedImage trainImage;
 	private static final Logger LOGGER = Logger.getLogger(TrainRun.class);
+	private final NciBrain brain;
+	private final BufferedImage trainImage;
 
 	public TrainRun(final NciBrain brain, final BufferedImage trainImage)
 	{
@@ -49,7 +49,7 @@ public class TrainRun implements Runnable
 		catch (Error caught)
 		{
 			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught");
+			throw new Error("Throwable was caught", caught);
 		}
 	}
 }

@@ -24,8 +24,8 @@ import org.apache.log4j.Logger;
 
 public class BackPropagateRun implements Runnable
 {
-	private BackpropNeuron processor;
 	private static final Logger LOGGER = Logger.getLogger(BackPropagateRun.class);
+	private final BackpropNeuron processor;
 
 	public BackPropagateRun(final BackpropNeuron processor)
 	{
@@ -47,7 +47,7 @@ public class BackPropagateRun implements Runnable
 		catch(Error caught)
 		{
 			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught");
+			throw new Error("Throwable was caught", caught);
 		}
 	}
 }

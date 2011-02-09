@@ -23,7 +23,7 @@ import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.Hyperas
 
 public class UpdateViewRun implements Runnable
 {
-	private HyperassociativeMapCanvas view;
+	private final HyperassociativeMapCanvas view;
 
 	public UpdateViewRun(final HyperassociativeMapCanvas view)
 	{

@@ -40,6 +40,7 @@ import org.apache.log4j.Logger;
 
 public class NciDemo extends JFrame implements ActionListener, BrainListener
 {
+	private static final Logger LOGGER = Logger.getLogger(NciDemo.class);
 	private static final int BLOCK_WIDTH = 7;
 	private static final int BLOCK_HEIGHT = 7;
 	private BrainRunner brainRunner;
@@ -49,14 +50,13 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
 	private File trainingDirectory;
 	private File originalImageLocation;
 	private BufferedImage originalImage;
-	private ImagePanel originalImagePanel = new ImagePanel();
+	private final ImagePanel originalImagePanel = new ImagePanel();
 	private BufferedImage finalImage;
-	private ImagePanel finalImagePanel = new ImagePanel();
+	private final ImagePanel finalImagePanel = new ImagePanel();
 	private boolean processing = false;
 	private int trainingRemaining;
 	private int currentTrainingCycles = 100000;
 	private ViewBrain viewBrain;
-	private static final Logger LOGGER = Logger.getLogger(NciDemo.class);
 
 	public NciDemo()
 	{
@@ -72,7 +72,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
 		initComponents();
 
 		this.add(this.originalImagePanel);
-		int currentX = this.separator.getX() + 5;
+		final int currentX = this.separator.getX() + 5;
 		int currentY = 0;
 		this.originalImagePanel.setLocation(currentX, currentY);
 		this.originalImagePanel.setSize(800, 400);
@@ -84,10 +84,8 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
 		this.finalImagePanel.setSize(800, 600);
 		this.finalImagePanel.setVisible(true);
 
-
 		this.setSize(600, 350);
 		this.setExtendedState(MAXIMIZED_BOTH);
-
 
 		new Timer(250, this).start();
 	}
@@ -98,7 +96,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
 		if (this.trainingRemaining > 0)
 		{
 			this.trainingRemaining = this.brainRunner.getTrainingCycles();
-			int progressPercent = ((this.currentTrainingCycles - this.trainingRemaining) * 100) / (this.currentTrainingCycles);
+			final int progressPercent = ((this.currentTrainingCycles - this.trainingRemaining) * 100) / (this.currentTrainingCycles);
 			this.progress.setValue(progressPercent);
 		}
 		else if (this.processing)
@@ -363,8 +361,8 @@ private void aboutMenuItemMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//
 }//GEN-LAST:event_aboutMenuItemMenuKeyPressed
 
 private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originalImageSelectActionPerformed
-	JFileChooser chooser = new JFileChooser();
-	FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
+	final JFileChooser chooser = new JFileChooser();
+	final FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
 	chooser.setFileFilter(filter);
 	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	chooser.setMultiSelectionEnabled(false);
@@ -387,7 +385,7 @@ private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) 
 }//GEN-LAST:event_originalImageSelectActionPerformed
 
 private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trainingDirectorySelectActionPerformed
-	JFileChooser chooser = new JFileChooser();
+	final JFileChooser chooser = new JFileChooser();
 	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	chooser.setMultiSelectionEnabled(false);
 	chooser.setVisible(true);
@@ -396,7 +394,7 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
 		this.trainingDirectoryText.setText(chooser.getSelectedFile().getAbsolutePath());
 		this.trainingDirectory = chooser.getSelectedFile();
 
-		File[] trainingFiles = trainingDirectory.listFiles(new PngFileFilter());
+		final File[] trainingFiles = trainingDirectory.listFiles(new PngFileFilter());
 		if (trainingFiles.length <= 0)
 		{
 			this.trainingDirectory = null;
@@ -455,9 +453,15 @@ private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 	this.brainRunner.stop();
 }//GEN-LAST:event_stopButtonActionPerformed
 
-	public void viewBrain()
+	public void showBrainView()
 	{
-		if (brainVisual != null)
+		if (brainVisual == null)
+		{
+			final JDialog errorDialog = new JDialog();
+			errorDialog.add(errorPanel);
+			errorDialog.setVisible(true);
+		}
+		else
 		{
 			this.brainVisual.refresh();
 
@@ -468,20 +472,14 @@ private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
 			this.viewBrain.setVisible(true);
 		}
-		else
-		{
-			JDialog errorDialog = new JDialog();
-			errorDialog.add(errorPanel);
-			errorDialog.setVisible(true);
-		}
 	}
 
 private void brainViewMenuMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_brainViewMenuMenuKeyPressed
-	viewBrain();
+	showBrainView();
 }//GEN-LAST:event_brainViewMenuMenuKeyPressed
 
 private void brainViewMenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brainViewMenuMouseReleased
-	viewBrain();
+	showBrainView();
 }//GEN-LAST:event_brainViewMenuMouseReleased
 
 private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItem1ActionPerformed
@@ -514,7 +512,7 @@ private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 
 	private void displayAbout()
 	{
-		AboutDialog about = new AboutDialog(this, true);
+		final AboutDialog about = new AboutDialog(this, true);
 		about.setVisible(true);
 	}
 
@@ -561,7 +559,7 @@ private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 		this.statusLabel.setText("Ready!");
 	}
 
-	public static void main(final String[] args) throws Exception
+	public static void main(final String[] args)
 	{
 		try
 		{
@@ -581,7 +579,7 @@ private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 							catch (Error caught)
 							{
 								LOGGER.error("Error was caught", caught);
-								throw new Error("Throwable was caught");
+								throw new Error("Throwable was caught", caught);
 							}
 						}
 					});
@@ -594,7 +592,7 @@ private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 		catch (Error caught)
 		{
 			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught");
+			throw new Error("Throwable was caught", caught);
 		}
 	}
     // Variables declaration - do not modify//GEN-BEGIN:variables

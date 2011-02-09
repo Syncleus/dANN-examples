@@ -37,13 +37,13 @@ public class ImagePanel extends javax.swing.JPanel
 	}
 
 	@Override
-	protected void paintComponent(final Graphics g)
+	protected void paintComponent(final Graphics graphics)
 	{
-		super.paintComponent(g);
+		super.paintComponent(graphics);
 
 		if (this.image != null)
 		{
-			g.drawImage(this.image, 0, 0, this);
+			graphics.drawImage(this.image, 0, 0, this);
 		}
 	}
 

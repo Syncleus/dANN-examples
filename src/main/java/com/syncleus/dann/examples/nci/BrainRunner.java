@@ -32,23 +32,23 @@ import org.apache.log4j.Logger;
 
 public class BrainRunner implements Runnable
 {
+	private static final Logger LOGGER = Logger.getLogger(BrainRunner.class);
+	private static final Random RANDOM = new Random();
 	private NciBrain brain;
 	private HyperassociativeMap brainMap;
-	private double compression;
-	private int xSize;
-	private int ySize;
-	private boolean extraConnectivity;
+	private final double compression;
+	private final int xSize;
+	private final int ySize;
+	private final boolean extraConnectivity;
 	private BufferedImage[] trainingImages;
 	private File[] trainingFiles;
 	private BufferedImage sampleImage;
 	private volatile File sampleFile;
-	private BrainListener listener;
-	private static final Random RANDOM = new Random();
-	private volatile boolean shutdown = false;
+	private final BrainListener listener;
+	private volatile boolean keepRunning = true;
 	private volatile int trainingRemaining = 0;
 	private volatile int sampleRemaining;
 	private volatile int sampleTotal;
-	private static final Logger LOGGER = Logger.getLogger(BrainRunner.class);
 
 	public BrainRunner(final BrainListener listener, final File[] trainingFiles, final double compression, final int xSize, final int ySize, final boolean extraConnectivity)
 	{
@@ -100,11 +100,10 @@ public class BrainRunner implements Runnable
 				this.trainingImages[trainingFilesIndex] = ImageIO.read(trainingFiles[trainingFilesIndex]);
 			}
 		}
-		catch (Exception e)
+		catch (Exception exc)
 		{
-			System.out.println("Danger will robinson, Danger: " + e);
-			e.printStackTrace();
-			return;
+			System.out.println("Danger will robinson, Danger: " + exc);
+			LOGGER.error("Failed reading training image", exc);
 		}
 	}
 
@@ -120,7 +119,7 @@ public class BrainRunner implements Runnable
 
 	public void shutdown()
 	{
-		this.shutdown = true;
+		this.keepRunning = false;
 	}
 
 	public void stop()
@@ -142,7 +141,7 @@ public class BrainRunner implements Runnable
 			this.setTrainingImages(trainingFiles);
 
 			this.listener.brainFinishedBuffering();
-			while (!this.shutdown)
+			while (this.keepRunning)
 			{
 
 				if (this.sampleFile != null)
@@ -151,7 +150,7 @@ public class BrainRunner implements Runnable
 
 					this.sampleImage = ImageIO.read(sampleFile);
 
-					ArrayBlockingQueue<FutureTask<BufferedImage>> processingSampleSegments = new ArrayBlockingQueue<FutureTask<BufferedImage>>(12000, true);
+					final ArrayBlockingQueue<FutureTask<BufferedImage>> processingSampleSegments = new ArrayBlockingQueue<FutureTask<BufferedImage>>(12000, true);
 
 					this.sampleTotal = 0;
 					stopProcessing:
@@ -159,12 +158,12 @@ public class BrainRunner implements Runnable
 					{
 						for (int currentX = 0; currentX < this.sampleImage.getWidth(); currentX += xSize)
 						{
-							int blockWidth = this.sampleImage.getWidth() - currentX < xSize ? this.sampleImage.getWidth() - currentX : xSize;
-							int blockHeight = this.sampleImage.getHeight() - currentY < ySize ? this.sampleImage.getHeight() - currentY : ySize;
-							BufferedImage currentSegment = this.sampleImage.getSubimage(currentX, currentY, blockWidth, blockHeight);
+							final int blockWidth = this.sampleImage.getWidth() - currentX < xSize ? this.sampleImage.getWidth() - currentX : xSize;
+							final int blockHeight = this.sampleImage.getHeight() - currentY < ySize ? this.sampleImage.getHeight() - currentY : ySize;
+							final BufferedImage currentSegment = this.sampleImage.getSubimage(currentX, currentY, blockWidth, blockHeight);
 
-							SampleRun sampleRun = new SampleRun(this.brain, currentSegment);
-							FutureTask<BufferedImage> futureSampleRun = new FutureTask<BufferedImage>(sampleRun);
+							final SampleRun sampleRun = new SampleRun(this.brain, currentSegment);
+							final FutureTask<BufferedImage> futureSampleRun = new FutureTask<BufferedImage>(sampleRun);
 
 							this.sampleTotal++;
 
@@ -181,7 +180,7 @@ public class BrainRunner implements Runnable
 
 					this.sampleRemaining = this.sampleTotal;
 
-					BufferedImage finalImage = new BufferedImage(this.sampleImage.getWidth(), this.sampleImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+					final BufferedImage finalImage = new BufferedImage(this.sampleImage.getWidth(), this.sampleImage.getHeight(), BufferedImage.TYPE_INT_RGB);
 
 					this.sampleImage = null;
 					this.sampleFile = null;
@@ -190,13 +189,13 @@ public class BrainRunner implements Runnable
 					int currentY = 0;
 					while (processingSampleSegments.peek() != null)
 					{
-						FutureTask<BufferedImage> nextSegment = processingSampleSegments.take();
+						final FutureTask<BufferedImage> nextSegment = processingSampleSegments.take();
 
-						BufferedImage currentSegment = nextSegment.get();
+						final BufferedImage currentSegment = nextSegment.get();
 
-						int writeWidth = (currentSegment.getWidth() < (finalImage.getWidth() - currentX) ? currentSegment.getWidth() : finalImage.getWidth() - currentX);
-						int writeHeight = (currentSegment.getHeight() < (finalImage.getHeight() - currentY) ? currentSegment.getHeight() : finalImage.getHeight() - currentY);
-						int[] chunkArray = new int[writeHeight * writeWidth];
+						final int writeWidth = (currentSegment.getWidth() < (finalImage.getWidth() - currentX) ? currentSegment.getWidth() : finalImage.getWidth() - currentX);
+						final int writeHeight = (currentSegment.getHeight() < (finalImage.getHeight() - currentY) ? currentSegment.getHeight() : finalImage.getHeight() - currentY);
+						final int[] chunkArray = new int[writeHeight * writeWidth];
 						currentSegment.getRGB(0, 0, writeWidth, writeHeight, chunkArray, 0, writeWidth);
 						finalImage.setRGB(currentX, currentY, writeWidth, writeHeight, chunkArray, 0, writeWidth);
 
@@ -226,13 +225,13 @@ public class BrainRunner implements Runnable
 				{
 					this.brain.setLearning(true);
 
-					ArrayBlockingQueue<FutureTask> trainingSegments = new ArrayBlockingQueue<FutureTask>(50, true);
+					final ArrayBlockingQueue<FutureTask> trainingSegments = new ArrayBlockingQueue<FutureTask>(50, true);
 
 					while (this.trainingRemaining > 0)
 					{
 						if (trainingSegments.remainingCapacity() <= 0)
 						{
-							FutureTask currentTask = trainingSegments.take();
+							final FutureTask currentTask = trainingSegments.take();
 							currentTask.get();
 							this.trainingRemaining--;
 							if (this.trainingRemaining < 0)
@@ -240,9 +239,8 @@ public class BrainRunner implements Runnable
 								this.trainingRemaining = 0;
 							}
 						}
-						TrainRun trainRun = new TrainRun(this.brain, this.getRandomTrainingBlock(xSize, ySize));
-						FutureTask<Void> trainTask = new FutureTask<Void>(trainRun, null);
-
+						final TrainRun trainRun = new TrainRun(this.brain, this.getRandomTrainingBlock(xSize, ySize));
+						final FutureTask<Void> trainTask = new FutureTask<Void>(trainRun, null);
 
 						trainingSegments.add(trainTask);
 						executor.execute(trainTask);
@@ -250,7 +248,7 @@ public class BrainRunner implements Runnable
 
 					while (!trainingSegments.isEmpty())
 					{
-						FutureTask currentTask = trainingSegments.take();
+						final FutureTask currentTask = trainingSegments.take();
 						currentTask.get();
 						this.trainingRemaining--;
 						if (this.trainingRemaining < 0)
@@ -261,13 +259,13 @@ public class BrainRunner implements Runnable
 
 					this.listener.brainTrainingComplete();
 				}
-				else if (!this.brainMap.isAligned())
+				else if (this.brainMap.isAligned())
 				{
-					this.brainMap.align();
+					Thread.sleep(5);
 				}
 				else
 				{
-					Thread.sleep(5);
+					this.brainMap.align();
 				}
 			}
 
@@ -281,7 +279,7 @@ public class BrainRunner implements Runnable
 		catch (Error caught)
 		{
 			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught");
+			throw new Error("Throwable was caught", caught);
 		}
 		finally
 		{
@@ -292,16 +290,16 @@ public class BrainRunner implements Runnable
 		}
 	}
 
-	private BufferedImage getRandomTrainingBlock(final int width, final int height) throws Exception
+	private BufferedImage getRandomTrainingBlock(final int width, final int height) throws IndexOutOfBoundsException
 	{
-		BufferedImage randomImage = this.getRandomTrainingImage();
+		final BufferedImage randomImage = this.getRandomTrainingImage();
 
-		int randomX = RANDOM.nextInt(randomImage.getWidth() - width);
-		int randomY = RANDOM.nextInt(randomImage.getHeight() - height);
+		final int randomX = RANDOM.nextInt(randomImage.getWidth() - width);
+		final int randomY = RANDOM.nextInt(randomImage.getHeight() - height);
 		return randomImage.getSubimage(randomX, randomY, width, height);
 	}
 
-	private BufferedImage getRandomTrainingImage() throws Exception
+	private BufferedImage getRandomTrainingImage() throws IndexOutOfBoundsException
 	{
 		return this.trainingImages[RANDOM.nextInt(this.trainingImages.length)];
 	}

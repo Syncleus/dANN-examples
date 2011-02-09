@@ -18,25 +18,22 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.test;
 
-
-import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet;
 import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet.GlobalSignalConcentration;
 import com.syncleus.dann.math.visualization.MathFunctionCanvas;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Test3d extends JFrame
 {
-	private javax.swing.JPanel drawingPanel;
-	//private SimpleUniverse universe = null;
-	private BranchGroup origin = new BranchGroup();
+	private JPanel drawingPanel;
 
 	public Test3d()
 	{
 		this.initComponents();
 
-		Canvas3D canvas = this.createUniverse();
+		final Canvas3D canvas = this.createUniverse();
 		try
 		{
 			this.drawingPanel.add(canvas, java.awt.BorderLayout.CENTER);
@@ -49,9 +46,9 @@ public class Test3d extends JFrame
 
 	private Canvas3D createUniverse()
 	{
-		GlobalSignalConcentration signalX = new GlobalSignalConcentration();
-		GlobalSignalConcentration signalY = new GlobalSignalConcentration();
-		GlobalSignalConcentration signalZ = new GlobalSignalConcentration();
+		final GlobalSignalConcentration signalX = new GlobalSignalConcentration();
+		final GlobalSignalConcentration signalY = new GlobalSignalConcentration();
+		final GlobalSignalConcentration signalZ = new GlobalSignalConcentration();
 		SignalProcessingWavelet processor = new SignalProcessingWavelet(/*new Cell(),*/signalX, signalZ);
 		for (int index = 0; (index < 500) || (processor.getSignals().size() < 3); index++)
 		{
@@ -66,10 +63,10 @@ public class Test3d extends JFrame
 		processor.preTick();
 		processor.tick();
 
-		MathFunctionCanvas plotCanvas = new MathFunctionCanvas(
+		final MathFunctionCanvas plotCanvas = new MathFunctionCanvas(
 				processor.getWavelet(),
-				signalX.getId() + "",
-				signalY.getId() + "",
+				String.valueOf(signalX.getId()),
+				String.valueOf(signalY.getId()),
 				-200.0f,
 				200.0f,
 				-200.0f,

@@ -32,9 +32,8 @@ import javax.swing.Timer;
 
 public class ViewBrain extends JDialog implements ActionListener, KeyListener
 {
-
-	private HyperassociativeMapCanvas brainVisual;
-	private ExecutorService executor = Executors.newFixedThreadPool(1);
+	private final HyperassociativeMapCanvas brainVisual;
+	private final ExecutorService executor = Executors.newFixedThreadPool(1);
 	private FutureTask<Void> lastRun;
 
 	public ViewBrain(final Frame parent, final HyperassociativeMapCanvas brainVisual)
@@ -79,11 +78,13 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener
 	@Override
 	public void keyReleased(final KeyEvent evt)
 	{
+		// unused
 	}
 
 	@Override
 	public void keyTyped(final KeyEvent evt)
 	{
+		// unused
 	}
 
 	@Override

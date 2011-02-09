@@ -40,25 +40,25 @@ import javax.swing.JPanel;
  */
 public abstract class AbstractGridCanvas extends JPanel implements MouseListener, MouseMotionListener
 {
-	private final WeightedGrid grid;
-	private int nodeSize;
-	private int edgeSize;
-	private List<SimpleWeightedUndirectedEdge<GridNode>> path;
-	private int pathThickness;
-	private GridNode touchedNode = null;
-	private SimpleWeightedUndirectedEdge<GridNode> touchedEdge = null;
-	private final int selectedThickness;
 	/**
 	 * Number of times smaller that the drawn path is than nodes which it runs
 	 * through.
 	 */
-	private final int pathFraction = 4;
+	private static final int PATH_FRACTION = 4;
 	/**
 	 * Number of times smaller that the drawn border highlighting is than nodes
 	 * and edges which it surrounds.
 	 */
-	private final int borderFraction = 4;
+	private static final int BORDER_FRACTION = 4;
 	private static final Color PATH_COLOR = new Color(0.5f, 0f, 0f);
+	private final WeightedGrid grid;
+	private final int nodeSize;
+	private final int edgeSize;
+	private List<SimpleWeightedUndirectedEdge<GridNode>> path;
+	private final int pathThickness;
+	private GridNode touchedNode = null;
+	private SimpleWeightedUndirectedEdge<GridNode> touchedEdge = null;
+	private final int selectedThickness;
 
 	/**
 	 * Constructs a Swing component representing a grid and a path according to
@@ -78,85 +78,77 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 		this.nodeSize = initialNodeSize;
 		this.edgeSize = initialEdgeSize;
 		this.path = initialPath;
-		this.pathThickness = Math.max(1, nodeSize / pathFraction);
-		this.selectedThickness = Math.max(1, Math.min(edgeSize, nodeSize) / borderFraction);
+		this.pathThickness = Math.max(1, nodeSize / PATH_FRACTION);
+		this.selectedThickness = Math.max(1, Math.min(edgeSize, nodeSize) / BORDER_FRACTION);
 
-		int pw = grid.getWidth() * nodeSize + (grid.getWidth() + 1) * edgeSize;
-		int ph = grid.getHeight() * nodeSize + (grid.getHeight() + 1) * edgeSize;
-		setPreferredSize(new Dimension(pw, ph));
+		final int preferredWidth = grid.getWidth() * nodeSize + (grid.getWidth() + 1) * edgeSize;
+		final int preferredHeight = grid.getHeight() * nodeSize + (grid.getHeight() + 1) * edgeSize;
+		setPreferredSize(new Dimension(preferredWidth, preferredHeight));
 
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
 
 	@Override
-	public void paint(final Graphics g1)
+	public void paint(final Graphics graphics)
 	{
-		super.paint(g1);
+		super.paint(graphics);
 
-		Graphics2D g = (Graphics2D) g1;
+		final Graphics2D graphics2D = (Graphics2D) graphics;
 
-		int px = 0, py = 0;
+		int px = 0;
+		int py = 0;
 		for (int y = 0; y < grid.getHeight(); y++)
 		{
 			px = 0;
 			for (int x = 0; x < grid.getWidth(); x++)
 			{
-
-				GridNode gn = grid.getNode(x, y);
+				final GridNode gridNode = grid.getNode(x, y);
 
 				if (y != 0)
 				{
-					GridNode to = grid.getNode(x, y - 1);
+					final GridNode toNode = grid.getNode(x, y - 1);
 
 					//draw filled rect for edge
-					WeightedBidirectedEdge<GridNode> upEdge = grid.getEdgeBetween(x, y, x, y - 1);
-					g.setColor(getEdgeColor(upEdge));
-					g.fillRect(px + edgeSize, py, nodeSize, edgeSize);
+					final WeightedBidirectedEdge<GridNode> upEdge = grid.getEdgeBetween(x, y, x, y - 1);
+					graphics2D.setColor(getEdgeColor(upEdge));
+					graphics2D.fillRect(px + edgeSize, py, nodeSize, edgeSize);
 
-					if (touchedEdge != null)
+					if ((touchedEdge != null) && (touchedEdge.getRightNode() == gridNode) && (touchedEdge.getLeftNode() == toNode))
 					{
-						if ((touchedEdge.getRightNode() == gn) && (touchedEdge.getLeftNode() == to))
-						{
-							//draw border of selected edge
-							g.setStroke(new BasicStroke(selectedThickness));
-							g.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
-							g.drawRect(px + edgeSize, py, nodeSize, edgeSize);
-						}
+						//draw border of selected edge
+						graphics2D.setStroke(new BasicStroke(selectedThickness));
+						graphics2D.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
+						graphics2D.drawRect(px + edgeSize, py, nodeSize, edgeSize);
 					}
-
 				}
 
 				if (x != 0)
 				{
-					GridNode to = grid.getNode(x - 1, y);
+					final GridNode toNode = grid.getNode(x - 1, y);
 
 					//draw filled rect for edge
-					WeightedBidirectedEdge<GridNode> rightEdge = grid.getEdgeBetween(x, y, x - 1, y);
-					g.setColor(getEdgeColor(rightEdge));
-					g.fillRect(px, py + edgeSize, edgeSize, nodeSize);
+					final WeightedBidirectedEdge<GridNode> rightEdge = grid.getEdgeBetween(x, y, x - 1, y);
+					graphics2D.setColor(getEdgeColor(rightEdge));
+					graphics2D.fillRect(px, py + edgeSize, edgeSize, nodeSize);
 
-					if (touchedEdge != null)
+					if ((touchedEdge != null) && (touchedEdge.getRightNode() == gridNode) && (touchedEdge.getLeftNode() == toNode))
 					{
-						if ((touchedEdge.getRightNode() == gn) && (touchedEdge.getLeftNode() == to))
-						{
-							//draw border of selected edge
-							g.setStroke(new BasicStroke(selectedThickness));
-							g.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
-							g.drawRect(px, py + edgeSize, edgeSize, nodeSize);
-						}
+						//draw border of selected edge
+						graphics2D.setStroke(new BasicStroke(selectedThickness));
+						graphics2D.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
+						graphics2D.drawRect(px, py + edgeSize, edgeSize, nodeSize);
 					}
-
 				}
 
-				g.setColor(getNodeColor(gn));
-				g.fillRect(px + edgeSize, py + edgeSize, nodeSize, nodeSize);
+				graphics2D.setColor(getNodeColor(gridNode));
+				graphics2D.fillRect(px + edgeSize, py + edgeSize, nodeSize, nodeSize);
 
-				if (gn == touchedNode)
+				if (gridNode == touchedNode)
 				{
-					g.setStroke(new BasicStroke(selectedThickness));
-					g.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
-					g.drawRect(px + edgeSize, py + edgeSize, nodeSize, nodeSize);
+					graphics2D.setStroke(new BasicStroke(selectedThickness));
+					graphics2D.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
+					graphics2D.drawRect(px + edgeSize, py + edgeSize, nodeSize, nodeSize);
 				}
 
 				px += nodeSize + edgeSize;
@@ -166,32 +158,27 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 
 		if (path != null)
 		{
-			g.setColor(PATH_COLOR);
+			graphics2D.setColor(PATH_COLOR);
 
-			g.setStroke(new BasicStroke(pathThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+			graphics2D.setStroke(new BasicStroke(pathThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
-			int centerOffset = (edgeSize + nodeSize / 2);
+			final int centerOffset = (edgeSize + nodeSize / 2);
 
 			for (BidirectedEdge<GridNode> edge : path)
 			{
-				int lastX = edge.getLeftNode().getX();
-				int lastY = edge.getLeftNode().getY();
+				final int lastX = edge.getLeftNode().getX();
+				final int lastY = edge.getLeftNode().getY();
 
-				int curX = edge.getRightNode().getX();
-				int curY = edge.getRightNode().getY();
+				final int curX = edge.getRightNode().getX();
+				final int curY = edge.getRightNode().getY();
 
-				int curPX = getNodePosition(curX) + centerOffset;
-				int curPY = getNodePosition(curY) + centerOffset;
+				final int curPX = getNodePosition(curX) + centerOffset;
+				final int curPY = getNodePosition(curY) + centerOffset;
 
-				int lastPX = getNodePosition(lastX) + centerOffset;
-				int lastPY = getNodePosition(lastY) + centerOffset;
+				final int lastPX = getNodePosition(lastX) + centerOffset;
+				final int lastPY = getNodePosition(lastY) + centerOffset;
 
-
-
-				g.drawLine(lastPX, lastPY, curPX, curPY);
-
-				lastX = curX;
-				lastY = curY;
+				graphics2D.drawLine(lastPX, lastPY, curPX, curPY);
 			}
 		}
 	}
@@ -212,12 +199,12 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 
 	/**
 	 * Yields the pixel coordinate for a given grid coordinate of a node.  The coordinate may represent either X or Y, since the grid is drawn in 1:1 "square" aspect ratio.
-	 * @param c the grid coordinate
+	 * @param coordinate the grid coordinate
 	 * @return pixel coordinate of a given grid position, which may be outside of the grid's bounds
 	 */
-	private int getNodePosition(final int c)
+	private int getNodePosition(final int coordinate)
 	{
-		return c * (nodeSize + edgeSize);
+		return coordinate * (nodeSize + edgeSize);
 	}
 
 	/**
@@ -227,7 +214,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 	 */
 	protected int getNodePositionPixel(final int x)
 	{
-		return (int) Math.floor(((float) (x)) / ((float) (nodeSize + edgeSize)));
+		return (int) Math.floor(((float) x) / ((float) (nodeSize + edgeSize)));
 	}
 
 	/**
@@ -256,54 +243,46 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 			return null;
 		}
 
-		boolean upOrLeft = (px - nx * (nodeSize + edgeSize) > py - ny * (nodeSize + edgeSize)) ? true : false;
+		final boolean upOrLeft = (px - nx * (nodeSize + edgeSize) > py - ny * (nodeSize + edgeSize)) ? true : false;
 
-		if (nx >= ((upOrLeft) ? 0 : 1))
+		if ((nx >= (upOrLeft ? 0 : 1)) && (ny >= (!upOrLeft ? 0 : 1))
+				&& (nx < grid.getWidth()) && (ny < grid.getHeight()))
 		{
-			if (ny >= ((!upOrLeft) ? 0 : 1))
+			final List<SimpleWeightedUndirectedEdge<GridNode>> thisEdges;
+			final List<SimpleWeightedUndirectedEdge<GridNode>> otherEdges;
+			thisEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx, ny)));
+			//System.err.println(nx + " " + ny + " : " + thisEdges);
+
+			if (upOrLeft)
 			{
-				if (nx < grid.getWidth())
+				//up
+				otherEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx, ny - 1)));
+				//System.err.println(nx + " " + (ny-1) + " : " + otherEdges);
+			}
+			else
+			{
+				//left
+				otherEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx - 1, ny)));
+				//System.err.println((nx-1) + " " + ny + " : " + otherEdges);
+			}
+
+			SimpleWeightedUndirectedEdge<GridNode> sharedEdge = null;
+			for (SimpleWeightedUndirectedEdge<GridNode> eedge : thisEdges)
+			{
+				if (otherEdges.contains(eedge))
 				{
-					if (ny < grid.getHeight())
-					{
-
-						LinkedList<SimpleWeightedUndirectedEdge<GridNode>> thisEdges, otherEdges;
-						thisEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx, ny)));
-						//System.err.println(nx + " " + ny + " : " + thisEdges);
-
-						if (upOrLeft)
-						{
-							//up
-							otherEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx, ny - 1)));
-							//System.err.println(nx + " " + (ny-1) + " : " + otherEdges);
-						}
-						else
-						{
-							//left
-							otherEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx - 1, ny)));
-							//System.err.println((nx-1) + " " + ny + " : " + otherEdges);
-						}
-
-						SimpleWeightedUndirectedEdge<GridNode> sharedEdge = null;
-						for (SimpleWeightedUndirectedEdge<GridNode> eedge : thisEdges)
-						{
-							if (otherEdges.contains(eedge))
-							{
-								sharedEdge = eedge;
-								break;
-							}
-						}
-
-						if (sharedEdge != null)
-						{
-							return sharedEdge;
-						}
-						else
-						{
-							return null;
-						}
-					}
+					sharedEdge = eedge;
+					break;
 				}
+			}
+
+			if (sharedEdge == null)
+			{
+				return null;
+			}
+			else
+			{
+				return sharedEdge;
 			}
 		}
 
@@ -330,62 +309,60 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 			return null;
 		}
 
-		if (nx >= 0)
+		if ((nx >= 0) && (ny >= 0) && (nx < grid.getWidth()) && (ny < grid.getHeight()))
 		{
-			if (ny >= 0)
-			{
-				if (nx < grid.getWidth())
-				{
-					if (ny < grid.getHeight())
-					{
-						return grid.getNode(nx, ny);
-					}
-				}
-			}
+			return grid.getNode(nx, ny);
 		}
+
 		return null;
 	}
 
 	@Override
-	public void mouseClicked(final MouseEvent e)
+	public void mouseClicked(final MouseEvent evt)
 	{
+		// unused
 	}
 
 	@Override
-	public void mousePressed(final MouseEvent e)
+	public void mousePressed(final MouseEvent evt)
 	{
+		// unused
 	}
 
 	@Override
-	public void mouseReleased(final MouseEvent e)
+	public void mouseReleased(final MouseEvent evt)
 	{
+		// unused
 	}
 
 	@Override
-	public void mouseEntered(final MouseEvent e)
+	public void mouseEntered(final MouseEvent evt)
 	{
+		// unused
 	}
 
 	@Override
-	public void mouseExited(final MouseEvent e)
+	public void mouseExited(final MouseEvent evt)
 	{
+		// unused
 	}
 
 	@Override
-	public void mouseDragged(final MouseEvent e)
+	public void mouseDragged(final MouseEvent evt)
 	{
-		updateMouseMoved(e);
+		updateMouseMoved(evt);
 	}
 
 	/**
-	 * Updates the current touchedNode or touchedEdge when the mouse is either moved or dragged.
-	 * @param e mouse event to update according to
+	 * Updates the current touchedNode or touchedEdge when the mouse is either
+	 * moved or dragged.
+	 * @param evt mouse event to update according to
 	 */
-	protected void updateMouseMoved(final MouseEvent e)
+	protected void updateMouseMoved(final MouseEvent evt)
 	{
-		GridNode tNode = getTouchedNode(e.getX(), e.getY());
+		final GridNode tNode = getTouchedNode(evt.getX(), evt.getY());
 
-		SimpleWeightedUndirectedEdge<GridNode> tEdge = getTouchedEdge(e.getX(), e.getY());
+		final SimpleWeightedUndirectedEdge<GridNode> tEdge = getTouchedEdge(evt.getX(), evt.getY());
 
 		this.touchedNode = null;
 		this.touchedEdge = null;
@@ -402,17 +379,17 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 		//System.out.println("touchedNode: " + touchedNode + " , touchedEdge: " + touchedEdge);
 
 		repaint();
-
 	}
 
 	@Override
-	public void mouseMoved(final MouseEvent e)
+	public void mouseMoved(final MouseEvent evt)
 	{
-		updateMouseMoved(e);
+		updateMouseMoved(evt);
 	}
 
 	/**
-	 * Sets a different path to draw when the component is redrawn, and then repaint()'s.
+	 * Sets a different path to draw when the component is redrawn, and then
+	 * repaint()'s.
 	 * @param nextPath the next path to draw
 	 */
 	void setPath(final List<SimpleWeightedUndirectedEdge<GridNode>> nextPath)
