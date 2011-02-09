@@ -55,7 +55,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	private final double learningRate;
 
 	/**
-	 * creates an instance of NciBrain.<BR>
+	 * Creates an instance of NciBrain.<BR>
 	 * @author Jeffrey Phillips Freeman
 	 * @param compression A value between 0.0 (inclusive) and 1.0 (exclusive)
 	 *   which represents the % of compression.
@@ -195,25 +195,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 
 	public BufferedImage test(final BufferedImage originalImage)
 	{
-		final int[] originalRgbArray = new int[xSize * ySize];
-		originalImage.getRGB(0, 0, (originalImage.getWidth() < xSize ? originalImage.getWidth() : xSize), (originalImage.getHeight() < ySize ? originalImage.getHeight() : ySize), originalRgbArray, 0, xSize);
-
-		//set the image onto the inputs
-		for (int yIndex = 0; (yIndex < ySize) && (yIndex < originalImage.getHeight()); yIndex++)
-		{
-			for (int xIndex = 0; (xIndex < xSize) && (xIndex < originalImage.getWidth()); xIndex++)
-			{
-				final int rgbCurrent = originalRgbArray[yIndex * xSize + xIndex];
-				for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
-				{
-					final int channel = (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
-					final double input = (((double) channel) / 127.5) - 1.0;
-
-					this.inputNeurons[xIndex][yIndex][rgbIndex].setInput(input);
-					this.outputNeurons[xIndex][yIndex][rgbIndex].setDesired(input);
-				}
-			}
-		}
+		setImageOnto(originalImage, true);
 
 		if (this.compressionInputsSet)
 		{
@@ -227,31 +209,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 
 		if (!this.learning)
 		{
-			final int[] finalRgbArray = new int[xSize * ySize];
-			final BufferedImage uncompressedImage = new BufferedImage(this.xSize, this.ySize, BufferedImage.TYPE_INT_RGB);
-			for (int yIndex = 0; (yIndex < ySize) && (yIndex < uncompressedImage.getHeight()); yIndex++)
-				for (int xIndex = 0; (xIndex < xSize) && (xIndex < uncompressedImage.getWidth()); xIndex++)
-				{
-					//int rgbCurrent = imageToCompress.getRGB(xIndex, yIndex);
-					int rgbCurrent = 0;
-					for (int rgbIndex = 0; rgbIndex < 4; rgbIndex++)
-					{
-						double output;
-
-						if (rgbIndex >= CHANNELS)
-							output = this.outputNeurons[xIndex][yIndex][0].getOutput();
-						else
-							output = this.outputNeurons[xIndex][yIndex][rgbIndex].getOutput();
-
-						final int channel = (int)((output + 1.0d) * 127.5d);
-
-						rgbCurrent |= (channel & 0x000000FF) << (rgbIndex * 8);
-					}
-					finalRgbArray[xSize * yIndex + (xIndex)] = rgbCurrent;
-				}
-			uncompressedImage.setRGB(0, 0, xSize, ySize, finalRgbArray, 0, xSize);
-
-			return uncompressedImage;
+			return createBufferedImage();
 		}
 
 		//now back propogate
@@ -267,22 +225,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	 */
 	public byte[] compress(final BufferedImage originalImage)
 	{
-		final int[] originalRgbArray = new int[xSize * ySize];
-		originalImage.getRGB(0, 0, (originalImage.getWidth() < xSize ? originalImage.getWidth() : xSize), (originalImage.getHeight() < ySize ? originalImage.getHeight() : ySize), originalRgbArray, 0, xSize);
-
-		//set the image onto the inputs
-		for (int yIndex = 0; (yIndex < ySize) && (yIndex < originalImage.getHeight()); yIndex++)
-			for (int xIndex = 0; (xIndex < xSize) && (xIndex < originalImage.getWidth()); xIndex++)
-			{
-				final int rgbCurrent = originalRgbArray[yIndex * xSize + xIndex];
-				for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
-				{
-					final int channel = (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
-					final double input = (((double) channel) / 127.5) - 1.0;
-
-					this.inputNeurons[xIndex][yIndex][rgbIndex].setInput(input);
-				}
-			}
+		setImageOnto(originalImage, false);
 
 		if (this.compressionInputsSet)
 		{
@@ -302,6 +245,32 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 		return compressedData;
 	}
 
+	private void setImageOnto(final BufferedImage originalImage, final boolean setDesired)
+	{
+		final int[] originalRgbArray = new int[xSize * ySize];
+		originalImage.getRGB(0, 0, (originalImage.getWidth() < xSize ? originalImage.getWidth() : xSize), (originalImage.getHeight() < ySize ? originalImage.getHeight() : ySize), originalRgbArray, 0, xSize);
+
+		//set the image onto the inputs
+		for (int yIndex = 0; (yIndex < ySize) && (yIndex < originalImage.getHeight()); yIndex++)
+		{
+			for (int xIndex = 0; (xIndex < xSize) && (xIndex < originalImage.getWidth()); xIndex++)
+			{
+				final int rgbCurrent = originalRgbArray[yIndex * xSize + xIndex];
+				for (int rgbIndex = 0; rgbIndex < CHANNELS; rgbIndex++)
+				{
+					final int channel = (((rgbCurrent >> (rgbIndex * 8)) & 0x000000FF));
+					final double input = (((double) channel) / 127.5) - 1.0;
+
+					this.inputNeurons[xIndex][yIndex][rgbIndex].setInput(input);
+					if (setDesired)
+					{
+						this.outputNeurons[xIndex][yIndex][rgbIndex].setDesired(input);
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
@@ -316,6 +285,11 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 
 		this.propagate();
 
+		return createBufferedImage();
+	}
+
+	private BufferedImage createBufferedImage()
+	{
 		final int[] finalRgbArray = new int[xSize * ySize];
 		final BufferedImage uncompressedImage = new BufferedImage(this.xSize, this.ySize, BufferedImage.TYPE_INT_RGB);
 		for (int yIndex = 0; (yIndex < ySize) && (yIndex < uncompressedImage.getHeight()); yIndex++)
