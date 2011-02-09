@@ -30,19 +30,16 @@ import com.syncleus.dann.neural.backprop.AbstractBackpropNeuron;
 public final class CompressionNeuron extends AbstractBackpropNeuron
 {
 	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
 	private byte input = 0;
 	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
 	private boolean inputSet = false;
 
 	/**
 	 * Creates a new instance of InputNeuron<BR>
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
 	public CompressionNeuron(final Brain brain)
@@ -52,7 +49,6 @@ public final class CompressionNeuron extends AbstractBackpropNeuron
 
 	/**
 	 * Creates a new instance of InputNeuron<BR>
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
 	public CompressionNeuron(final Brain brain, final ActivationFunction activationFunction)
@@ -72,7 +68,6 @@ public final class CompressionNeuron extends AbstractBackpropNeuron
 
 	/**
 	 * This method sets the current input on the neuron.<BR>
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 * @param inputToSet The value to set the current input to.
 	 */
@@ -83,7 +78,6 @@ public final class CompressionNeuron extends AbstractBackpropNeuron
 	}
 
 	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
 	public void unsetInput()
@@ -92,7 +86,6 @@ public final class CompressionNeuron extends AbstractBackpropNeuron
 	}
 
 	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
 	public byte getChannelOutput()
@@ -101,7 +94,6 @@ public final class CompressionNeuron extends AbstractBackpropNeuron
 	}
 
 	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
 	private double getDoubleInput()

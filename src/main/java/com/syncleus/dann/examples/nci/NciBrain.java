@@ -115,7 +115,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	}
 
 	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
 	public double getCompression()
@@ -124,7 +123,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	}
 
 	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
 	public boolean isLearning()
@@ -133,7 +131,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	}
 
 	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
 	public void setLearning(final boolean learningToSet)
@@ -220,7 +217,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	}
 
 	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @author Jeffrey Phillips Freeman
 	 * @since 1.0
 	 */
 	public byte[] compress(final BufferedImage originalImage)
@@ -272,7 +269,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	}
 
 	/**
-	 * <!-- Author: Jeffrey Phillips Freeman -->
+	 * @author Jeffrey Phillips Freeman
 	 * @since 1.0
 	 */
 	public BufferedImage uncompress(final byte[] compressedData)
