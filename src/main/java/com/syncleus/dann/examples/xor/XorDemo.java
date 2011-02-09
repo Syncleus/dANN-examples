@@ -49,18 +49,23 @@ import org.apache.log4j.Logger;
  * @since 0.1
  * @author Jeffrey Phillips Freeman
  */
-public class XorDemo
+public final class XorDemo
 {
+	private static final Logger LOGGER = Logger.getLogger(XorDemo.class);
+	private static final double LEARNING_RATE = 0.0175;
+	private static final long KEEP_ALIVE_TIME = 20;
+	private static final int INPUTS = 3;
 	private static BufferedReader inReader = null;
-	private static InputBackpropNeuron inputA = null;
-	private static InputBackpropNeuron inputB = null;
-	private static InputBackpropNeuron inputC = null;
+	private static InputBackpropNeuron[] input = null;
 	private static OutputBackpropNeuron output = null;
 	private static FullyConnectedFeedforwardBrain brain;
 	private static String saveLocation = "default.dann";
-	private final static Logger LOGGER = Logger.getLogger(XorDemo.class);
 
-	public static void main(String args[])
+	private XorDemo()
+	{
+	}
+
+	public static void main(final String[] args)
 	{
 		try
 		{
@@ -70,18 +75,18 @@ public class XorDemo
 			inReader = new BufferedReader(new InputStreamReader(System.in));
 
 			//Adjust the learning rate
-			double learningRate = 0.0175;
 			ActivationFunction activationFunction = new SineActivationFunction();
 
 			final int cores = Runtime.getRuntime().availableProcessors();
-			ThreadPoolExecutor executer = new ThreadPoolExecutor(cores+1, cores*2, 20, TimeUnit.SECONDS, new LinkedBlockingQueue());
+			ThreadPoolExecutor executer = new ThreadPoolExecutor(cores+1, cores*2, KEEP_ALIVE_TIME, TimeUnit.SECONDS, new LinkedBlockingQueue());
 			try
 			{
-				brain = new FullyConnectedFeedforwardBrain(new int[]{3, 3, 1}, learningRate, activationFunction, executer);
+				brain = new FullyConnectedFeedforwardBrain(new int[] {INPUTS, INPUTS, 1}, LEARNING_RATE, activationFunction, executer);
 				ArrayList<InputNeuron> inputs = new ArrayList<InputNeuron>(brain.getInputNeurons());
-				inputA = (InputBackpropNeuron) inputs.get(0);
-				inputB = (InputBackpropNeuron) inputs.get(1);
-				inputC = (InputBackpropNeuron) inputs.get(2);
+				for (int ii = 0; ii < INPUTS; ii++)
+				{
+					input[ii] = (InputBackpropNeuron) inputs.get(ii);
+				}
 				ArrayList<OutputNeuron> outputs = new ArrayList<OutputNeuron>(brain.getOutputNeurons());
 				output = (OutputBackpropNeuron) outputs.get(0);
 
@@ -92,7 +97,7 @@ public class XorDemo
 				do
 				{
 					boolean received = false;
-					while( received == false )
+					while( !received )
 					{
 						System.out.println();
 						System.out.println("D) display current circuit pin-out");
@@ -177,9 +182,10 @@ public class XorDemo
 		{
 			out.writeObject(brain);
 			out.writeObject(output);
-			out.writeObject(inputA);
-			out.writeObject(inputB);
-			out.writeObject(inputC);
+			for (int ii = 0; ii < INPUTS; ii++)
+			{
+				out.writeObject(input[ii]);
+			}
 			out.flush();
 		}
 		finally
@@ -208,9 +214,10 @@ public class XorDemo
 		{
 			brain = (FullyConnectedFeedforwardBrain) in.readObject();
 			output = (OutputBackpropNeuron) in.readObject();
-			inputA = (InputBackpropNeuron) in.readObject();
-			inputB = (InputBackpropNeuron) in.readObject();
-			inputC = (InputBackpropNeuron) in.readObject();
+			for (int ii = 0; ii < INPUTS; ii++)
+			{
+				input[ii] = (InputBackpropNeuron) in.readObject();
+			}
 		}
 		finally
 		{
@@ -231,11 +238,12 @@ public class XorDemo
 		brain.backPropagate();
 	}
 
-	private static void setCurrentInput(double[] inputToSet)
+	private static void setCurrentInput(final double[] inputToSet)
 	{
-		inputA.setInput(inputToSet[0]);
-		inputB.setInput(inputToSet[1]);
-		inputC.setInput(inputToSet[2]);
+		for (int ii = 0; ii < INPUTS; ii++)
+		{
+			input[ii].setInput(inputToSet[ii]);
+		}
 	}
 
 	private static void testOutput()
@@ -299,7 +307,7 @@ public class XorDemo
 		System.out.println(curInput[0] + ", " + curInput[1] + ", " + curInput[2] + ":\t" + output.getOutput());
 	}
 
-	private static void train(int count)
+	private static void train(final int count)
 	{
 		for (int lcv = 0; lcv < count; lcv++)
 		{

@@ -36,10 +36,10 @@ import org.apache.log4j.Logger;
 
 public class TravellingSalesmanDemo extends JFrame implements ActionListener
 {
-	private final static Logger LOGGER = Logger.getLogger(TravellingSalesmanDemo.class);
-	private final static Random RANDOM = new Random();
+	private static final Logger LOGGER = Logger.getLogger(TravellingSalesmanDemo.class);
+	private static final Random RANDOM = new Random();
 
-	private final SpinnerNumberModel citiesModel = new SpinnerNumberModel(10, 1, 100,1);
+	private final SpinnerNumberModel citiesModel = new SpinnerNumberModel(10, 1, 100, 1);
 	private final SpinnerNumberModel mutabilityModel = new SpinnerNumberModel(1.0, Double.MIN_VALUE, 10000, 0.1);
 	private final SpinnerNumberModel populationModel = new SpinnerNumberModel(100, 4, 1000, 10);
 	private final SpinnerNumberModel crossoverModel = new SpinnerNumberModel(0.1, Double.MIN_VALUE, 1.0, 0.01);
@@ -58,14 +58,14 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 	private PopulationEvolveCallable populationCallable = null;
 	private Future<TravellingSalesmanChromosome> futureWinner = null;
 	private TravellingSalesmanChromosome currentWinner = null;
-	private Vector cities[] = null;
+	private Vector[] cities = null;
 
 	private static class PopulationEvolveCallable implements Callable<TravellingSalesmanChromosome>
 	{
 		private final TravellingSalesmanPopulation population;
 		private volatile int iterations = 0;
 		private final int iterationsMax;
-		private final static Logger LOGGER = Logger.getLogger(PopulationEvolveCallable.class);
+		private static final Logger LOGGER = Logger.getLogger(PopulationEvolveCallable.class);
 
 		public PopulationEvolveCallable(final TravellingSalesmanPopulation population, final int iterationsMax)
 		{
@@ -136,7 +136,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
     }
 
 	@Override
-	public void paint(Graphics graphics)
+	public void paint(final Graphics graphics)
 	{
 		super.paint(graphics);
 		graphics.drawRect(MAP_X, MAP_Y, MAP_WIDTH, MAP_HEIGHT);
@@ -152,9 +152,9 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 			}
 		}
 
-		if((this.cities != null)&&(this.currentWinner != null))
+		if((this.cities != null) && (this.currentWinner != null))
 		{
-			int ordering[] = this.currentWinner.getCitiesOrder();
+			int[] ordering = this.currentWinner.getCitiesOrder();
 			Vector[] orderedPoints = new Vector[ordering.length];
 			for(int cityIndex = 0; cityIndex < this.cities.length; cityIndex++)
 			{
@@ -198,7 +198,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 
 	}
 
-	private static Vector[] getRandomPoints(int cityCount)
+	private static Vector[] getRandomPoints(final int cityCount)
 	{
 		if(cityCount < 4)
 			throw new IllegalArgumentException("cityCount must have atleast 4 elements");
@@ -214,7 +214,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent evt)
+	public void actionPerformed(final ActionEvent evt)
 	{
 		if((this.futureWinner != null)&&(this.populationCallable != null))
 		{
@@ -407,11 +407,12 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
 		this.repaint();
 	}//GEN-LAST:event_evolveDisplayButtonActionPerformed
 
-    public static void main(String args[])
+    public static void main(final String[] args)
 	{
 		LOGGER.info("Starting Travelling Salesman Demo from main()");
         java.awt.EventQueue.invokeLater(new Runnable()
 		{
+			@Override
             public void run()
 			{
                 new TravellingSalesmanDemo().setVisible(true);

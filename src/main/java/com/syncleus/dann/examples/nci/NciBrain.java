@@ -56,15 +56,14 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	 * creates an instance of NciBrain.<BR>
 	 * @author Jeffrey Phillips Freeman
 	 * @param compression A value between 0.0 (inclusive) and 1.0 (exclusive)
-	 *		which represents the % of compression.
+	 *   which represents the % of compression.
 	 */
-	public NciBrain(double compression, int xSize, int ySize, boolean extraConnectivity)
+	public NciBrain(final double compression, final int xSize, final int ySize, final boolean extraConnectivity)
 	{
 		super();
 
 		this.learningRate = 0.001;
 		this.activationFunction = new SineActivationFunction();
-
 
 		this.xSize = xSize;
 		this.ySize = ySize;
@@ -85,12 +84,12 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 				{
 					int overallIndex = yIndex*xSize*CHANNELS + xIndex*CHANNELS + rgbIndex;
 					this.inputNeurons[xIndex][yIndex][rgbIndex] = (InputBackpropNeuron)inputs.get(overallIndex);
-					this.outputNeurons[xIndex][yIndex][rgbIndex] =(OutputBackpropNeuron)outputs.get(overallIndex);
+					this.outputNeurons[xIndex][yIndex][rgbIndex] = (OutputBackpropNeuron)outputs.get(overallIndex);
 				}
 	}
 
 	@Override
-	protected BackpropNeuron createNeuron(int layer, int index)
+	protected BackpropNeuron createNeuron(final int layer, final int index)
 	{
 		if( layer == 0 )
 			return new SimpleInputBackpropNeuron(this);
@@ -128,7 +127,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
-	public void setLearning(boolean learningToSet)
+	public void setLearning(final boolean learningToSet)
 	{
 		this.learning = learningToSet;
 	}
@@ -185,7 +184,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 		return weightSum / weightCount;
 	}
 
-	public BufferedImage test(BufferedImage originalImage)
+	public BufferedImage test(final BufferedImage originalImage)
 	{
 		int[] originalRgbArray = new int[xSize * ySize];
 		originalImage.getRGB(0, 0, (originalImage.getWidth() < xSize ? originalImage.getWidth() : xSize), (originalImage.getHeight() < ySize ? originalImage.getHeight() : ySize), originalRgbArray, 0, xSize);
@@ -208,7 +207,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 				}
 			}
 
-		if (this.compressionInputsSet == true)
+		if (this.compressionInputsSet)
 		{
 			for (CompressionNeuron compressionNeuron : this.compressedNeurons)
 				compressionNeuron.unsetInput();
@@ -218,7 +217,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 		//propogate the output
 		this.propagate();
 
-		if (this.learning == false)
+		if (!this.learning)
 		{
 			int[] finalRgbArray = new int[xSize * ySize];
 			BufferedImage uncompressedImage = new BufferedImage(this.xSize, this.ySize, BufferedImage.TYPE_INT_RGB);
@@ -278,7 +277,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 				}
 			}
 
-		if (this.compressionInputsSet == true)
+		if (this.compressionInputsSet)
 		{
 			for (CompressionNeuron compressionNeuron : this.compressedNeurons)
 				compressionNeuron.unsetInput();

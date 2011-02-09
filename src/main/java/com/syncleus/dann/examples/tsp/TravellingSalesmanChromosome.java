@@ -27,12 +27,12 @@ import java.util.TreeSet;
 
 public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome implements Cloneable
 {
-	public TravellingSalesmanChromosome(int cityCount)
+	public TravellingSalesmanChromosome(final int cityCount)
 	{
 		super(cityCount, 10.0);
 	}
 
-	public int getCityOrder(int cityIndex)
+	public int getCityOrder(final int cityIndex)
 	{
 		if( cityIndex >= this.getGeneCount())
 			throw new IllegalArgumentException("cityIndex is out of bounds");
@@ -65,7 +65,7 @@ public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome imp
 		TreeSet<AbstractValueGene> sortedGenes = new TreeSet<AbstractValueGene>(new Comparator<AbstractValueGene>()
 				{
 					@Override
-					public int compare(AbstractValueGene gene1, AbstractValueGene gene2)
+					public int compare(final AbstractValueGene gene1, final AbstractValueGene gene2)
 					{
 						if( gene1.getValue().doubleValue() < gene2.getValue().doubleValue() )
 							return -1;
@@ -108,7 +108,7 @@ public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome imp
 	 * @since 2.0
 	 */
 	@Override
-	public TravellingSalesmanChromosome mutate(double deviation)
+	public TravellingSalesmanChromosome mutate(final double deviation)
 	{
 		TravellingSalesmanChromosome mutated = (TravellingSalesmanChromosome)super.mutate(deviation);
 //		mutated.sortedGenes.clear();

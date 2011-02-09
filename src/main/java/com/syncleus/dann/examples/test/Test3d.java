@@ -93,7 +93,7 @@ public class Test3d extends JFrame
 		this.pack();
 	}
 
-	public static void main(String[] args)
+	public static void main(final String[] args)
 	{
 		java.awt.EventQueue.invokeLater(
 				new Runnable()

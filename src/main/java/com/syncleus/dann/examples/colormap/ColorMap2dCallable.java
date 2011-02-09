@@ -38,13 +38,13 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 	private volatile int width;
 	private volatile int height;
 
-	private static Random random = new Random();
+	private static final Random RANDOM = new Random();
 
 	private volatile int progress;
 
-	private final static Logger LOGGER = Logger.getLogger(ColorMap2dCallable.class);
+	private static final Logger LOGGER = Logger.getLogger(ColorMap2dCallable.class);
 
-	public ColorMap2dCallable(int iterations, double learningRate, int width, int height)
+	public ColorMap2dCallable(final int iterations, final double learningRate, final int width, final int height)
 	{
 		this.iterations = iterations;
 		this.learningRate = learningRate;
@@ -58,26 +58,26 @@ public class ColorMap2dCallable implements Callable<Color[][]>
 		try
 		{
 			//initialize brain
-			ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain = new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(3, 2, getIterations(), getLearningRate());
+			ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain
+					= new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(ColorMap1dCallable.COLOR_CHANNELS, 2, getIterations(), getLearningRate());
 
 			//create the output latice
 			for(double x = 0; x < getWidth(); x++)
 				for(double y = 0; y < getHeight(); y++)
-					brain.createOutput(new Vector(new double[]{x, y}));
+					brain.createOutput(new Vector(new double[] {x, y}));
 
 			//makes sure all the weights are randomly distributed within the
 			//output bounds.
 			for(Synapse synapse : brain.getEdges())
-				synapse.setWeight(random.nextDouble());
+				synapse.setWeight(RANDOM.nextDouble());
 
 			//run through random training data
 			for(int iteration = 0; iteration < getIterations(); iteration++)
 			{
 				this.progress++;
 
-				brain.setInput(0, random.nextDouble());
-				brain.setInput(1, random.nextDouble());
-				brain.setInput(2, random.nextDouble());
+				for (int ci = 0; ci < ColorMap1dCallable.COLOR_CHANNELS; ci++)
+					brain.setInput(ci, RANDOM.nextDouble());
 
 				brain.getBestMatchingUnit(true);
 			}

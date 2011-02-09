@@ -31,13 +31,13 @@ import java.util.Set;
 
 public class SimpleGraph extends AbstractBidirectedAdjacencyGraph<SimpleNode, BidirectedEdge<SimpleNode>>
 {
-	final private SimpleNode[][] nodes;
-	final private Set<SimpleNode> nodeSet = new HashSet<SimpleNode>();
-	final private Set<BidirectedEdge<SimpleNode>> edges = new HashSet<BidirectedEdge<SimpleNode>>();
-	final private Map<SimpleNode, Set<BidirectedEdge<SimpleNode>>> neighborEdges = new HashMap<SimpleNode, Set<BidirectedEdge<SimpleNode>>>();
-	final private Map<SimpleNode, Set<SimpleNode>> neighborNodes = new HashMap<SimpleNode, Set<SimpleNode>>();
+	private final SimpleNode[][] nodes;
+	private final Set<SimpleNode> nodeSet = new HashSet<SimpleNode>();
+	private final Set<BidirectedEdge<SimpleNode>> edges = new HashSet<BidirectedEdge<SimpleNode>>();
+	private final Map<SimpleNode, Set<BidirectedEdge<SimpleNode>>> neighborEdges = new HashMap<SimpleNode, Set<BidirectedEdge<SimpleNode>>>();
+	private final Map<SimpleNode, Set<SimpleNode>> neighborNodes = new HashMap<SimpleNode, Set<SimpleNode>>();
 
-	public SimpleGraph(int layers, int nodesPerLayer)
+	public SimpleGraph(final int layers, final int nodesPerLayer)
 	{
 		this.nodes = new SimpleNode[layers][nodesPerLayer];
 
@@ -74,7 +74,7 @@ public class SimpleGraph extends AbstractBidirectedAdjacencyGraph<SimpleNode, Bi
 		return this.nodes;
 	}
 
-	public SimpleNode getNode(int layer, int index)
+	public SimpleNode getNode(final int layer, final int index)
 	{
 		if( (index >= nodes[0].length)||(layer >= nodes.length) )
 			throw new IllegalArgumentException("coordinates are out of bounds");
@@ -94,51 +94,51 @@ public class SimpleGraph extends AbstractBidirectedAdjacencyGraph<SimpleNode, Bi
 	}
 
 	@Override
-	public Set<BidirectedEdge<SimpleNode>> getAdjacentEdges(SimpleNode node)
+	public Set<BidirectedEdge<SimpleNode>> getAdjacentEdges(final SimpleNode node)
 	{
 		return Collections.unmodifiableSet(this.neighborEdges.get(node));
 	}
 
 	@Override
-	public Set<BidirectedEdge<SimpleNode>> getTraversableEdges(SimpleNode node)
+	public Set<BidirectedEdge<SimpleNode>> getTraversableEdges(final SimpleNode node)
 	{
 		return this.getAdjacentEdges(node);
 	}
 
-	public Set<BidirectedEdge<SimpleNode>> getOutEdges(SimpleNode node)
+	public Set<BidirectedEdge<SimpleNode>> getOutEdges(final SimpleNode node)
 	{
 		return this.getAdjacentEdges(node);
 	}
 
 	@Override
-	public Set<BidirectedEdge<SimpleNode>> getInEdges(SimpleNode node)
+	public Set<BidirectedEdge<SimpleNode>> getInEdges(final SimpleNode node)
 	{
 		return this.getAdjacentEdges(node);
 	}
 
-	public int getIndegree(SimpleNode node)
+	public int getIndegree(final SimpleNode node)
 	{
 		return this.getInEdges(node).size();
 	}
 
-	public int getOutdegree(SimpleNode node)
+	public int getOutdegree(final SimpleNode node)
 	{
 		return this.getOutEdges(node).size();
 	}
 
-	public boolean isConnected(SimpleNode leftNode, SimpleNode rightNode)
+	public boolean isConnected(final SimpleNode leftNode, final SimpleNode rightNode)
 	{
 		return this.neighborNodes.get(leftNode).contains(rightNode);
 	}
 
 	@Override
-	public List<SimpleNode> getAdjacentNodes(SimpleNode node)
+	public List<SimpleNode> getAdjacentNodes(final SimpleNode node)
 	{
 		return Collections.unmodifiableList(new ArrayList<SimpleNode>(this.neighborNodes.get(node)));
 	}
 
 	@Override
-	public List<SimpleNode> getTraversableNodes(SimpleNode node)
+	public List<SimpleNode> getTraversableNodes(final SimpleNode node)
 	{
 		return this.getAdjacentNodes(node);
 	}

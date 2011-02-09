@@ -26,7 +26,8 @@ import com.syncleus.dann.math.Vector;
 
 public class TravellingSalesmanFitnessFunction extends AbstractGeneticAlgorithmFitnessFunction<TravellingSalesmanFitnessFunction>
 {
-	final private Vector cities[];
+	public static final int MINIMUM_CITIES = 4;
+	private final Vector[] cities;
 	private double totalDistance = 0.0;
 
 	public TravellingSalesmanFitnessFunction(final TravellingSalesmanChromosome chromosome, final Vector[] cities)
@@ -37,8 +38,8 @@ public class TravellingSalesmanFitnessFunction extends AbstractGeneticAlgorithmF
 			throw new IllegalArgumentException("chromosome can not be null");
 		if(cities == null)
 			throw new IllegalArgumentException("cities can not be null");
-		if(cities.length < 4)
-			throw new IllegalArgumentException("cities must have atleast 4 elements");
+		if(cities.length < MINIMUM_CITIES)
+			throw new IllegalArgumentException("cities must have atleast " + MINIMUM_CITIES + " elements");
 		if(chromosome.getGeneCount() != cities.length)
 			throw new IllegalArgumentException("Cities must have the same number of elements as genes in the chromosome");
 
@@ -63,7 +64,7 @@ public class TravellingSalesmanFitnessFunction extends AbstractGeneticAlgorithmF
 	 * @since 2.0
 	 */
 	@Override
-	public int compareTo(TravellingSalesmanFitnessFunction compareWith)
+	public int compareTo(final TravellingSalesmanFitnessFunction compareWith)
 	{
 		if(this.totalDistance < compareWith.totalDistance)
 			return 1;

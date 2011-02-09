@@ -28,12 +28,17 @@ import org.apache.log4j.xml.DOMConfigurator;
  * Runs dANN demos from a console menu.
  * @author Jeffrey Phillips Freeman
  */
-public class Main
+public final class Main
 {
 	private static final Logger LOGGER = Logger.getLogger(Main.class);
-	private static final long inputSleepMs = 100;
+	/** How long to sleep in milli-seconds, until checking for input again. */
+	private static final long INPUT_SLEEP = 100;
 
-	public static void main(String args[])
+	private Main()
+	{
+	}
+
+	public static void main(final String[] args)
 	{
 		try
 		{
@@ -97,7 +102,7 @@ public class Main
 			do
 			{
 				boolean received = false;
-				while (received == false)
+				while (!received)
 				{
 					System.out.println();
 					System.out.println("X) XOR Example");
@@ -114,9 +119,9 @@ public class Main
 					received = true;
 					try
 					{
-						while (inReader.ready() == false)
+						while (!inReader.ready())
 						{
-							Thread.sleep(inputSleepMs);
+							Thread.sleep(INPUT_SLEEP);
 						}
 						currentCommand = inReader.readLine().toLowerCase().toCharArray()[0];
 					}

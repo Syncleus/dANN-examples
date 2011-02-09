@@ -32,8 +32,8 @@ import java.util.concurrent.FutureTask;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class ViewMap extends JFrame implements ActionListener, WindowListener, KeyListener {
-
+public class ViewMap extends JFrame implements ActionListener, WindowListener, KeyListener
+{
 	private HyperassociativeMapCanvas mapVisual;
 	private LayeredHyperassociativeMap associativeMap;
 	private final ExecutorService executor;
@@ -77,17 +77,17 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e)
+	public void keyPressed(final KeyEvent evt)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_R)
+		if (evt.getKeyCode() == KeyEvent.VK_R)
 		{
 			this.associativeMap.reset();
 		}
-		if (e.getKeyCode() == KeyEvent.VK_L)
+		if (evt.getKeyCode() == KeyEvent.VK_L)
 		{
 			this.associativeMap.resetLearning();
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_UP)
+		else if (evt.getKeyCode() == KeyEvent.VK_UP)
 		{
 			if (this.associativeMap.getEquilibriumDistance() < 1.0)
 			{
@@ -99,7 +99,7 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 			}
 			this.associativeMap.resetLearning();
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+		else if (evt.getKeyCode() == KeyEvent.VK_DOWN)
 		{
 			if (this.associativeMap.getEquilibriumDistance() < 2.0)
 			{
@@ -114,60 +114,60 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e)
+	public void keyReleased(final KeyEvent evt)
 	{
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e)
+	public void keyTyped(final KeyEvent evt)
 	{
 	}
 
 	@Override
-	public void windowClosing(WindowEvent e)
+	public void windowClosing(final WindowEvent evt)
 	{
 		this.executor.shutdown();
 	}
 
 	@Override
-	public void windowClosed(WindowEvent e)
+	public void windowClosed(final WindowEvent evt)
 	{
 	}
 
 	@Override
-	public void windowOpened(WindowEvent e)
+	public void windowOpened(final WindowEvent evt)
 	{
 	}
 
 	@Override
-	public void windowIconified(WindowEvent e)
+	public void windowIconified(final WindowEvent evt)
 	{
 	}
 
 	@Override
-	public void windowDeiconified(WindowEvent e)
+	public void windowDeiconified(final WindowEvent evt)
 	{
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e)
+	public void windowActivated(final WindowEvent evt)
 	{
 	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e)
+	public void windowDeactivated(final WindowEvent evt)
 	{
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent evt)
+	public void actionPerformed(final ActionEvent evt)
 	{
-		if ((this.lastRun != null) && (this.lastRun.isDone() == false))
+		if ((this.lastRun != null) && !this.lastRun.isDone())
 		{
 			return;
 		}
 
-		if (this.isVisible() == false)
+		if (!this.isVisible())
 		{
 			return;
 		}
@@ -191,7 +191,7 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 		return true;
 	}
 
-	public static void main(String args[]) throws Exception
+	public static void main(final String[] args) throws Exception
 	{
 		//check that the java3D drivers are present
 		if (!checkClasses())

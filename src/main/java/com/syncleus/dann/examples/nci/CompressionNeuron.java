@@ -46,7 +46,7 @@ public final class CompressionNeuron extends AbstractBackpropNeuron implements S
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
-	public CompressionNeuron(Brain brain)
+	public CompressionNeuron(final Brain brain)
 	{
 		super(brain);
 	}
@@ -56,17 +56,17 @@ public final class CompressionNeuron extends AbstractBackpropNeuron implements S
 	 * <!-- Author: Jeffrey Phillips Freeman -->
 	 * @since 1.0
 	 */
-	public CompressionNeuron(Brain brain, ActivationFunction activationFunction)
+	public CompressionNeuron(final Brain brain, final ActivationFunction activationFunction)
 	{
 		super(brain, activationFunction);
 	}
 
-	public CompressionNeuron(Brain brain, double learningRate)
+	public CompressionNeuron(final Brain brain, final double learningRate)
 	{
 		super(brain, learningRate);
 	}
 
-	public CompressionNeuron(Brain brain, ActivationFunction activationFunction, double learningRate)
+	public CompressionNeuron(final Brain brain, final ActivationFunction activationFunction, final double learningRate)
 	{
 		super(brain, activationFunction, learningRate);
 	}
@@ -77,7 +77,7 @@ public final class CompressionNeuron extends AbstractBackpropNeuron implements S
 	 * @since 1.0
 	 * @param inputToSet The value to set the current input to.
 	 */
-	public void setInput(byte inputToSet)
+	public void setInput(final byte inputToSet)
 	{
 		this.input = inputToSet;
 		this.inputSet = true;
@@ -113,7 +113,7 @@ public final class CompressionNeuron extends AbstractBackpropNeuron implements S
 	@Override
 	public void tick()
 	{
-		if (this.inputSet == false)
+		if (!this.inputSet)
 		{
 			super.tick();
 		}

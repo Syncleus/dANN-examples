@@ -30,14 +30,14 @@ public class ImagePanel extends javax.swing.JPanel
 		initComponents();
 	}
 
-	public void setImage(Image newImage)
+	public void setImage(final Image newImage)
 	{
 		this.image = newImage;
 		this.repaint();
 	}
 
 	@Override
-	protected void paintComponent(Graphics g)
+	protected void paintComponent(final Graphics g)
 	{
 		super.paintComponent(g);
 

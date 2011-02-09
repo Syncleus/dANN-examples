@@ -68,7 +68,7 @@ public class PathFindDemoPanel extends JPanel
 	private static final int DEFAULT_GRID_SIZE = 18;
 	private static final double MIN_GRID_WEIGHT = 1.0;
 	private static final double INITIAL_GRID_WEIGHT = MIN_GRID_WEIGHT;
-	private static final double PAINT_WEIGHTS[] =
+	private static final double[] PAINT_WEIGHTS =
 	{
 		1, 2, 4, 6, 8, 10, INF
 	};

@@ -18,12 +18,11 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.hyperassociativemap.visualization;
 
-
 public class SimpleNode
 {
-	final int layer;
+	private final int layer;
 
-	public SimpleNode(int layer)
+	public SimpleNode(final int layer)
 	{
 		this.layer = layer;
 	}

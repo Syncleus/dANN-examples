@@ -22,7 +22,7 @@ import java.awt.image.BufferedImage;
 
 public interface BrainListener
 {
-	public void brainFinishedBuffering();
-	public void brainSampleProcessed(BufferedImage finalImage);
-	public void brainTrainingComplete();
+	void brainFinishedBuffering();
+	void brainSampleProcessed(BufferedImage finalImage);
+	void brainTrainingComplete();
 }

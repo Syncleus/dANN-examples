@@ -40,8 +40,8 @@ import org.apache.log4j.Logger;
 
 public class NciDemo extends JFrame implements ActionListener, BrainListener
 {
-	private final static int BLOCK_WIDTH = 7;
-	private final static int BLOCK_HEIGHT = 7;
+	private static final int BLOCK_WIDTH = 7;
+	private static final int BLOCK_HEIGHT = 7;
 	private BrainRunner brainRunner;
 	private HyperassociativeMapCanvas brainVisual;
 	private Component errorPanel;
@@ -56,12 +56,16 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
 	private int trainingRemaining;
 	private int currentTrainingCycles = 100000;
 	private ViewBrain viewBrain;
-	private final static Logger LOGGER = Logger.getLogger(NciDemo.class);
+	private static final Logger LOGGER = Logger.getLogger(NciDemo.class);
 
-	public NciDemo() {
-		try {
+	public NciDemo()
+	{
+		try
+		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception caught) {
+		}
+		catch (Exception caught)
+		{
 			LOGGER.warn("Could not set the UI to native look and feel", caught);
 		}
 
@@ -89,13 +93,16 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent evt) {
+	public void actionPerformed(final ActionEvent evt) {
 
-		if (this.trainingRemaining > 0) {
+		if (this.trainingRemaining > 0)
+		{
 			this.trainingRemaining = this.brainRunner.getTrainingCycles();
 			int progressPercent = ((this.currentTrainingCycles - this.trainingRemaining) * 100) / (this.currentTrainingCycles);
 			this.progress.setValue(progressPercent);
-		} else if (this.processing == true) {
+		}
+		else if (this.processing)
+		{
 			this.progress.setValue(this.brainRunner.getSampleProgress());
 		}
 	}
@@ -332,14 +339,16 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener
 	// </editor-fold>
 
 private void quitMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quitMenuItemMouseReleased
-	if (this.brainRunner != null) {
+	if (this.brainRunner != null)
+	{
 		this.brainRunner.shutdown();
 	}
 	System.exit(0);
 }//GEN-LAST:event_quitMenuItemMouseReleased
 
 private void quitMenuItemMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_quitMenuItemMenuKeyPressed
-	if (this.brainRunner != null) {
+	if (this.brainRunner != null)
+	{
 		this.brainRunner.shutdown();
 	}
 	System.exit(0);
@@ -360,13 +369,15 @@ private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) 
 	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	chooser.setMultiSelectionEnabled(false);
 	chooser.setVisible(true);
-	if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+	if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+	{
 		this.originalImageText.setText(chooser.getSelectedFile().getAbsolutePath());
 		this.originalImageLocation = chooser.getSelectedFile();
 
 		this.refreshOriginalImage();
 
-		if (this.brainRunnerThread != null) {
+		if (this.brainRunnerThread != null)
+		{
 			this.processButton.setEnabled(true);
 			this.trainButton.setEnabled(true);
 
@@ -380,12 +391,14 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
 	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	chooser.setMultiSelectionEnabled(false);
 	chooser.setVisible(true);
-	if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+	if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+	{
 		this.trainingDirectoryText.setText(chooser.getSelectedFile().getAbsolutePath());
 		this.trainingDirectory = chooser.getSelectedFile();
 
 		File[] trainingFiles = trainingDirectory.listFiles(new PngFileFilter());
-		if (trainingFiles.length <= 0) {
+		if (trainingFiles.length <= 0)
+		{
 			this.trainingDirectory = null;
 			this.trainingDirectoryText.setText("");
 
@@ -398,7 +411,8 @@ private void trainingDirectorySelectActionPerformed(java.awt.event.ActionEvent e
 		this.brainRunnerThread = new Thread(this.brainRunner);
 		this.brainRunnerThread.start();
 
-		if (this.originalImageLocation != null) {
+		if (this.originalImageLocation != null)
+		{
 			this.processButton.setEnabled(true);
 			this.trainButton.setEnabled(true);
 
@@ -421,7 +435,8 @@ private void trainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 }//GEN-LAST:event_trainButtonActionPerformed
 
 private void processButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processButtonActionPerformed
-	if ((this.processing == true) || (finalImage == null) || (originalImage == null)) {
+	if (this.processing || (finalImage == null) || (originalImage == null))
+	{
 		return;
 	}
 
@@ -440,16 +455,21 @@ private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 	this.brainRunner.stop();
 }//GEN-LAST:event_stopButtonActionPerformed
 
-	public void viewBrain() {
-		if (brainVisual != null) {
+	public void viewBrain()
+	{
+		if (brainVisual != null)
+		{
 			this.brainVisual.refresh();
 
-			if (this.viewBrain == null) {
+			if (this.viewBrain == null)
+			{
 				this.viewBrain = new ViewBrain(this, brainVisual);
 			}
 
 			this.viewBrain.setVisible(true);
-		} else {
+		}
+		else
+		{
 			JDialog errorDialog = new JDialog();
 			errorDialog.add(errorPanel);
 			errorDialog.setVisible(true);
@@ -457,7 +477,6 @@ private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 	}
 
 private void brainViewMenuMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_brainViewMenuMenuKeyPressed
-
 	viewBrain();
 }//GEN-LAST:event_brainViewMenuMenuKeyPressed
 
@@ -466,20 +485,26 @@ private void brainViewMenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FI
 }//GEN-LAST:event_brainViewMenuMouseReleased
 
 private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItem1ActionPerformed
-	if (this.brainRunner != null) {
+	if (this.brainRunner != null)
+	{
 		this.brainRunner.shutdown();
 	}
 	System.exit(0);
 }//GEN-LAST:event_quitMenuItem1ActionPerformed
 
-	private void refreshOriginalImage() {
-		if (this.originalImageLocation == null) {
+	private void refreshOriginalImage()
+	{
+		if (this.originalImageLocation == null)
+		{
 			return;
 		}
 
-		try {
+		try
+		{
 			originalImage = ImageIO.read(this.originalImageLocation);
-		} catch (IOException caught) {
+		}
+		catch (IOException caught)
+		{
 			LOGGER.warn("IO Exception when reading image", caught);
 			return;
 		}
@@ -487,24 +512,30 @@ private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 		this.finalImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_RGB);
 	}
 
-	private void displayAbout() {
+	private void displayAbout()
+	{
 		AboutDialog about = new AboutDialog(this, true);
 		about.setVisible(true);
 	}
 
-	public void brainFinishedBuffering() {
-		try {
+	public void brainFinishedBuffering()
+	{
+		try
+		{
 			this.brainVisual = new HyperassociativeMapCanvas(this.brainRunner.getBrainMap());
 			this.brainViewMenu.setEnabled(true);
-		} catch (ComponentUnavailableException e) {
+		}
+		catch (ComponentUnavailableException exc)
+		{
 			this.brainVisual = null;
-			this.errorPanel = e.newPanel();
+			this.errorPanel = exc.newPanel();
 			this.brainViewMenu.setEnabled(false);
 
 		}
 	}
 
-	public void brainSampleProcessed(BufferedImage finalImage) {
+	public void brainSampleProcessed(final BufferedImage finalImage)
+	{
 		this.processing = false;
 		this.progress.setValue(100);
 		this.finalImage = finalImage;
@@ -518,7 +549,8 @@ private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 		this.statusLabel.setText("Ready!");
 	}
 
-	public void brainTrainingComplete() {
+	public void brainTrainingComplete()
+	{
 		this.trainingRemaining = 0;
 		this.progress.setValue(100);
 
@@ -529,26 +561,38 @@ private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 		this.statusLabel.setText("Ready!");
 	}
 
-	public static void main(String args[]) throws Exception {
-		try {
-			java.awt.EventQueue.invokeAndWait(new Runnable() {
-
-				public void run() {
-					try {
-						new NciDemo().setVisible(true);
-					} catch (Exception caught) {
-						LOGGER.error("Exception was caught", caught);
-						throw new RuntimeException("Throwable was caught", caught);
-					} catch (Error caught) {
-						LOGGER.error("Error was caught", caught);
-						throw new Error("Throwable was caught");
-					}
-				}
-			});
-		} catch (Exception caught) {
+	public static void main(final String[] args) throws Exception
+	{
+		try
+		{
+			java.awt.EventQueue.invokeAndWait(new Runnable()
+					{
+						public void run()
+						{
+							try
+							{
+								new NciDemo().setVisible(true);
+							}
+							catch (Exception caught)
+							{
+								LOGGER.error("Exception was caught", caught);
+								throw new RuntimeException("Throwable was caught", caught);
+							}
+							catch (Error caught)
+							{
+								LOGGER.error("Error was caught", caught);
+								throw new Error("Throwable was caught");
+							}
+						}
+					});
+		}
+		catch (Exception caught)
+		{
 			LOGGER.error("Exception was caught", caught);
 			throw new RuntimeException("Throwable was caught", caught);
-		} catch (Error caught) {
+		}
+		catch (Error caught)
+		{
 			LOGGER.error("Error was caught", caught);
 			throw new Error("Throwable was caught");
 		}

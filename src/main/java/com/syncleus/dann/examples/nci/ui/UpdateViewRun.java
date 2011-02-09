@@ -25,7 +25,7 @@ public class UpdateViewRun implements Runnable
 {
 	private HyperassociativeMapCanvas view;
 
-	public UpdateViewRun(HyperassociativeMapCanvas view)
+	public UpdateViewRun(final HyperassociativeMapCanvas view)
 	{
 		this.view = view;
 	}

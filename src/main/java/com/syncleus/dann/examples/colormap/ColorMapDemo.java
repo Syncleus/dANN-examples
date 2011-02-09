@@ -36,9 +36,9 @@ import org.apache.log4j.Logger;
 
 public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, WindowListener
 {
-	private final static Logger LOGGER = Logger.getLogger(ColorMapDemo.class);
+	private static final Logger LOGGER = Logger.getLogger(ColorMapDemo.class);
 
-	private final SpinnerNumberModel iterationsModel = new SpinnerNumberModel(INITIAL_ITERATIONS, 1, 10000,100);
+	private final SpinnerNumberModel iterationsModel = new SpinnerNumberModel(INITIAL_ITERATIONS, 1, 10000, 100);
 	private final SpinnerNumberModel learningRateModel = new SpinnerNumberModel(INITIAL_LEARNING_RATE, Double.MIN_VALUE, 1.0, 0.01);
 
 	private Color[] color1d;
@@ -81,43 +81,43 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
     }
 
 	@Override
-	public void windowClosing(WindowEvent e)
+	public void windowClosing(final WindowEvent e)
 	{
 		this.executor.shutdown();
 	}
 
 	@Override
-	public void windowClosed(WindowEvent e)
+	public void windowClosed(final WindowEvent e)
 	{
 	}
 
 	@Override
-	public void windowOpened(WindowEvent e)
+	public void windowOpened(final WindowEvent e)
 	{
 	}
 
 	@Override
-	public void windowIconified(WindowEvent e)
+	public void windowIconified(final WindowEvent e)
 	{
 	}
 
 	@Override
-	public void windowDeiconified(WindowEvent e)
+	public void windowDeiconified(final WindowEvent e)
 	{
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e)
+	public void windowActivated(final WindowEvent e)
 	{
 	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e)
+	public void windowDeactivated(final WindowEvent e)
 	{
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent evt)
+	public void actionPerformed(final ActionEvent evt)
 	{
 		if(this.callable1d != null)
 		{
@@ -135,7 +135,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 
 		if(this.future1d != null)
 		{
-			if(! this.future1d.isDone())
+			if(!this.future1d.isDone())
 				return;
 			try
 			{
@@ -163,7 +163,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 		}
 		else if(this.future2d != null)
 		{
-			if(! this.future2d.isDone())
+			if(!this.future2d.isDone())
 				return;
 			try
 			{
@@ -196,7 +196,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 	}
 
 	@Override
-	public void paint(Graphics graphics)
+	public void paint(final Graphics graphics)
 	{
 		super.paint(graphics);
 
@@ -390,7 +390,7 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
         about.setVisible(true);
 	}//GEN-LAST:event_aboutMenuItemMouseReleased
 
-    public static void main(String args[])
+    public static void main(final String[] args)
 	{
 		try
 		{

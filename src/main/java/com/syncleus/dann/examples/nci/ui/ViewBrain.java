@@ -37,7 +37,7 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener
 	private ExecutorService executor = Executors.newFixedThreadPool(1);
 	private FutureTask<Void> lastRun;
 
-	public ViewBrain(Frame parent, HyperassociativeMapCanvas brainVisual)
+	public ViewBrain(final Frame parent, final HyperassociativeMapCanvas brainVisual)
 	{
 		super(parent, false);
 
@@ -64,37 +64,37 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e)
+	public void keyPressed(final KeyEvent evt)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_R)
+		if (evt.getKeyCode() == KeyEvent.VK_R)
 		{
 			this.brainVisual.getHyperassociativeMap().reset();
 		}
-		if (e.getKeyCode() == KeyEvent.VK_L)
+		if (evt.getKeyCode() == KeyEvent.VK_L)
 		{
 			this.brainVisual.getHyperassociativeMap().resetLearning();
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e)
+	public void keyReleased(final KeyEvent evt)
 	{
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e)
+	public void keyTyped(final KeyEvent evt)
 	{
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent evt)
+	public void actionPerformed(final ActionEvent evt)
 	{
-		if ((this.lastRun != null) && (this.lastRun.isDone() == false))
+		if ((this.lastRun != null) && !this.lastRun.isDone())
 		{
 			return;
 		}
 
-		if (this.isVisible() == false)
+		if (!this.isVisible())
 		{
 			return;
 		}

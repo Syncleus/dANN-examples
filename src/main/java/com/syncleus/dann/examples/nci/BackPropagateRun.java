@@ -25,9 +25,9 @@ import org.apache.log4j.Logger;
 public class BackPropagateRun implements Runnable
 {
 	private BackpropNeuron processor;
-	private final static Logger LOGGER = Logger.getLogger(BackPropagateRun.class);
+	private static final Logger LOGGER = Logger.getLogger(BackPropagateRun.class);
 
-	public BackPropagateRun(BackpropNeuron processor)
+	public BackPropagateRun(final BackpropNeuron processor)
 	{
 		this.processor = processor;
 	}

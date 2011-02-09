@@ -38,7 +38,7 @@ public class FftDemo extends JFrame implements ActionListener
 	private AudioFormat audioFormat;
 	private TargetDataLine targetDataLine;
 	private FastFourierTransformer transformer;
-	final private JProgressBar[] frequencyBars;
+	private final JProgressBar[] frequencyBars;
 	private Timer sampleTimer = new Timer(100, this);
 
     public FftDemo()
@@ -331,7 +331,7 @@ public class FftDemo extends JFrame implements ActionListener
 	}//GEN-LAST:event_listenButtonActionPerformed
 
 	@Override
-	public void actionPerformed(ActionEvent evt)
+	public void actionPerformed(final ActionEvent evt)
 	{
 		if(this.transformer.getBlockSize()*2 <= this.targetDataLine.available())
 		{
@@ -356,7 +356,7 @@ public class FftDemo extends JFrame implements ActionListener
 		}
 	}
 
-	private double bytesToDouble(byte... data)
+	private double bytesToDouble(final byte... data)
 	{
 		return ((double) (((short)data[1])<<8) + ((short)data[0])) / ((double)Short.MAX_VALUE);
 	}
@@ -372,7 +372,7 @@ public class FftDemo extends JFrame implements ActionListener
 		return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
 	}
 
-    public static void main(String args[])
+    public static void main(final String[] args)
 	{
         java.awt.EventQueue.invokeLater(
 			new Runnable()

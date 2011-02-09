@@ -27,36 +27,36 @@ import com.syncleus.dann.math.Vector;
 
 public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopulation
 {
-	private final Vector cities[];
+	private final Vector[] cities;
 
-	public TravellingSalesmanPopulation(final Vector cities[], final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage)
+	public TravellingSalesmanPopulation(final Vector[] cities, final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage)
 	{
 		super(mutationDeviation, crossoverPercentage, dieOffPercentage);
 
 		if(cities == null)
 			throw new IllegalArgumentException("cities can not be null");
-		if(cities.length < 4)
-			throw new IllegalArgumentException("cities must have atleast 4 elements");
+		if(cities.length < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
+			throw new IllegalArgumentException("cities must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
 
 		this.cities = cities.clone();
 	}
 
-	public TravellingSalesmanPopulation(final Vector cities[], final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage, final ThreadPoolExecutor threadExecutor)
+	public TravellingSalesmanPopulation(final Vector[] cities, final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage, final ThreadPoolExecutor threadExecutor)
 	{
 		super(mutationDeviation, crossoverPercentage, dieOffPercentage, threadExecutor);
 
 		if(cities == null)
 			throw new IllegalArgumentException("cities can not be null");
-		if(cities.length < 4)
-			throw new IllegalArgumentException("cities must have atleast 4 elements");
+		if(cities.length < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
+			throw new IllegalArgumentException("cities must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
 
 		this.cities = cities.clone();
 	}
 
 	public void initializePopulation(final int populationSize)
 	{
-		if(populationSize < 4)
-			throw new IllegalArgumentException("populationSize must have atleast 4 elements");
+		if(populationSize < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
+			throw new IllegalArgumentException("populationSize must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
 
 		this.addAll(initialChromosomes(cities.length, populationSize));
 	}
@@ -72,10 +72,10 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
 
 	private static Set<GeneticAlgorithmChromosome> initialChromosomes(final int cityCount, final int populationSize)
 	{
-		if(populationSize < 4)
-			throw new IllegalArgumentException("populationSize must have atleast 4 elements");
-		if(cityCount < 4)
-			throw new IllegalArgumentException("cityCount must be atleast 4");
+		if(populationSize < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
+			throw new IllegalArgumentException("populationSize must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
+		if(cityCount < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
+			throw new IllegalArgumentException("cityCount must be atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES);
 
 		final HashSet<GeneticAlgorithmChromosome> returnValue = new HashSet<GeneticAlgorithmChromosome>();
 		while(returnValue.size() < populationSize)

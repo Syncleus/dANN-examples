@@ -23,7 +23,7 @@ import javax.swing.JDialog;
 
 public class AboutDialog extends JDialog
 {
-	public AboutDialog(Frame parent, boolean modal)
+	public AboutDialog(final Frame parent, final boolean modal)
 	{
 		super(parent, modal);
 		initComponents();

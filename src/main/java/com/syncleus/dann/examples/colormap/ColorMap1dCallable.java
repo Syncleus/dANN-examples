@@ -36,11 +36,12 @@ public final class ColorMap1dCallable implements Callable<Color[]>
 	private volatile int iterations;
 	private volatile double learningRate;
 	private volatile int width;
-	private final static Random RANDOM = new Random();
+	private static final Random RANDOM = new Random();
 	private volatile int progress;
-	private final static Logger LOGGER = Logger.getLogger(ColorMap1dCallable.class);
+	private static final Logger LOGGER = Logger.getLogger(ColorMap1dCallable.class);
+	static final int COLOR_CHANNELS = 3;
 
-	public ColorMap1dCallable(int iterations, double learningRate, int width)
+	public ColorMap1dCallable(final int iterations, final double learningRate, final int width)
 	{
 		this.iterations = iterations;
 		this.learningRate = learningRate;
@@ -53,20 +54,20 @@ public final class ColorMap1dCallable implements Callable<Color[]>
 		try
 		{
 			//initialize brain
-			ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain = new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(3, 1, getIterations(), getLearningRate());
+			ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain
+					= new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(COLOR_CHANNELS, 1, getIterations(), getLearningRate());
 
 			//create the output latice
 			for(double x = 0; x < getWidth(); x++)
-				brain.createOutput(new Vector(new double[]{x}));
+				brain.createOutput(new Vector(new double[] {x}));
 
 			//run through random training data for all iterations
 			for(int iteration = 0; iteration < getIterations(); iteration++)
 			{
 				this.progress++;
 
-				brain.setInput(0, RANDOM.nextDouble());
-				brain.setInput(1, RANDOM.nextDouble());
-				brain.setInput(2, RANDOM.nextDouble());
+				for (int ci = 0; ci < COLOR_CHANNELS; ci++)
+					brain.setInput(ci, RANDOM.nextDouble());
 
 				brain.getBestMatchingUnit(true);
 			}

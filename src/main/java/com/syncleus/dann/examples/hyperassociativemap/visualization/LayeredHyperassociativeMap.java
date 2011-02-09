@@ -24,9 +24,10 @@ import com.syncleus.dann.graph.drawing.hyperassociativemap.HyperassociativeMap;
 public class LayeredHyperassociativeMap extends HyperassociativeMap<SimpleGraph, SimpleNode>
 {
 	private static final int NODES_PER_LAYER = 16;
+	private static final int DIMENSION = 3;
 
-	LayeredHyperassociativeMap(int layers, ExecutorService executor)
+	LayeredHyperassociativeMap(final int layers, final ExecutorService executor)
 	{
-		super(new SimpleGraph(layers, NODES_PER_LAYER), 3, executor);
+		super(new SimpleGraph(layers, NODES_PER_LAYER), DIMENSION, executor);
 	}
 }

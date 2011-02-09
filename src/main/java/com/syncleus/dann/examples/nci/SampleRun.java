@@ -26,9 +26,9 @@ public class SampleRun implements Callable<BufferedImage>
 {
 	private NciBrain brain;
 	private BufferedImage sampleImage;
-	private final static Logger LOGGER = Logger.getLogger(SampleRun.class);
+	private static final Logger LOGGER = Logger.getLogger(SampleRun.class);
 
-	public SampleRun(NciBrain brain, BufferedImage sampleImage)
+	public SampleRun(final NciBrain brain, final BufferedImage sampleImage)
 	{
 		this.brain = brain;
 		this.sampleImage = sampleImage;

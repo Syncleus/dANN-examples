@@ -25,9 +25,9 @@ public class TrainRun implements Runnable
 {
 	private NciBrain brain;
 	private BufferedImage trainImage;
-	private final static Logger LOGGER = Logger.getLogger(TrainRun.class);
+	private static final Logger LOGGER = Logger.getLogger(TrainRun.class);
 
-	public TrainRun(NciBrain brain, BufferedImage trainImage)
+	public TrainRun(final NciBrain brain, final BufferedImage trainImage)
 	{
 		this.brain = brain;
 		this.trainImage = trainImage;
