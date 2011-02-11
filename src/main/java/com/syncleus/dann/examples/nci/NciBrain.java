@@ -55,8 +55,7 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	private final double learningRate;
 
 	/**
-	 * Creates an instance of NciBrain.<BR>
-	 * @author Jeffrey Phillips Freeman
+	 * Creates an instance of NciBrain.
 	 * @param compression A value between 0.0 (inclusive) and 1.0 (exclusive)
 	 *   which represents the % of compression.
 	 */
@@ -217,7 +216,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	}
 
 	/**
-	 * @author Jeffrey Phillips Freeman
 	 * @since 1.0
 	 */
 	public byte[] compress(final BufferedImage originalImage)
@@ -269,7 +267,6 @@ public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpr
 	}
 
 	/**
-	 * @author Jeffrey Phillips Freeman
 	 * @since 1.0
 	 */
 	public BufferedImage uncompress(final byte[] compressedData)
