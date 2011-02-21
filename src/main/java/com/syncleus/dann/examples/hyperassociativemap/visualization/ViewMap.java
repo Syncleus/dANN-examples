@@ -56,6 +56,7 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 
 			myMapVisual.setFocusTraversalKeysEnabled(false);
 			myMapVisual.addKeyListener(this);
+			myMapVisual.getCanvas3D().addKeyListener(this);
 			this.addKeyListener(this);
 
 			new Timer(100, this).start();
