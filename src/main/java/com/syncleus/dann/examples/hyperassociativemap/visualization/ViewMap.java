@@ -67,15 +67,18 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 		}
 		catch (ComponentUnavailableException exc)
 		{
+			myMapVisual = null;
 			this.add(exc.newPanel());
 		}
 		this.mapVisual = myMapVisual;
+		if (this.mapVisual != null) {
+			this.add(this.mapVisual);
+		}
 
 		this.addWindowListener(this);
 		this.setFocusTraversalKeysEnabled(false);
 
 		this.setSize(800, 600);
-
 	}
 
 	@Override
@@ -188,22 +191,27 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 
 	private static boolean checkClasses()
 	{
+		// This class does not exist in Java3D 1.3.1, so we can not use this
+		// test. Fortunately, it will still fail gracefully later, if Java3D
+		// is not is installed properly.
+		/*
 		try
 		{
 			Class.forName("javax.media.j3d.NativePipeline");
 		}
 		catch (ClassNotFoundException caughtException)
 		{
-			System.out.println("java3D library isnt in classpath!");
+			System.out.println("Java3D library is not in classpath!");
 			return false;
 		}
+		*/
 
 		return true;
 	}
 
 	public static void main(final String[] args)
 	{
-		//check that the java3D drivers are present
+		// check that the Java3D drivers are present
 		if (!checkClasses())
 		{
 			return;
