@@ -42,7 +42,9 @@ public class ViewMap extends JFrame implements ActionListener
 
 	public ViewMap()
 	{
-		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		// With only 1 thread, we would get a dead-lock when
+		// the view-update-thread is waiting for the alignment.
+		this.executor = Executors.newFixedThreadPool(Math.max(2, Runtime.getRuntime().availableProcessors()));
 		this.associativeMap = new LayeredHyperassociativeMap(8, executor);
 
 		HyperassociativeMapCanvas myMapVisual = null;
