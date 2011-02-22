@@ -23,16 +23,16 @@ import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.Hyperas
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.WindowAdapter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class ViewMap extends JFrame implements ActionListener, WindowListener, KeyListener
+public class ViewMap extends JFrame implements ActionListener
 {
 	private static final float NODE_RADIUS = 0.07F;
 	private final HyperassociativeMapCanvas mapVisual;
@@ -55,9 +55,10 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 			this.executor.execute(this.lastRun);
 
 			myMapVisual.setFocusTraversalKeysEnabled(false);
-			myMapVisual.addKeyListener(this);
-			myMapVisual.getCanvas3D().addKeyListener(this);
-			this.addKeyListener(this);
+			AssociativeMapKeyAdapter keyAdapter = new AssociativeMapKeyAdapter(associativeMap);
+			myMapVisual.addKeyListener(keyAdapter);
+			myMapVisual.getCanvas3D().addKeyListener(keyAdapter);
+			this.addKeyListener(keyAdapter);
 
 			new Timer(100, this).start();
 
@@ -76,101 +77,64 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 			this.add(this.mapVisual);
 		}
 
-		this.addWindowListener(this);
+		this.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent event)
+			{
+				executor.shutdown();
+			}
+		});
 		this.setFocusTraversalKeysEnabled(false);
 
 		this.setSize(800, 600);
 	}
 
-	@Override
-	public void keyPressed(final KeyEvent evt)
+	private static class AssociativeMapKeyAdapter extends KeyAdapter
 	{
-		if (evt.getKeyCode() == KeyEvent.VK_R)
+		private final LayeredHyperassociativeMap associativeMap;
+
+		public AssociativeMapKeyAdapter(final LayeredHyperassociativeMap associativeMap)
 		{
-			this.associativeMap.reset();
+			this.associativeMap = associativeMap;
 		}
-		if (evt.getKeyCode() == KeyEvent.VK_L)
+
+		@Override
+		public void keyPressed(final KeyEvent evt)
 		{
-			this.associativeMap.resetLearning();
+			if (evt.getKeyCode() == KeyEvent.VK_R)
+			{
+				this.associativeMap.reset();
+			}
+			if (evt.getKeyCode() == KeyEvent.VK_L)
+			{
+				this.associativeMap.resetLearning();
+			}
+			else if (evt.getKeyCode() == KeyEvent.VK_UP)
+			{
+				if (this.associativeMap.getEquilibriumDistance() < 1.0)
+				{
+					this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 1.1);
+				}
+				else
+				{
+					this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() + 1.0);
+				}
+				this.associativeMap.resetLearning();
+			}
+			else if (evt.getKeyCode() == KeyEvent.VK_DOWN)
+			{
+				if (this.associativeMap.getEquilibriumDistance() < 2.0)
+				{
+					this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 0.9);
+				}
+				else
+				{
+					this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() - 1.0);
+				}
+				this.associativeMap.resetLearning();
+			}
 		}
-		else if (evt.getKeyCode() == KeyEvent.VK_UP)
-		{
-			if (this.associativeMap.getEquilibriumDistance() < 1.0)
-			{
-				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 1.1);
-			}
-			else
-			{
-				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() + 1.0);
-			}
-			this.associativeMap.resetLearning();
-		}
-		else if (evt.getKeyCode() == KeyEvent.VK_DOWN)
-		{
-			if (this.associativeMap.getEquilibriumDistance() < 2.0)
-			{
-				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 0.9);
-			}
-			else
-			{
-				this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() - 1.0);
-			}
-			this.associativeMap.resetLearning();
-		}
-	}
-
-	@Override
-	public void keyReleased(final KeyEvent evt)
-	{
-		// unused
-	}
-
-	@Override
-	public void keyTyped(final KeyEvent evt)
-	{
-		// unused
-	}
-
-	@Override
-	public void windowClosing(final WindowEvent evt)
-	{
-		this.executor.shutdown();
-	}
-
-	@Override
-	public void windowClosed(final WindowEvent evt)
-	{
-		// unused
-	}
-
-	@Override
-	public void windowOpened(final WindowEvent evt)
-	{
-		// unused
-	}
-
-	@Override
-	public void windowIconified(final WindowEvent evt)
-	{
-		// unused
-	}
-
-	@Override
-	public void windowDeiconified(final WindowEvent evt)
-	{
-		// unused
-	}
-
-	@Override
-	public void windowActivated(final WindowEvent evt)
-	{
-		// unused
-	}
-
-	@Override
-	public void windowDeactivated(final WindowEvent evt)
-	{
-		// unused
 	}
 
 	@Override
@@ -220,7 +184,7 @@ public class ViewMap extends JFrame implements ActionListener, WindowListener, K
 
 		System.out.println("controls:");
 		System.out.println("R: reset");
-		System.out.println("L: reset learing curve");
+		System.out.println("L: reset learning curve");
 		System.out.println("up arrow: increase Equilibrium");
 		System.out.println("down arrow: decrease Equilibrium");
 

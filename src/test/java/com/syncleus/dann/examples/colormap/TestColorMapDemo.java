@@ -80,10 +80,10 @@ public class TestColorMapDemo
 		colorMapDemoFixture.spinner("learningRateSpinner").enterTextAndCommit("0.01");
 		colorMapDemoFixture.spinner("learningRateSpinner").increment(9);
 		double currentValue = Double.valueOf(colorMapDemoFixture.spinner("learningRateSpinner").text());
-		Assert.assertTrue("learning rate spinner did notincrement properly", (currentValue - 0.1) < 0.00001);
+		Assert.assertTrue("learning rate spinner did not increment properly", (currentValue - 0.1) < 0.00001);
 		colorMapDemoFixture.spinner("learningRateSpinner").increment(100);
 		currentValue = Double.valueOf(colorMapDemoFixture.spinner("learningRateSpinner").text());
-		Assert.assertTrue("learning rate spinner did notincrement properly", (currentValue - 1.0) < 0.001);
+		Assert.assertTrue("learning rate spinner did not increment properly", (currentValue - 1.0) < 0.001);
 		//lets try decrementing
 		colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("10000");
 		colorMapDemoFixture.spinner("iterationsSpinner").requireValue(10000);
@@ -94,10 +94,10 @@ public class TestColorMapDemo
 		colorMapDemoFixture.spinner("learningRateSpinner").enterTextAndCommit("1.0");
 		colorMapDemoFixture.spinner("learningRateSpinner").decrement(10);
 		currentValue = Double.valueOf(colorMapDemoFixture.spinner("learningRateSpinner").text());
-		Assert.assertTrue("learning rate spinner did notincrement properly", (currentValue - 0.9) < 0.00001);
+		Assert.assertTrue("learning rate spinner did not increment properly", (currentValue - 0.9) < 0.00001);
 		colorMapDemoFixture.spinner("learningRateSpinner").decrement(100);
 		currentValue = Double.valueOf(colorMapDemoFixture.spinner("learningRateSpinner").text());
-		Assert.assertTrue("learning rate spinner did notincrement properly", (currentValue - 0.01) < 0.00001);
+		Assert.assertTrue("learning rate spinner did not increment properly", (currentValue - 0.01) < 0.00001);
 	}
 
 	@Test(expected=UnexpectedException.class)

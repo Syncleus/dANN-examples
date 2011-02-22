@@ -23,8 +23,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import javax.swing.JFrame;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,7 +35,7 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 
-public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, WindowListener
+public class ColorMapDemo extends JFrame implements ActionListener
 {
 	private static final Logger LOGGER = Logger.getLogger(ColorMapDemo.class);
 
@@ -78,56 +79,16 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 		this.setResizable(false);
 		this.setSize(550, 175);
 		this.color1d = (new ColorMap1dCallable(INITIAL_ITERATIONS, INITIAL_LEARNING_RATE, 500)).call();
+
+		this.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent event)
+			{
+				executor.shutdown();
+			}
+		});
     }
-
-	/** @inheritDoc */
-	@Override
-	public void windowClosing(final WindowEvent evt)
-	{
-		this.executor.shutdown();
-	}
-
-	/** @inheritDoc */
-	@Override
-	public void windowClosed(final WindowEvent evt)
-	{
-		// unused
-	}
-
-	/** @inheritDoc */
-	@Override
-	public void windowOpened(final WindowEvent evt)
-	{
-		// unused
-	}
-
-	/** @inheritDoc */
-	@Override
-	public void windowIconified(final WindowEvent evt)
-	{
-		// unused
-	}
-
-	/** @inheritDoc */
-	@Override
-	public void windowDeiconified(final WindowEvent evt)
-	{
-		// unused
-	}
-
-	/** @inheritDoc */
-	@Override
-	public void windowActivated(final WindowEvent evt)
-	{
-		// unused
-	}
-
-	/** @inheritDoc */
-	@Override
-	public void windowDeactivated(final WindowEvent evt)
-	{
-		// unused
-	}
 
 	@Override
 	public void actionPerformed(final ActionEvent evt)
@@ -144,7 +105,6 @@ public class ColorMapDemo extends javax.swing.JFrame implements ActionListener, 
 			this.progressBar.setMinimum(0);
 			this.progressBar.setValue(this.callable2d.getProgress());
 		}
-
 
 		if(this.future1d != null)
 		{
