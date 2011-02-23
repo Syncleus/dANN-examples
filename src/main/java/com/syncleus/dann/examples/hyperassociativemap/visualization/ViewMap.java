@@ -44,23 +44,23 @@ public class ViewMap extends JFrame implements ActionListener
 	{
 		// With only 1 thread, we would get a dead-lock when
 		// the view-update-thread is waiting for the alignment.
-		this.executor = Executors.newFixedThreadPool(Math.max(2, Runtime.getRuntime().availableProcessors()));
-		this.associativeMap = new LayeredHyperassociativeMap(8, executor);
+		executor = Executors.newFixedThreadPool(Math.max(2, Runtime.getRuntime().availableProcessors()));
+		associativeMap = new LayeredHyperassociativeMap(8, executor);
 
 		HyperassociativeMapCanvas myMapVisual = null;
 		try
 		{
-			myMapVisual = new HyperassociativeMapCanvas(this.associativeMap, NODE_RADIUS);
+			myMapVisual = new HyperassociativeMapCanvas(associativeMap, NODE_RADIUS);
 			initComponents();
 
-			this.lastRun = new FutureTask<Void>(new UpdateViewRun(myMapVisual, associativeMap), null);
-			this.executor.execute(this.lastRun);
+			lastRun = new FutureTask<Void>(new UpdateViewRun(myMapVisual, associativeMap), null);
+			executor.execute(lastRun);
 
 			myMapVisual.setFocusTraversalKeysEnabled(false);
 			AssociativeMapKeyAdapter keyAdapter = new AssociativeMapKeyAdapter(associativeMap);
 			myMapVisual.addKeyListener(keyAdapter);
 			myMapVisual.getCanvas3D().addKeyListener(keyAdapter);
-			this.addKeyListener(keyAdapter);
+			addKeyListener(keyAdapter);
 
 			new Timer(100, this).start();
 
@@ -72,14 +72,14 @@ public class ViewMap extends JFrame implements ActionListener
 		catch (ComponentUnavailableException exc)
 		{
 			myMapVisual = null;
-			this.add(exc.newPanel());
+			add(exc.newPanel());
 		}
-		this.mapVisual = myMapVisual;
-		if (this.mapVisual != null) {
-			this.add(this.mapVisual);
+		mapVisual = myMapVisual;
+		if (mapVisual != null) {
+			add(mapVisual);
 		}
 
-		this.addWindowListener(new WindowAdapter()
+		addWindowListener(new WindowAdapter()
 		{
 			@Override
 			public void windowClosing(WindowEvent event)
@@ -87,9 +87,9 @@ public class ViewMap extends JFrame implements ActionListener
 				executor.shutdown();
 			}
 		});
-		this.setFocusTraversalKeysEnabled(false);
+		setFocusTraversalKeysEnabled(false);
 
-		this.setSize(800, 600);
+		setSize(800, 600);
 	}
 
 	private static class AssociativeMapKeyAdapter extends KeyAdapter
@@ -106,35 +106,39 @@ public class ViewMap extends JFrame implements ActionListener
 		{
 			if (evt.getKeyCode() == KeyEvent.VK_R)
 			{
-				this.associativeMap.reset();
+				associativeMap.reset();
 			}
 			if (evt.getKeyCode() == KeyEvent.VK_L)
 			{
-				this.associativeMap.resetLearning();
+				associativeMap.resetLearning();
 			}
 			else if (evt.getKeyCode() == KeyEvent.VK_UP)
 			{
-				if (this.associativeMap.getEquilibriumDistance() < 1.0)
+				double equilibDist = associativeMap.getEquilibriumDistance();
+				if (equilibDist < 1.0)
 				{
-					this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 1.1);
+					equilibDist *= 1.1;
 				}
 				else
 				{
-					this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() + 1.0);
+					equilibDist += 1.0;
 				}
-				this.associativeMap.resetLearning();
+				associativeMap.setEquilibriumDistance(equilibDist);
+				associativeMap.resetLearning();
 			}
 			else if (evt.getKeyCode() == KeyEvent.VK_DOWN)
 			{
-				if (this.associativeMap.getEquilibriumDistance() < 2.0)
+				double equilibDist = associativeMap.getEquilibriumDistance();
+				if (equilibDist < 2.0)
 				{
-					this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() * 0.9);
+					equilibDist *= 0.9;
 				}
 				else
 				{
-					this.associativeMap.setEquilibriumDistance(this.associativeMap.getEquilibriumDistance() - 1.0);
+					equilibDist -= 1.0;
 				}
-				this.associativeMap.resetLearning();
+				associativeMap.setEquilibriumDistance(equilibDist);
+				associativeMap.resetLearning();
 			}
 		}
 	}
@@ -142,18 +146,18 @@ public class ViewMap extends JFrame implements ActionListener
 	@Override
 	public void actionPerformed(final ActionEvent evt)
 	{
-		if ((this.lastRun != null) && !this.lastRun.isDone())
+		if ((lastRun != null) && !lastRun.isDone())
 		{
 			return;
 		}
 
-		if (!this.isVisible())
+		if (!isVisible())
 		{
 			return;
 		}
 
-		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, this.associativeMap), null);
-		this.executor.execute(this.lastRun);
+		lastRun = new FutureTask<Void>(new UpdateViewRun(mapVisual, associativeMap), null);
+		executor.execute(lastRun);
 	}
 
 	private static boolean checkClasses()
