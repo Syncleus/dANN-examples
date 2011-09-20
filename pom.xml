@@ -1,93 +1,108 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>syncleus.com</groupId>
-		<artifactId>dann</artifactId>
-		<version>2.0-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
-	<packaging>jar</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>syncleus.com</groupId>
+        <artifactId>dann</artifactId>
+        <version>2.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <packaging>jar</packaging>
 
-	<groupId>syncleus.com</groupId>
-	<artifactId>dann-examples</artifactId>
-	<name>dANN Example Projects</name>
-	<description>Artificial Intelligence and Artificial Genetics library - Example Projects</description>
+    <groupId>syncleus.com</groupId>
+    <artifactId>dann-examples</artifactId>
+    <name>dANN Example Projects</name>
+    <description>Artificial Intelligence and Artificial Genetics library - Example Projects</description>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<url>http://ezekiel2.syncleus.com/archiva/repository/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://ezekiel2.syncleus.com/archiva/repository/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 
-	<build>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>log4j.xml</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-plugin</artifactId>
-              <configuration>
-                <forkMode>pertest</forkMode>
-                <argLine>-enableassertions</argLine>
-              </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkMode>pertest</forkMode>
+                    <argLine>-enableassertions</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2</version>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-ea</argument>
+                        <argument>-classpath</argument>
+                        <classpath/>
+                        <argument>com.syncleus.dann.examples.Main</argument>
+                    </arguments>
+                </configuration>
             </plugin>
         </plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>log4j.xml</include>
-				</includes>
-			</resource>
-		</resources>
-	</build>
+    </build>
 
-	<dependencies>
 
-		<dependency>
-			<groupId>org.freehep</groupId>
-			<artifactId>freehep-java3d</artifactId>
-			<version>2.0-SNAPSHOT</version>
-		</dependency>
+    <dependencies>
 
-		<dependency>
-			<groupId>org.easytesting</groupId>
-			<artifactId>fest-swing-junit</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.freehep</groupId>
+            <artifactId>freehep-java3d</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.easytesting</groupId>
-			<artifactId>fest-util</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-swing-junit</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>dann-core</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-util</artifactId>
+        </dependency>
 
-	</dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>dann-core</artifactId>
+        </dependency>
 
-	<repositories>
-		<repository>
-			<id>snapshots</id>
-			<name>Syncleus Maven Snapshot Respository</name>
-			<url>http://ezekiel2.syncleus.com/archiva/repository/snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
+    </dependencies>
 
-	  <repository>
-		<id>freehep-maven</id>
-		<name>Maven FreeHEP</name>
-		<url>http://java.freehep.org/maven2</url>
-	  </repository>
-	</repositories>
+    <repositories>
+        <!--repository>
+            <id>snapshots</id>
+            <name>Syncleus Maven Snapshot Respository</name>
+            <url>http://ezekiel2.syncleus.com/archiva/repository/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository-->
+
+        <repository>
+            <id>freehep-maven</id>
+            <name>Maven FreeHEP</name>
+            <url>http://java.freehep.org/maven2</url>
+        </repository>
+    </repositories>
 
 </project>
