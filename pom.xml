@@ -86,7 +86,7 @@
     </dependencies>
 
     <repositories>
-        <!--repository>
+        <repository>
             <id>snapshots</id>
             <name>Syncleus Maven Snapshot Respository</name>
             <url>http://ezekiel2.syncleus.com/archiva/repository/snapshots/</url>
@@ -96,7 +96,7 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </repository-->
+        </repository>
 
         <repository>
             <id>freehep-maven</id>
