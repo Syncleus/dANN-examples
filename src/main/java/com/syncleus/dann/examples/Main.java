@@ -21,6 +21,8 @@ package com.syncleus.dann.examples;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.net.URL;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
@@ -45,7 +47,11 @@ public final class Main
 			if(new File("log4j.xml").exists())
 				DOMConfigurator.configure("log4j.xml");
 			else
-				DOMConfigurator.configure(ClassLoader.getSystemResource("log4j.xml"));
+			{
+				final URL logConfig = ClassLoader.getSystemResource("log4j.xml");
+				assert logConfig != null;
+				DOMConfigurator.configure(logConfig);
+			}
 
 			LOGGER.info("program started...");
 
