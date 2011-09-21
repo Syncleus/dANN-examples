@@ -50,6 +50,7 @@
                     <executable>java</executable>
                     <arguments>
                         <argument>-ea</argument>
+                        <argument>-Xmx512m</argument>
                         <argument>-classpath</argument>
                         <classpath/>
                         <argument>com.syncleus.dann.examples.Main</argument>
