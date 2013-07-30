@@ -15,6 +15,12 @@
     <artifactId>dann-examples</artifactId>
     <name>dANN Example Projects</name>
     <description>Artificial Intelligence and Artificial Genetics library - Example Projects</description>
+    <url>http://wiki.syncleus.com/index.php/DANN</url>
+
+    <scm>
+            <connection>git://git.syncleus.com/dANN-examples.git</connection>
+            <developerConnection>git@git.syncleus.com:dANN-examples.git</developerConnection>
+    </scm>
 
     <distributionManagement>
         <repository>
