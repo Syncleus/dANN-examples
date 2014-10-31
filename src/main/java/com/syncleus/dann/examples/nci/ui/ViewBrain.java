@@ -26,6 +26,7 @@ import java.awt.event.*;
 import java.util.concurrent.*;
 
 public class ViewBrain extends JDialog implements ActionListener, KeyListener {
+    private static final long serialVersionUID = -6075084734645970735L;
     private final HyperassociativeMapCanvas brainVisual;
     private final ExecutorService executor = Executors.newFixedThreadPool(1);
     private FutureTask<Void> lastRun;

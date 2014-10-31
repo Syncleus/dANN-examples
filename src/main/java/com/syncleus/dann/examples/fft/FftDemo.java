@@ -38,6 +38,7 @@ public class FftDemo extends JFrame implements ActionListener {
     private static final int AUDIO_CHANNELS = 1;
     private static final boolean AUDIO_SIGNED = true;
     private static final boolean AUDIO_BIG_ENDIAN = false;
+    private static final long serialVersionUID = -4300149787884073809L;
 
     private final AudioFormat audioFormat;
     private final TargetDataLine targetDataLine;

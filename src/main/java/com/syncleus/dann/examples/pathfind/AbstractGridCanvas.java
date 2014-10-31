@@ -44,6 +44,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      */
     private static final int BORDER_FRACTION = 4;
     private static final Color PATH_COLOR = new Color(0.5f, 0f, 0f);
+    private static final long serialVersionUID = -4678014646197441067L;
     private final WeightedGrid grid;
     private final int nodeSize;
     private final int edgeSize;
@@ -103,7 +104,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
                     graphics2D.setColor(this.getEdgeColor(upEdge));
                     graphics2D.fillRect(px + this.edgeSize, py, this.nodeSize, this.edgeSize);
 
-                    if ((this.touchedEdge != null) && (this.touchedEdge.getRightNode() == gridNode) && (this.touchedEdge.getLeftNode() == toNode)) {
+                    if ((this.touchedEdge != null) && (this.touchedEdge.getRightNode().equals(gridNode)) && (this.touchedEdge.getLeftNode().equals(toNode))) {
                         //draw border of selected edge
                         graphics2D.setStroke(new BasicStroke(this.selectedThickness));
                         graphics2D.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
@@ -119,7 +120,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
                     graphics2D.setColor(this.getEdgeColor(rightEdge));
                     graphics2D.fillRect(px, py + this.edgeSize, this.edgeSize, this.nodeSize);
 
-                    if ((this.touchedEdge != null) && (this.touchedEdge.getRightNode() == gridNode) && (this.touchedEdge.getLeftNode() == toNode)) {
+                    if ((this.touchedEdge != null) && (this.touchedEdge.getRightNode().equals(gridNode)) && (this.touchedEdge.getLeftNode().equals(toNode))) {
                         //draw border of selected edge
                         graphics2D.setStroke(new BasicStroke(this.selectedThickness));
                         graphics2D.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
@@ -130,7 +131,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
                 graphics2D.setColor(this.getNodeColor(gridNode));
                 graphics2D.fillRect(px + this.edgeSize, py + this.edgeSize, this.nodeSize, this.nodeSize);
 
-                if (gridNode == this.touchedNode) {
+                if (gridNode.equals(this.touchedNode)) {
                     graphics2D.setStroke(new BasicStroke(this.selectedThickness));
                     graphics2D.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
                     graphics2D.drawRect(px + this.edgeSize, py + this.edgeSize, this.nodeSize, this.nodeSize);
@@ -225,7 +226,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
             return null;
         }
 
-        final boolean upOrLeft = (px - nx * (this.nodeSize + this.edgeSize) > py - ny * (this.nodeSize + this.edgeSize)) ? true : false;
+        final boolean upOrLeft = (px - nx * (this.nodeSize + this.edgeSize) > py - ny * (this.nodeSize + this.edgeSize));
 
         if ((nx >= (upOrLeft ? 0 : 1)) && (ny >= (!upOrLeft ? 0 : 1))
                     && (nx < this.grid.getWidth()) && (ny < this.grid.getHeight())) {

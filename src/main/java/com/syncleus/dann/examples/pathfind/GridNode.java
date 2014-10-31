@@ -22,6 +22,7 @@ import com.syncleus.dann.graph.Weighted;
 import com.syncleus.dann.math.Vector;
 
 public class GridNode extends Vector implements Weighted {
+    private static final long serialVersionUID = -596450707283749461L;
     private double weight;
 
     public GridNode(final int x, final int y, final double weight) {

@@ -46,6 +46,7 @@ public class PathFindDemoPanel extends JPanel {
     private static final int DEFAULT_GRID_SIZE = 18;
     private static final double MIN_GRID_WEIGHT = 1.0;
     private static final double INITIAL_GRID_WEIGHT = MIN_GRID_WEIGHT;
+    private static final long serialVersionUID = 7903553630603410869L;
     private AbstractGridCanvas gridCanvas;
     private WeightedGrid grid;
     private PathFindControlPanel controlPanel;
@@ -152,6 +153,7 @@ public class PathFindDemoPanel extends JPanel {
         this.add(this.controlPanel, BorderLayout.NORTH);
 
         this.gridCanvas = new AbstractGridCanvas(PathFindDemoPanel.this.grid, PathFindDemoPanel.this.path, DEFAULT_NODE_SIZE, DEFAULT_EDGE_SIZE) {
+            private static final long serialVersionUID = -3695773443229570354L;
             private boolean mouseDown = false;
 
             @Override
@@ -212,7 +214,7 @@ public class PathFindDemoPanel extends JPanel {
 
                 //starting position
                 if ((selectedIndex == 1) && (touchedNode != null)) {
-                    if (this.getTouchedNode() != PathFindDemoPanel.this.endNode) {
+                    if (!this.getTouchedNode().equals(PathFindDemoPanel.this.endNode)) {
                         PathFindDemoPanel.this.startNode = touchedNode;
                         PathFindDemoPanel.this.updatePath();
                     }
@@ -221,7 +223,7 @@ public class PathFindDemoPanel extends JPanel {
                     }
                 } //ending position
                 else if ((selectedIndex == 2) && (touchedNode != null)) {
-                    if (touchedNode != PathFindDemoPanel.this.startNode) {
+                    if (!touchedNode.equals(PathFindDemoPanel.this.startNode)) {
                         PathFindDemoPanel.this.endNode = touchedNode;
                         PathFindDemoPanel.this.updatePath();
                     }
@@ -293,6 +295,7 @@ public class PathFindDemoPanel extends JPanel {
 
     private static class PaintButton extends JToggleButton {
         private static final int BUTTON_BORDER_SIZE = 4;
+        private static final long serialVersionUID = 2430145596483094131L;
         private final double weight;
 
         public PaintButton(final double drawWeight) {
@@ -320,6 +323,7 @@ public class PathFindDemoPanel extends JPanel {
      * A panel that provides buttons for each of the drawable "weights".
      */
     private static class DrawingPanel extends JPanel {
+        private static final long serialVersionUID = -9123184793276080345L;
         private final List<PaintButton> paintButtons = new LinkedList();
         private final ButtonGroup paintButtonsGroup = new ButtonGroup();
 
@@ -342,6 +346,8 @@ public class PathFindDemoPanel extends JPanel {
     }
 
     private static class PathFindControlPanel extends JTabbedPane {
+        private static final long serialVersionUID = 3392698058428473502L;
+
         public PathFindControlPanel(final PathFindDemoPanel pathFindDemoPanel) {
             this.addTab("Edit", new DrawingPanel(PAINT_WEIGHTS, pathFindDemoPanel));
             this.addTab("Start Position", new JLabel("Click a start position"));

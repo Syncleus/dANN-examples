@@ -23,6 +23,7 @@ import com.syncleus.dann.graph.*;
 import java.util.*;
 
 public class SimpleGraph extends AbstractBidirectedAdjacencyGraph<SimpleNode, BidirectedEdge<SimpleNode>> {
+    private static final long serialVersionUID = -6742895620113778827L;
     private final SimpleNode[][] nodes;
     private final Set<SimpleNode> nodeSet = new HashSet<SimpleNode>();
     private final Set<BidirectedEdge<SimpleNode>> edges = new HashSet<BidirectedEdge<SimpleNode>>();

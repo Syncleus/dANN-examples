@@ -35,6 +35,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener {
     private static final int MAP_Y = 130;
     private static final int MAP_WIDTH = 635;
     private static final int MAP_HEIGHT = 500;
+    private static final long serialVersionUID = -8431779227939122588L;
     private final SpinnerNumberModel citiesModel = new SpinnerNumberModel(10, 1, 100, 1);
     private final SpinnerNumberModel mutabilityModel = new SpinnerNumberModel(1.0, Double.MIN_VALUE, 10000, 0.1);
     private final SpinnerNumberModel populationModel = new SpinnerNumberModel(100, 4, 1000, 10);

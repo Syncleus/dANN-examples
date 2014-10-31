@@ -29,6 +29,7 @@ import java.util.*;
  * @author seh
  */
 public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, SimpleWeightedUndirectedEdge<GridNode>> {
+    private static final long serialVersionUID = -5666614285453171551L;
     private final GridNode[][] nodes;
     private final Set<GridNode> nodeSet = new HashSet<GridNode>();
     private final Set<SimpleWeightedUndirectedEdge<GridNode>> edges = new HashSet<SimpleWeightedUndirectedEdge<GridNode>>();

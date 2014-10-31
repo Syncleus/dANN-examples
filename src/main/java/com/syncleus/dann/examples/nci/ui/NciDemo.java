@@ -35,6 +35,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
     private static final Logger LOGGER = Logger.getLogger(NciDemo.class);
     private static final int BLOCK_WIDTH = 7;
     private static final int BLOCK_HEIGHT = 7;
+    private static final long serialVersionUID = -5660092209366455673L;
     private final ImagePanel originalImagePanel = new ImagePanel();
     private final ImagePanel finalImagePanel = new ImagePanel();
     private BrainRunner brainRunner;

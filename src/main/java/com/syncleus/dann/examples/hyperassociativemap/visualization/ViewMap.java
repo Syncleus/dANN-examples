@@ -27,6 +27,7 @@ import java.util.concurrent.*;
 
 public class ViewMap extends JFrame implements ActionListener {
     private static final float NODE_RADIUS = 0.07F;
+    private static final long serialVersionUID = -1535635297304488816L;
     private final HyperassociativeMapCanvas mapVisual;
     private final LayeredHyperassociativeMap associativeMap;
     private final ExecutorService executor;

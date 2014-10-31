@@ -22,6 +22,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AboutDialog extends JDialog {
+    private static final long serialVersionUID = 8338474261992018024L;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

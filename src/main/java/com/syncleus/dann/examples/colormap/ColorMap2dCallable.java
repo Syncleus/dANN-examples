@@ -32,10 +32,10 @@ import java.util.concurrent.Callable;
 public class ColorMap2dCallable implements Callable<Color[][]> {
     private static final Random RANDOM = new Random();
     private static final Logger LOGGER = Logger.getLogger(ColorMap2dCallable.class);
-    private volatile int iterations;
-    private volatile double learningRate;
-    private volatile int width;
-    private volatile int height;
+    private final int iterations;
+    private final double learningRate;
+    private final int width;
+    private final int height;
     private volatile int progress;
 
     public ColorMap2dCallable(final int iterations, final double learningRate, final int width, final int height) {

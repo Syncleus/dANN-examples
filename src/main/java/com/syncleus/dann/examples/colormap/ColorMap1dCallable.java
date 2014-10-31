@@ -33,9 +33,9 @@ public final class ColorMap1dCallable implements Callable<Color[]> {
     static final int COLOR_CHANNELS = 3;
     private static final Random RANDOM = new Random();
     private static final Logger LOGGER = Logger.getLogger(ColorMap1dCallable.class);
-    private volatile int iterations;
-    private volatile double learningRate;
-    private volatile int width;
+    private final int iterations;
+    private final double learningRate;
+    private final int width;
     private volatile int progress;
 
     public ColorMap1dCallable(final int iterations, final double learningRate, final int width) {

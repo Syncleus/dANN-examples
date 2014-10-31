@@ -28,6 +28,7 @@ import java.util.concurrent.*;
 public class ColorMapDemo extends JFrame implements ActionListener {
     private static final Logger LOGGER = Logger.getLogger(ColorMapDemo.class);
     private static final int INITIAL_ITERATIONS = 200;
+    private static final long serialVersionUID = -409985159806625127L;
     private final SpinnerNumberModel iterationsModel = new SpinnerNumberModel(INITIAL_ITERATIONS, 1, 10000, 100);
     private static final double INITIAL_LEARNING_RATE = 0.5;
     private final SpinnerNumberModel learningRateModel = new SpinnerNumberModel(INITIAL_LEARNING_RATE, Double.MIN_VALUE, 1.0, 0.01);

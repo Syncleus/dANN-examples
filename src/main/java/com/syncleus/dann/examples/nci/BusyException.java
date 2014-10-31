@@ -19,6 +19,8 @@
 package com.syncleus.dann.examples.nci;
 
 public class BusyException extends Exception {
+    private static final long serialVersionUID = 2200665153337057806L;
+
     public BusyException() {
         super();
     }

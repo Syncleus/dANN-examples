@@ -21,6 +21,7 @@ package com.syncleus.dann.examples.nci.ui;
 import java.awt.*;
 
 public class ImagePanel extends javax.swing.JPanel {
+    private static final long serialVersionUID = 5368818198268917973L;
     private Image image = null;
 
     public ImagePanel() {

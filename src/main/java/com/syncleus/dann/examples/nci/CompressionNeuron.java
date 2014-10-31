@@ -27,6 +27,7 @@ import com.syncleus.dann.neural.backprop.AbstractBackpropNeuron;
  * @since 1.0
  */
 public final class CompressionNeuron extends AbstractBackpropNeuron {
+    private static final long serialVersionUID = -5018203208680400351L;
     /**
      * @since 1.0
      */

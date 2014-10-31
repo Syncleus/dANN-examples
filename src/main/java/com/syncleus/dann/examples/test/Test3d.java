@@ -26,6 +26,7 @@ import javax.media.j3d.Canvas3D;
 import javax.swing.*;
 
 public class Test3d extends JFrame {
+    private static final long serialVersionUID = 2293654966316459293L;
     private JPanel drawingPanel;
 
     public Test3d() {

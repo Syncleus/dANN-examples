@@ -43,7 +43,7 @@ public final class XorDemo {
     private static final long KEEP_ALIVE_TIME = 20;
     private static final int INPUTS = 3;
     private static BufferedReader inReader = null;
-    private static InputBackpropNeuron[] input = null;
+    private static final InputBackpropNeuron[] input = null;
     private static OutputBackpropNeuron output = null;
     private static FullyConnectedFeedforwardBrain brain;
     private static String saveLocation = "default.dann";

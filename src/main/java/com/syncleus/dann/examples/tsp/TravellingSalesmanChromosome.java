@@ -38,7 +38,7 @@ public class TravellingSalesmanChromosome extends GeneticAlgorithmChromosome {
         final AbstractValueGene cityGene = this.getGenes().get(cityIndex);
         int cityOrder = 0;
         for (AbstractValueGene sortedGene : sortedGenes) {
-            if (sortedGene == cityGene)
+            if (sortedGene.equals(cityGene))
                 return cityOrder;
 
             cityOrder++;

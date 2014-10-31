@@ -33,6 +33,7 @@ import java.util.*;
 public class NciBrain extends AbstractFullyConnectedFeedforwardBrain<InputBackpropNeuron, OutputBackpropNeuron, BackpropNeuron, Synapse<BackpropNeuron>> {
     private static final int CHANNELS = 3;
     private static final double DEFAULT_LEARNING_RATE = 0.001;
+    private static final long serialVersionUID = 3093536064207726943L;
     private final double actualCompression;
     private final int xSize;
     private final int ySize;
