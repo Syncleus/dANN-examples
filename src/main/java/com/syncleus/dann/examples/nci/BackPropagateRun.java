@@ -22,32 +22,26 @@ import com.syncleus.dann.neural.backprop.BackpropNeuron;
 import org.apache.log4j.Logger;
 
 
-public class BackPropagateRun implements Runnable
-{
-	private static final Logger LOGGER = Logger.getLogger(BackPropagateRun.class);
-	private final BackpropNeuron processor;
+public class BackPropagateRun implements Runnable {
+    private static final Logger LOGGER = Logger.getLogger(BackPropagateRun.class);
+    private final BackpropNeuron processor;
 
-	public BackPropagateRun(final BackpropNeuron processor)
-	{
-		this.processor = processor;
-	}
+    public BackPropagateRun(final BackpropNeuron processor) {
+        this.processor = processor;
+    }
 
-	@Override
-	public void run()
-	{
-		try
-		{
-			this.processor.backPropagate();
-		}
-		catch(Exception caught)
-		{
-			LOGGER.error("Exception was caught", caught);
-			throw new RuntimeException("Throwable was caught", caught);
-		}
-		catch(Error caught)
-		{
-			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught", caught);
-		}
-	}
+    @Override
+    public void run() {
+        try {
+            this.processor.backPropagate();
+        }
+        catch (Exception caught) {
+            LOGGER.error("Exception was caught", caught);
+            throw new RuntimeException("Throwable was caught", caught);
+        }
+        catch (Error caught) {
+            LOGGER.error("Error was caught", caught);
+            throw new Error("Throwable was caught", caught);
+        }
+    }
 }

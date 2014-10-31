@@ -19,90 +19,75 @@
 package com.syncleus.dann.examples.nci.ui;
 
 import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.HyperassociativeMapCanvas;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
-import javax.swing.JDialog;
-import javax.swing.Timer;
 
-public class ViewBrain extends JDialog implements ActionListener, KeyListener
-{
-	private final HyperassociativeMapCanvas brainVisual;
-	private final ExecutorService executor = Executors.newFixedThreadPool(1);
-	private FutureTask<Void> lastRun;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.concurrent.*;
 
-	public ViewBrain(final Frame parent, final HyperassociativeMapCanvas brainVisual)
-	{
-		super(parent, false);
+public class ViewBrain extends JDialog implements ActionListener, KeyListener {
+    private final HyperassociativeMapCanvas brainVisual;
+    private final ExecutorService executor = Executors.newFixedThreadPool(1);
+    private FutureTask<Void> lastRun;
 
-		initComponents();
+    public ViewBrain(final Frame parent, final HyperassociativeMapCanvas brainVisual) {
+        super(parent, false);
 
-		this.brainVisual = brainVisual;
+        initComponents();
 
-		this.add(this.brainVisual);
-		this.brainVisual.setLocation(0, 0);
-		this.brainVisual.setSize(800, 600);
-		this.brainVisual.setVisible(true);
+        this.brainVisual = brainVisual;
 
-		this.setSize(800, 600);
+        this.add(this.brainVisual);
+        this.brainVisual.setLocation(0, 0);
+        this.brainVisual.setSize(800, 600);
+        this.brainVisual.setVisible(true);
 
-		this.brainVisual.refresh();
+        this.setSize(800, 600);
 
-		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual), null);
-		this.executor.execute(this.lastRun);
+        this.brainVisual.refresh();
 
-		new Timer(100, this).start();
+        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual), null);
+        this.executor.execute(this.lastRun);
 
-		this.addKeyListener(this);
-		this.brainVisual.addKeyListener(this);
-	}
+        new Timer(100, this).start();
 
-	@Override
-	public void keyPressed(final KeyEvent evt)
-	{
-		if (evt.getKeyCode() == KeyEvent.VK_R)
-		{
-			this.brainVisual.getHyperassociativeMap().reset();
-		}
-		if (evt.getKeyCode() == KeyEvent.VK_L)
-		{
-			this.brainVisual.getHyperassociativeMap().resetLearning();
-		}
-	}
+        this.addKeyListener(this);
+        this.brainVisual.addKeyListener(this);
+    }
 
-	@Override
-	public void keyReleased(final KeyEvent evt)
-	{
-		// unused
-	}
+    @Override
+    public void keyPressed(final KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_R) {
+            this.brainVisual.getHyperassociativeMap().reset();
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_L) {
+            this.brainVisual.getHyperassociativeMap().resetLearning();
+        }
+    }
 
-	@Override
-	public void keyTyped(final KeyEvent evt)
-	{
-		// unused
-	}
+    @Override
+    public void keyReleased(final KeyEvent evt) {
+        // unused
+    }
 
-	@Override
-	public void actionPerformed(final ActionEvent evt)
-	{
-		if ((this.lastRun != null) && !this.lastRun.isDone())
-		{
-			return;
-		}
+    @Override
+    public void keyTyped(final KeyEvent evt) {
+        // unused
+    }
 
-		if (!this.isVisible())
-		{
-			return;
-		}
+    @Override
+    public void actionPerformed(final ActionEvent evt) {
+        if ((this.lastRun != null) && !this.lastRun.isDone()) {
+            return;
+        }
 
-		this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual), null);
-		this.executor.execute(this.lastRun);
-	}
+        if (!this.isVisible()) {
+            return;
+        }
+
+        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.brainVisual), null);
+        this.executor.execute(this.lastRun);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -112,12 +97,12 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+                                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                 .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+                                       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                               .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();

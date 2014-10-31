@@ -18,38 +18,33 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.nci;
 
-import java.awt.image.BufferedImage;
 import org.apache.log4j.Logger;
 
-public class TrainRun implements Runnable
-{
-	private static final Logger LOGGER = Logger.getLogger(TrainRun.class);
-	private final NciBrain brain;
-	private final BufferedImage trainImage;
+import java.awt.image.BufferedImage;
 
-	public TrainRun(final NciBrain brain, final BufferedImage trainImage)
-	{
-		this.brain = brain;
-		this.trainImage = trainImage;
-	}
+public class TrainRun implements Runnable {
+    private static final Logger LOGGER = Logger.getLogger(TrainRun.class);
+    private final NciBrain brain;
+    private final BufferedImage trainImage;
 
-	@Override
-	public void run()
-	{
-		try
-		{
-			this.brain.setLearning(true);
-			this.brain.test(trainImage);
-		}
-		catch (Exception caught)
-		{
-			LOGGER.error("Exception was caught", caught);
-			throw new RuntimeException("Throwable was caught", caught);
-		}
-		catch (Error caught)
-		{
-			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught", caught);
-		}
-	}
+    public TrainRun(final NciBrain brain, final BufferedImage trainImage) {
+        this.brain = brain;
+        this.trainImage = trainImage;
+    }
+
+    @Override
+    public void run() {
+        try {
+            this.brain.setLearning(true);
+            this.brain.test(trainImage);
+        }
+        catch (Exception caught) {
+            LOGGER.error("Exception was caught", caught);
+            throw new RuntimeException("Throwable was caught", caught);
+        }
+        catch (Error caught) {
+            LOGGER.error("Error was caught", caught);
+            throw new Error("Throwable was caught", caught);
+        }
+    }
 }

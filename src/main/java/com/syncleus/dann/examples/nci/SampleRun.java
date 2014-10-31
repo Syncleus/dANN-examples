@@ -18,39 +18,34 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.nci;
 
-import java.awt.image.BufferedImage;
-import java.util.concurrent.Callable;
 import org.apache.log4j.Logger;
 
-public class SampleRun implements Callable<BufferedImage>
-{
-	private static final Logger LOGGER = Logger.getLogger(SampleRun.class);
-	private final NciBrain brain;
-	private final BufferedImage sampleImage;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.Callable;
 
-	public SampleRun(final NciBrain brain, final BufferedImage sampleImage)
-	{
-		this.brain = brain;
-		this.sampleImage = sampleImage;
-	}
+public class SampleRun implements Callable<BufferedImage> {
+    private static final Logger LOGGER = Logger.getLogger(SampleRun.class);
+    private final NciBrain brain;
+    private final BufferedImage sampleImage;
 
-	@Override
-	public BufferedImage call()
-	{
-		try
-		{
-			this.brain.setLearning(false);
-			return this.brain.uncompress(this.brain.compress(sampleImage));
-		}
-		catch (Exception caught)
-		{
-			LOGGER.error("Exception was caught", caught);
-			throw new RuntimeException("Throwable was caught", caught);
-		}
-		catch (Error caught)
-		{
-			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught", caught);
-		}
-	}
+    public SampleRun(final NciBrain brain, final BufferedImage sampleImage) {
+        this.brain = brain;
+        this.sampleImage = sampleImage;
+    }
+
+    @Override
+    public BufferedImage call() {
+        try {
+            this.brain.setLearning(false);
+            return this.brain.uncompress(this.brain.compress(sampleImage));
+        }
+        catch (Exception caught) {
+            LOGGER.error("Exception was caught", caught);
+            throw new RuntimeException("Throwable was caught", caught);
+        }
+        catch (Error caught) {
+            LOGGER.error("Error was caught", caught);
+            throw new Error("Throwable was caught", caught);
+        }
+    }
 }

@@ -18,82 +18,115 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.fft;
 
-import com.syncleus.dann.dataprocessing.signal.transform.CooleyTukeyFastFourierTransformer;
-import com.syncleus.dann.dataprocessing.signal.transform.DiscreteFourierTransform;
-import com.syncleus.dann.dataprocessing.signal.transform.FastFourierTransformer;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.TargetDataLine;
-import javax.swing.JFrame;
-import javax.swing.JProgressBar;
-import javax.swing.Timer;
+import com.syncleus.dann.dataprocessing.signal.transform.*;
 
-public class FftDemo extends JFrame implements ActionListener
-{
-	/**
-	 * The sample rate in Hz.
-	 * Common values: 8000, 11025, 16000, 22050, 44100
-	 */
-	private static final float AUDIO_SAMPLE_RATE = 8000.0F;
-	/** The sample size in bits. */
-	private static final int AUDIO_SAMPLE_SIZE = 16;
-	private static final int AUDIO_CHANNELS = 1;
-	private static final boolean AUDIO_SIGNED = true;
-	private static final boolean AUDIO_BIG_ENDIAN = false;
+import javax.sound.sampled.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
-	private final AudioFormat audioFormat;
-	private final TargetDataLine targetDataLine;
-	private final FastFourierTransformer transformer;
-	private final JProgressBar[] frequencyBars;
-	private final Timer sampleTimer = new Timer(100, this);
+public class FftDemo extends JFrame implements ActionListener {
+    /**
+     * The sample rate in Hz.
+     * Common values: 8000, 11025, 16000, 22050, 44100
+     */
+    private static final float AUDIO_SAMPLE_RATE = 8000.0F;
+    /**
+     * The sample size in bits.
+     */
+    private static final int AUDIO_SAMPLE_SIZE = 16;
+    private static final int AUDIO_CHANNELS = 1;
+    private static final boolean AUDIO_SIGNED = true;
+    private static final boolean AUDIO_BIG_ENDIAN = false;
 
-    public FftDemo()
-	{
+    private final AudioFormat audioFormat;
+    private final TargetDataLine targetDataLine;
+    private final FastFourierTransformer transformer;
+    private final JProgressBar[] frequencyBars;
+    private final Timer sampleTimer = new Timer(100, this);
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JMenu fileMenuItem;
+    private javax.swing.JProgressBar frequencyBar1;
+    private javax.swing.JProgressBar frequencyBar10;
+    private javax.swing.JProgressBar frequencyBar11;
+    private javax.swing.JProgressBar frequencyBar12;
+    private javax.swing.JProgressBar frequencyBar13;
+    private javax.swing.JProgressBar frequencyBar14;
+    private javax.swing.JProgressBar frequencyBar15;
+    private javax.swing.JProgressBar frequencyBar16;
+    private javax.swing.JProgressBar frequencyBar17;
+    private javax.swing.JProgressBar frequencyBar18;
+    private javax.swing.JProgressBar frequencyBar19;
+    private javax.swing.JProgressBar frequencyBar2;
+    private javax.swing.JProgressBar frequencyBar20;
+    private javax.swing.JProgressBar frequencyBar21;
+    private javax.swing.JProgressBar frequencyBar22;
+    private javax.swing.JProgressBar frequencyBar23;
+    private javax.swing.JProgressBar frequencyBar24;
+    private javax.swing.JProgressBar frequencyBar3;
+    private javax.swing.JProgressBar frequencyBar4;
+    private javax.swing.JProgressBar frequencyBar5;
+    private javax.swing.JProgressBar frequencyBar6;
+    private javax.swing.JProgressBar frequencyBar7;
+    private javax.swing.JProgressBar frequencyBar8;
+    private javax.swing.JProgressBar frequencyBar9;
+    private javax.swing.JMenu helpMenuItem;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JButton listenButton;
+    public FftDemo() {
         initComponents();
 
-		this.setResizable(false);
+        this.setResizable(false);
 
-		this.frequencyBars = new JProgressBar[]{frequencyBar1, frequencyBar2,
-												frequencyBar3, frequencyBar4,
-												frequencyBar5, frequencyBar6,
-												frequencyBar7, frequencyBar8,
-												frequencyBar9, frequencyBar10,
-												frequencyBar11, frequencyBar12,
-												frequencyBar13, frequencyBar14,
-												frequencyBar15, frequencyBar16,
-												frequencyBar17, frequencyBar18,
-												frequencyBar19, frequencyBar20,
-												frequencyBar21, frequencyBar22,
-												frequencyBar23, frequencyBar24};
+        this.frequencyBars = new JProgressBar[]{frequencyBar1, frequencyBar2,
+                                                       frequencyBar3, frequencyBar4,
+                                                       frequencyBar5, frequencyBar6,
+                                                       frequencyBar7, frequencyBar8,
+                                                       frequencyBar9, frequencyBar10,
+                                                       frequencyBar11, frequencyBar12,
+                                                       frequencyBar13, frequencyBar14,
+                                                       frequencyBar15, frequencyBar16,
+                                                       frequencyBar17, frequencyBar18,
+                                                       frequencyBar19, frequencyBar20,
+                                                       frequencyBar21, frequencyBar22,
+                                                       frequencyBar23, frequencyBar24};
 
-		//set the colors as a fradient from blue to red
-		for(int index = 0; index < this.frequencyBars.length; index++)
-		{
-			final float colorPercent = ((float)index) / ((float)(this.frequencyBars.length-1));
-			this.frequencyBars[index].setForeground(new Color(colorPercent, 0.0f, 1.0f - colorPercent));
-			this.frequencyBars[index].setMaximum(1024);
-		}
+        //set the colors as a fradient from blue to red
+        for (int index = 0; index < this.frequencyBars.length; index++) {
+            final float colorPercent = ((float) index) / ((float) (this.frequencyBars.length - 1));
+            this.frequencyBars[index].setForeground(new Color(colorPercent, 0.0f, 1.0f - colorPercent));
+            this.frequencyBars[index].setMaximum(1024);
+        }
 
-		this.audioFormat = createAudioFormat();
-		final DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
-		TargetDataLine myTargetDataLine = null;
-		try
-		{
-			myTargetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
-		}
-		catch(LineUnavailableException caughtException)
-		{
-			System.out.println("Line unavailible, exiting...");
-			System.exit(0);
-		}
-		this.targetDataLine = myTargetDataLine;
+        this.audioFormat = createAudioFormat();
+        final DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
+        TargetDataLine myTargetDataLine = null;
+        try {
+            myTargetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
+        }
+        catch (LineUnavailableException caughtException) {
+            System.out.println("Line unavailible, exiting...");
+            System.exit(0);
+        }
+        this.targetDataLine = myTargetDataLine;
 
-		this.transformer = new CooleyTukeyFastFourierTransformer(1024, 8000);
+        this.transformer = new CooleyTukeyFastFourierTransformer(1024, 8000);
+    }
+
+    private static AudioFormat createAudioFormat() {
+        return new AudioFormat(AUDIO_SAMPLE_RATE, AUDIO_SAMPLE_SIZE, AUDIO_CHANNELS, AUDIO_SIGNED, AUDIO_BIG_ENDIAN);
+    }
+
+    public static void main(final String[] args) {
+        java.awt.EventQueue.invokeLater(
+                                               new Runnable() {
+                                                   @Override
+                                                   public void run() {
+                                                       new FftDemo().setVisible(true);
+                                                   }
+                                               });
     }
 
     @SuppressWarnings("unchecked")
@@ -216,213 +249,154 @@ public class FftDemo extends JFrame implements ActionListener
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(frequencyBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(frequencyBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(frequencyBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(frequencyBar4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(frequencyBar5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(frequencyBar6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(frequencyBar7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(frequencyBar8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(frequencyBar9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(frequencyBar10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(frequencyBar11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(listenButton)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(frequencyBar12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(frequencyBar24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                 .addGroup(layout.createSequentialGroup()
+                                                                   .addContainerGap()
+                                                                   .addComponent(frequencyBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                   .addComponent(frequencyBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                   .addComponent(frequencyBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                   .addComponent(frequencyBar4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                   .addComponent(frequencyBar5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                   .addComponent(frequencyBar6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                   .addComponent(frequencyBar7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                   .addComponent(frequencyBar8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                   .addComponent(frequencyBar9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                   .addComponent(frequencyBar10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                   .addComponent(frequencyBar11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                   .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                     .addComponent(listenButton)
+                                                                                     .addGroup(layout.createSequentialGroup()
+                                                                                                       .addComponent(frequencyBar12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(frequencyBar24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                   .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(frequencyBar24, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar23, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar22, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar21, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar20, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar19, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar18, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar17, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar16, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar15, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar14, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar8, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar7, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar6, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar5, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar4, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar3, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar9, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar10, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar11, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar12, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                    .addComponent(frequencyBar13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(listenButton)
-                .addContainerGap())
+                                       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                                                             .addContainerGap()
+                                                                                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                                               .addComponent(frequencyBar24, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar23, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar22, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar21, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar20, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar19, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar18, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar17, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar16, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar15, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar14, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar8, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar7, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar6, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar5, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar4, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar3, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar9, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar10, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar11, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar12, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                                                                                                               .addComponent(frequencyBar13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
+                                                                                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                             .addComponent(listenButton)
+                                                                                                             .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-	private void exitMenuItemMouseReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_exitMenuItemMouseReleased
-	{//GEN-HEADEREND:event_exitMenuItemMouseReleased
-		System.exit(0);
-	}//GEN-LAST:event_exitMenuItemMouseReleased
+    private void exitMenuItemMouseReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_exitMenuItemMouseReleased
+    {//GEN-HEADEREND:event_exitMenuItemMouseReleased
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuItemMouseReleased
 
-	private void listenButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_listenButtonActionPerformed
-	{//GEN-HEADEREND:event_listenButtonActionPerformed
-		try
-		{
-			if(this.targetDataLine.isOpen())
-			{
-				this.sampleTimer.stop();
+    private void listenButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_listenButtonActionPerformed
+    {//GEN-HEADEREND:event_listenButtonActionPerformed
+        try {
+            if (this.targetDataLine.isOpen()) {
+                this.sampleTimer.stop();
 
-				this.targetDataLine.stop();
-				this.targetDataLine.close();
+                this.targetDataLine.stop();
+                this.targetDataLine.close();
 
-				this.listenButton.setText("Listen");
-			}
-			else
-			{
-				this.targetDataLine.open(audioFormat);
-				this.targetDataLine.start();
+                this.listenButton.setText("Listen");
+            }
+            else {
+                this.targetDataLine.open(audioFormat);
+                this.targetDataLine.start();
 
-				this.sampleTimer.start();
+                this.sampleTimer.start();
 
-				this.listenButton.setText("Stop");
-			}
-		}
-		catch(LineUnavailableException caughtException)
-		{
-			System.out.println("Line unavailible, exiting...");
-			System.exit(0);
-		}
-	}//GEN-LAST:event_listenButtonActionPerformed
+                this.listenButton.setText("Stop");
+            }
+        }
+        catch (LineUnavailableException caughtException) {
+            System.out.println("Line unavailible, exiting...");
+            System.exit(0);
+        }
+    }//GEN-LAST:event_listenButtonActionPerformed
 
-	@Override
-	public void actionPerformed(final ActionEvent evt)
-	{
-		if(this.transformer.getBlockSize()*2 <= this.targetDataLine.available())
-		{
-			final byte[] signalBytes = new byte[this.transformer.getBlockSize()*2];
-			this.targetDataLine.read(signalBytes, 0, signalBytes.length);
+    @Override
+    public void actionPerformed(final ActionEvent evt) {
+        if (this.transformer.getBlockSize() * 2 <= this.targetDataLine.available()) {
+            final byte[] signalBytes = new byte[this.transformer.getBlockSize() * 2];
+            this.targetDataLine.read(signalBytes, 0, signalBytes.length);
 
-			final double[] signal = new double[this.transformer.getBlockSize()];
-			for(int signalIndex = 0; signalIndex < signal.length; signalIndex++)
-			{
-				final int signalBytesIndex = signalIndex * 2;
-				signal[signalIndex] = bytesToDouble(signalBytes[signalBytesIndex], signalBytes[signalBytesIndex+1]);
-			}
+            final double[] signal = new double[this.transformer.getBlockSize()];
+            for (int signalIndex = 0; signalIndex < signal.length; signalIndex++) {
+                final int signalBytesIndex = signalIndex * 2;
+                signal[signalIndex] = bytesToDouble(signalBytes[signalBytesIndex], signalBytes[signalBytesIndex + 1]);
+            }
 
-			final DiscreteFourierTransform transform = this.transformer.transform(signal);
-			final double maximumFrequency = transform.getMaximumFrequency();
-			final double bandSize = maximumFrequency/((double)this.frequencyBars.length);
-			for(int frequencyBarIndex = 0; frequencyBarIndex < this.frequencyBars.length; frequencyBarIndex++)
-			{
-				final double bandPower = transform.getBandGeometricMean(((double)frequencyBarIndex) * bandSize, ((double)frequencyBarIndex + 1) * bandSize);
-				this.frequencyBars[frequencyBarIndex].setValue((int) (bandPower * 500.0));
-			}
-		}
-	}
-
-	private double bytesToDouble(final byte... data)
-	{
-		return ((double) (((short)data[1]) << 8) + ((short)data[0])) / ((double)Short.MAX_VALUE);
-	}
-
-	private static AudioFormat createAudioFormat()
-	{
-		return new AudioFormat(AUDIO_SAMPLE_RATE, AUDIO_SAMPLE_SIZE, AUDIO_CHANNELS, AUDIO_SIGNED, AUDIO_BIG_ENDIAN);
-	}
-
-    public static void main(final String[] args)
-	{
-        java.awt.EventQueue.invokeLater(
-			new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					new FftDemo().setVisible(true);
-				}
-			});
+            final DiscreteFourierTransform transform = this.transformer.transform(signal);
+            final double maximumFrequency = transform.getMaximumFrequency();
+            final double bandSize = maximumFrequency / ((double) this.frequencyBars.length);
+            for (int frequencyBarIndex = 0; frequencyBarIndex < this.frequencyBars.length; frequencyBarIndex++) {
+                final double bandPower = transform.getBandGeometricMean(((double) frequencyBarIndex) * bandSize, ((double) frequencyBarIndex + 1) * bandSize);
+                this.frequencyBars[frequencyBarIndex].setValue((int) (bandPower * 500.0));
+            }
+        }
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JMenu fileMenuItem;
-    private javax.swing.JProgressBar frequencyBar1;
-    private javax.swing.JProgressBar frequencyBar10;
-    private javax.swing.JProgressBar frequencyBar11;
-    private javax.swing.JProgressBar frequencyBar12;
-    private javax.swing.JProgressBar frequencyBar13;
-    private javax.swing.JProgressBar frequencyBar14;
-    private javax.swing.JProgressBar frequencyBar15;
-    private javax.swing.JProgressBar frequencyBar16;
-    private javax.swing.JProgressBar frequencyBar17;
-    private javax.swing.JProgressBar frequencyBar18;
-    private javax.swing.JProgressBar frequencyBar19;
-    private javax.swing.JProgressBar frequencyBar2;
-    private javax.swing.JProgressBar frequencyBar20;
-    private javax.swing.JProgressBar frequencyBar21;
-    private javax.swing.JProgressBar frequencyBar22;
-    private javax.swing.JProgressBar frequencyBar23;
-    private javax.swing.JProgressBar frequencyBar24;
-    private javax.swing.JProgressBar frequencyBar3;
-    private javax.swing.JProgressBar frequencyBar4;
-    private javax.swing.JProgressBar frequencyBar5;
-    private javax.swing.JProgressBar frequencyBar6;
-    private javax.swing.JProgressBar frequencyBar7;
-    private javax.swing.JProgressBar frequencyBar8;
-    private javax.swing.JProgressBar frequencyBar9;
-    private javax.swing.JMenu helpMenuItem;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JButton listenButton;
+    private double bytesToDouble(final byte... data) {
+        return ((double) (((short) data[1]) << 8) + ((short) data[0])) / ((double) Short.MAX_VALUE);
+    }
     // End of variables declaration//GEN-END:variables
 
 }

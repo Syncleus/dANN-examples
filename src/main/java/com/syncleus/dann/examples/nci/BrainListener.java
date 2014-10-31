@@ -20,9 +20,10 @@ package com.syncleus.dann.examples.nci;
 
 import java.awt.image.BufferedImage;
 
-public interface BrainListener
-{
-	void brainFinishedBuffering();
-	void brainSampleProcessed(BufferedImage finalImage);
-	void brainTrainingComplete();
+public interface BrainListener {
+    void brainFinishedBuffering();
+
+    void brainSampleProcessed(BufferedImage finalImage);
+
+    void brainTrainingComplete();
 }

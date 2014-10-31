@@ -18,231 +18,183 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.tsp;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashSet;
-import java.util.Random;
 import com.syncleus.dann.math.Vector;
-import java.awt.Graphics;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import javax.swing.JFrame;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.Timer;
-import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 
-public class TravellingSalesmanDemo extends JFrame implements ActionListener
-{
-	private static final Logger LOGGER = Logger.getLogger(TravellingSalesmanDemo.class);
-	private static final Random RANDOM = new Random();
+import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import java.util.concurrent.*;
 
-	private final SpinnerNumberModel citiesModel = new SpinnerNumberModel(10, 1, 100, 1);
-	private final SpinnerNumberModel mutabilityModel = new SpinnerNumberModel(1.0, Double.MIN_VALUE, 10000, 0.1);
-	private final SpinnerNumberModel populationModel = new SpinnerNumberModel(100, 4, 1000, 10);
-	private final SpinnerNumberModel crossoverModel = new SpinnerNumberModel(0.1, Double.MIN_VALUE, 1.0, 0.01);
-	private final SpinnerNumberModel dieOffModel = new SpinnerNumberModel(0.4, Double.MIN_VALUE, 1.0, 0.01);
-	private final SpinnerNumberModel generationsModel = new SpinnerNumberModel(100, 1, 100000, 100);
+public class TravellingSalesmanDemo extends JFrame implements ActionListener {
+    private static final Logger LOGGER = Logger.getLogger(TravellingSalesmanDemo.class);
+    private static final Random RANDOM = new Random();
+    private static final int MAP_X = 12;
+    private static final int MAP_Y = 130;
+    private static final int MAP_WIDTH = 635;
+    private static final int MAP_HEIGHT = 500;
+    private final SpinnerNumberModel citiesModel = new SpinnerNumberModel(10, 1, 100, 1);
+    private final SpinnerNumberModel mutabilityModel = new SpinnerNumberModel(1.0, Double.MIN_VALUE, 10000, 0.1);
+    private final SpinnerNumberModel populationModel = new SpinnerNumberModel(100, 4, 1000, 10);
+    private final SpinnerNumberModel crossoverModel = new SpinnerNumberModel(0.1, Double.MIN_VALUE, 1.0, 0.01);
+    private final SpinnerNumberModel dieOffModel = new SpinnerNumberModel(0.4, Double.MIN_VALUE, 1.0, 0.01);
+    private final SpinnerNumberModel generationsModel = new SpinnerNumberModel(100, 1, 100000, 100);
+    private final ExecutorService executor = Executors.newFixedThreadPool(1);
 
-	private static final int MAP_X = 12;
-	private static final int MAP_Y = 130;
-	private static final int MAP_WIDTH = 635;
-	private static final int MAP_HEIGHT = 500;
+    private final Timer progressTimer = new Timer(100, this);
 
-	private final ExecutorService executor = Executors.newFixedThreadPool(1);
+    private PopulationEvolveCallable populationCallable = null;
+    private Future<TravellingSalesmanChromosome> futureWinner = null;
+    private TravellingSalesmanChromosome currentWinner = null;
+    private Vector[] cities = null;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JLabel citiesLabel;
+    private javax.swing.JSpinner citiesSpinner;
+    private javax.swing.JLabel crossoverLabel;
+    private javax.swing.JSpinner crossoverSpinner;
+    private javax.swing.JLabel dieOffLabel;
+    private javax.swing.JSpinner dieOffSpinner;
+    private javax.swing.JButton evolveDisplayButton;
+    private javax.swing.JMenu fileMenuItem;
+    private javax.swing.JLabel generationsLabel;
+    private javax.swing.JSpinner generationsSpinner;
+    private javax.swing.JMenu helpMenuItem;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JLabel mutabilityLabel;
+    private javax.swing.JSpinner mutabilitySpinner;
+    private javax.swing.JLabel populationLabel;
+    private javax.swing.JSpinner populationSpinner;
+    private javax.swing.JProgressBar progressBar;
+    private javax.swing.JMenuItem quitMenuItem;
+    public TravellingSalesmanDemo() {
+        LOGGER.info("Instantiating Travelling Salesman Demo Frame");
 
-	private final Timer progressTimer = new Timer(100, this);
-
-	private PopulationEvolveCallable populationCallable = null;
-	private Future<TravellingSalesmanChromosome> futureWinner = null;
-	private TravellingSalesmanChromosome currentWinner = null;
-	private Vector[] cities = null;
-
-	private static class PopulationEvolveCallable implements Callable<TravellingSalesmanChromosome>
-	{
-		private final TravellingSalesmanPopulation population;
-		private volatile int iterations = 0;
-		private final int iterationsMax;
-		private static final Logger LOGGER = Logger.getLogger(PopulationEvolveCallable.class);
-
-		public PopulationEvolveCallable(final TravellingSalesmanPopulation population, final int iterationsMax)
-		{
-			if(iterationsMax <= 0)
-				throw new IllegalArgumentException("iterationsMax must be greater than 0");
-
-			this.population = population;
-			this.iterationsMax = iterationsMax;
-		}
-
-		@Override
-		public TravellingSalesmanChromosome call()
-		{
-			try
-			{
-				for(; this.iterations < this.iterationsMax; this.iterations++)
-					this.population.nextGeneration();
-
-				return this.population.getWinner();
-			}
-			catch(Exception caught)
-			{
-				LOGGER.error("Exception was caught", caught);
-				throw new RuntimeException("Throwable was caught", caught);
-			}
-			catch(Error caught)
-			{
-				LOGGER.error("Error was caught", caught);
-				throw new Error("Throwable was caught", caught);
-			}
-		}
-
-		public int getIterations()
-		{
-			return this.iterations;
-		}
-
-		public int getIterationsMax()
-		{
-			return this.iterationsMax;
-		}
-	}
-
-    public TravellingSalesmanDemo()
-	{
-		LOGGER.info("Instantiating Travelling Salesman Demo Frame");
-
-        try
-        {
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
-        catch(Exception caught)
-        {
+        catch (Exception caught) {
             LOGGER.warn("Could not set the UI to native look and feel", caught);
         }
 
         initComponents();
 
-		this.citiesSpinner.setModel(this.citiesModel);
-		this.mutabilitySpinner.setModel(this.mutabilityModel);
-		this.populationSpinner.setModel(this.populationModel);
-		this.crossoverSpinner.setModel(this.crossoverModel);
-		this.dieOffSpinner.setModel(this.dieOffModel);
-		this.generationsSpinner.setModel(this.generationsModel);
+        this.citiesSpinner.setModel(this.citiesModel);
+        this.mutabilitySpinner.setModel(this.mutabilityModel);
+        this.populationSpinner.setModel(this.populationModel);
+        this.crossoverSpinner.setModel(this.crossoverModel);
+        this.dieOffSpinner.setModel(this.dieOffModel);
+        this.generationsSpinner.setModel(this.generationsModel);
 
-		this.setResizable(false);
-		this.repaint();
+        this.setResizable(false);
+        this.repaint();
     }
 
-	@Override
-	public void paint(final Graphics graphics)
-	{
-		super.paint(graphics);
-		graphics.drawRect(MAP_X, MAP_Y, MAP_WIDTH, MAP_HEIGHT);
+    private static Vector[] getRandomPoints(final int cityCount) {
+        if (cityCount < 4)
+            throw new IllegalArgumentException("cityCount must have atleast 4 elements");
 
-		if(this.cities != null)
-		{
-			for(Vector city : this.cities)
-			{
-				final int currentX = (int) city.getCoordinate(1);
-				final int currentY = (int) city.getCoordinate(2);
+        final HashSet<Vector> pointsSet = new HashSet<Vector>();
+        while (pointsSet.size() < cityCount)
+            pointsSet.add(new Vector(new double[]{RANDOM.nextDouble() * MAP_WIDTH, RANDOM.nextDouble() * MAP_HEIGHT}));
 
-				graphics.fillArc((currentX + MAP_X) - 5, (currentY + MAP_Y) - 5, 10, 10, 0, 360);
-			}
-		}
+        final Vector[] points = new Vector[cityCount];
+        pointsSet.toArray(points);
 
-		if((this.cities != null) && (this.currentWinner != null))
-		{
-			final int[] ordering = this.currentWinner.getCitiesOrder();
-			final Vector[] orderedPoints = new Vector[ordering.length];
-			for(int cityIndex = 0; cityIndex < this.cities.length; cityIndex++)
-			{
-				orderedPoints[ordering[cityIndex]] = this.cities[cityIndex];
-			}
+        return points;
+    }
 
-			//draw the points
-			Vector firstPoint = null;
-			Vector lastPoint = null;
-			for(Vector point : orderedPoints)
-			{
-				if(lastPoint == null)
-				{
-					lastPoint = point;
-					firstPoint = point;
-				}
-				else
-				{
-					final int lastX = (int) lastPoint.getCoordinate(1);
-					final int lastY = (int) lastPoint.getCoordinate(2);
+    public static void main(final String[] args) {
+        LOGGER.info("Starting Travelling Salesman Demo from main()");
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new TravellingSalesmanDemo().setVisible(true);
+            }
+        });
+    }
 
-					final int currentX = (int) point.getCoordinate(1);
-					final int currentY = (int) point.getCoordinate(2);
+    @Override
+    public void paint(final Graphics graphics) {
+        super.paint(graphics);
+        graphics.drawRect(MAP_X, MAP_Y, MAP_WIDTH, MAP_HEIGHT);
 
-					graphics.drawLine(lastX + MAP_X, lastY + MAP_Y, currentX + MAP_X, currentY + MAP_Y);
+        if (this.cities != null) {
+            for (Vector city : this.cities) {
+                final int currentX = (int) city.getCoordinate(1);
+                final int currentY = (int) city.getCoordinate(2);
 
-					lastPoint = point;
-				}
-			}
-			if((lastPoint != null)&&(firstPoint != null))
-			{
-				final int lastX = (int) lastPoint.getCoordinate(1);
-				final int lastY = (int) lastPoint.getCoordinate(2);
+                graphics.fillArc((currentX + MAP_X) - 5, (currentY + MAP_Y) - 5, 10, 10, 0, 360);
+            }
+        }
 
-				final int firstX = (int) firstPoint.getCoordinate(1);
-				final int firstY = (int) firstPoint.getCoordinate(2);
+        if ((this.cities != null) && (this.currentWinner != null)) {
+            final int[] ordering = this.currentWinner.getCitiesOrder();
+            final Vector[] orderedPoints = new Vector[ordering.length];
+            for (int cityIndex = 0; cityIndex < this.cities.length; cityIndex++) {
+                orderedPoints[ordering[cityIndex]] = this.cities[cityIndex];
+            }
 
-				graphics.drawLine(lastX + MAP_X, lastY + MAP_Y, firstX + MAP_X, firstY + MAP_Y);
-			}
-		}
+            //draw the points
+            Vector firstPoint = null;
+            Vector lastPoint = null;
+            for (Vector point : orderedPoints) {
+                if (lastPoint == null) {
+                    lastPoint = point;
+                    firstPoint = point;
+                }
+                else {
+                    final int lastX = (int) lastPoint.getCoordinate(1);
+                    final int lastY = (int) lastPoint.getCoordinate(2);
 
-	}
+                    final int currentX = (int) point.getCoordinate(1);
+                    final int currentY = (int) point.getCoordinate(2);
 
-	private static Vector[] getRandomPoints(final int cityCount)
-	{
-		if(cityCount < 4)
-			throw new IllegalArgumentException("cityCount must have atleast 4 elements");
+                    graphics.drawLine(lastX + MAP_X, lastY + MAP_Y, currentX + MAP_X, currentY + MAP_Y);
 
-		final HashSet<Vector> pointsSet = new HashSet<Vector>();
-		while(pointsSet.size() < cityCount)
-			pointsSet.add(new Vector(new double[]{RANDOM.nextDouble() * MAP_WIDTH, RANDOM.nextDouble() * MAP_HEIGHT}));
+                    lastPoint = point;
+                }
+            }
+            if ((lastPoint != null) && (firstPoint != null)) {
+                final int lastX = (int) lastPoint.getCoordinate(1);
+                final int lastY = (int) lastPoint.getCoordinate(2);
 
-		final Vector[] points = new Vector[cityCount];
-		pointsSet.toArray(points);
+                final int firstX = (int) firstPoint.getCoordinate(1);
+                final int firstY = (int) firstPoint.getCoordinate(2);
 
-		return points;
-	}
+                graphics.drawLine(lastX + MAP_X, lastY + MAP_Y, firstX + MAP_X, firstY + MAP_Y);
+            }
+        }
 
-	@Override
-	public void actionPerformed(final ActionEvent evt)
-	{
-		if((this.futureWinner != null) && (this.populationCallable != null))
-		{
-			this.progressBar.setValue(this.populationCallable.getIterations());
+    }
 
-			if( this.futureWinner.isDone() )
-			{
-				LOGGER.debug("this.futureWinner.isDone() == true");
+    @Override
+    public void actionPerformed(final ActionEvent evt) {
+        if ((this.futureWinner != null) && (this.populationCallable != null)) {
+            this.progressBar.setValue(this.populationCallable.getIterations());
 
-				try
-				{
-					this.currentWinner = this.futureWinner.get();
-				}
-				catch(Exception caught)
-				{
-					LOGGER.error("futureWinner threw an unexpected exception", caught);
-					throw new Error("futureWinner threw an unexpected exception", caught);
-				}
-				this.populationCallable = null;
-				this.futureWinner = null;
+            if (this.futureWinner.isDone()) {
+                LOGGER.debug("this.futureWinner.isDone() == true");
 
-				this.progressTimer.stop();
-				this.evolveDisplayButton.setEnabled(true);
+                try {
+                    this.currentWinner = this.futureWinner.get();
+                }
+                catch (Exception caught) {
+                    LOGGER.error("futureWinner threw an unexpected exception", caught);
+                    throw new Error("futureWinner threw an unexpected exception", caught);
+                }
+                this.populationCallable = null;
+                this.futureWinner = null;
 
-				this.repaint();
-			}
-		}
-	}
+                this.progressTimer.stop();
+                this.evolveDisplayButton.setEnabled(true);
+
+                this.repaint();
+            }
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -316,130 +268,137 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(citiesLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(citiesSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(populationLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(populationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mutabilityLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mutabilitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(crossoverLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(crossoverSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dieOffLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(generationsLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(generationsSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
-                        .addGap(10, 10, 10)
-                        .addComponent(evolveDisplayButton)))
-                .addContainerGap())
+                                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                 .addGroup(layout.createSequentialGroup()
+                                                                   .addContainerGap()
+                                                                   .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                     .addGroup(layout.createSequentialGroup()
+                                                                                                       .addComponent(citiesLabel)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(citiesSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(populationLabel)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(populationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(mutabilityLabel)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(mutabilitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(crossoverLabel)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(crossoverSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(dieOffLabel)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(generationsLabel)
+                                                                                                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                       .addComponent(generationsSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
+                                                                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                                                                                                   .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+                                                                                                                                                   .addGap(10, 10, 10)
+                                                                                                                                                   .addComponent(evolveDisplayButton)))
+                                                                   .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(citiesLabel)
-                    .addComponent(citiesSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(populationLabel)
-                    .addComponent(populationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mutabilityLabel)
-                    .addComponent(mutabilitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(crossoverLabel)
-                    .addComponent(crossoverSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dieOffLabel)
-                    .addComponent(dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(generationsLabel)
-                    .addComponent(generationsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(evolveDisplayButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(520, Short.MAX_VALUE))
+                                       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                               .addGroup(layout.createSequentialGroup()
+                                                                 .addContainerGap()
+                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                   .addComponent(citiesLabel)
+                                                                                   .addComponent(citiesSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(populationLabel)
+                                                                                   .addComponent(populationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(mutabilityLabel)
+                                                                                   .addComponent(mutabilitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(crossoverLabel)
+                                                                                   .addComponent(crossoverSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(dieOffLabel)
+                                                                                   .addComponent(dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(generationsLabel)
+                                                                                   .addComponent(generationsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                   .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(evolveDisplayButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                 .addContainerGap(520, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-	private void quitMenuItemMouseReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_quitMenuItemMouseReleased
-	{//GEN-HEADEREND:event_quitMenuItemMouseReleased
-		System.exit(0);
-	}//GEN-LAST:event_quitMenuItemMouseReleased
+    private void quitMenuItemMouseReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_quitMenuItemMouseReleased
+    {//GEN-HEADEREND:event_quitMenuItemMouseReleased
+        System.exit(0);
+    }//GEN-LAST:event_quitMenuItemMouseReleased
 
-	private void evolveDisplayButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_evolveDisplayButtonActionPerformed
-	{//GEN-HEADEREND:event_evolveDisplayButtonActionPerformed
-		this.currentWinner = null;
-		this.cities = getRandomPoints(this.citiesModel.getNumber().intValue());
+    private void evolveDisplayButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_evolveDisplayButtonActionPerformed
+    {//GEN-HEADEREND:event_evolveDisplayButtonActionPerformed
+        this.currentWinner = null;
+        this.cities = getRandomPoints(this.citiesModel.getNumber().intValue());
 
-		final int populationSize = this.populationModel.getNumber().intValue();
-		final double mutability = this.mutabilityModel.getNumber().doubleValue();
-		final double crossover = this.crossoverModel.getNumber().doubleValue();
-		final double dieOff = this.dieOffModel.getNumber().doubleValue();
-		final int generations = this.generationsModel.getNumber().intValue();
+        final int populationSize = this.populationModel.getNumber().intValue();
+        final double mutability = this.mutabilityModel.getNumber().doubleValue();
+        final double crossover = this.crossoverModel.getNumber().doubleValue();
+        final double dieOff = this.dieOffModel.getNumber().doubleValue();
+        final int generations = this.generationsModel.getNumber().intValue();
 
-		final TravellingSalesmanPopulation population = new TravellingSalesmanPopulation(this.cities, mutability, crossover, dieOff);
-		population.initializePopulation(populationSize);
+        final TravellingSalesmanPopulation population = new TravellingSalesmanPopulation(this.cities, mutability, crossover, dieOff);
+        population.initializePopulation(populationSize);
 
-		this.populationCallable = new PopulationEvolveCallable(population, generations);
-		this.futureWinner = this.executor.submit(this.populationCallable);
+        this.populationCallable = new PopulationEvolveCallable(population, generations);
+        this.futureWinner = this.executor.submit(this.populationCallable);
 
-		this.progressBar.setMaximum(generations);
+        this.progressBar.setMaximum(generations);
 
-		this.evolveDisplayButton.setEnabled(false);
-		this.progressTimer.start();
+        this.evolveDisplayButton.setEnabled(false);
+        this.progressTimer.start();
 
-		this.repaint();
-	}//GEN-LAST:event_evolveDisplayButtonActionPerformed
+        this.repaint();
+    }//GEN-LAST:event_evolveDisplayButtonActionPerformed
 
-    public static void main(final String[] args)
-	{
-		LOGGER.info("Starting Travelling Salesman Demo from main()");
-        java.awt.EventQueue.invokeLater(new Runnable()
-		{
-			@Override
-            public void run()
-			{
-                new TravellingSalesmanDemo().setVisible(true);
+    private static class PopulationEvolveCallable implements Callable<TravellingSalesmanChromosome> {
+        private static final Logger LOGGER = Logger.getLogger(PopulationEvolveCallable.class);
+        private final TravellingSalesmanPopulation population;
+        private final int iterationsMax;
+        private volatile int iterations = 0;
+
+        public PopulationEvolveCallable(final TravellingSalesmanPopulation population, final int iterationsMax) {
+            if (iterationsMax <= 0)
+                throw new IllegalArgumentException("iterationsMax must be greater than 0");
+
+            this.population = population;
+            this.iterationsMax = iterationsMax;
+        }
+
+        @Override
+        public TravellingSalesmanChromosome call() {
+            try {
+                for (; this.iterations < this.iterationsMax; this.iterations++)
+                    this.population.nextGeneration();
+
+                return this.population.getWinner();
             }
-        });
-    }
+            catch (Exception caught) {
+                LOGGER.error("Exception was caught", caught);
+                throw new RuntimeException("Throwable was caught", caught);
+            }
+            catch (Error caught) {
+                LOGGER.error("Error was caught", caught);
+                throw new Error("Throwable was caught", caught);
+            }
+        }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JLabel citiesLabel;
-    private javax.swing.JSpinner citiesSpinner;
-    private javax.swing.JLabel crossoverLabel;
-    private javax.swing.JSpinner crossoverSpinner;
-    private javax.swing.JLabel dieOffLabel;
-    private javax.swing.JSpinner dieOffSpinner;
-    private javax.swing.JButton evolveDisplayButton;
-    private javax.swing.JMenu fileMenuItem;
-    private javax.swing.JLabel generationsLabel;
-    private javax.swing.JSpinner generationsSpinner;
-    private javax.swing.JMenu helpMenuItem;
-    private javax.swing.JMenuBar menuBar;
-    private javax.swing.JLabel mutabilityLabel;
-    private javax.swing.JSpinner mutabilitySpinner;
-    private javax.swing.JLabel populationLabel;
-    private javax.swing.JSpinner populationSpinner;
-    private javax.swing.JProgressBar progressBar;
-    private javax.swing.JMenuItem quitMenuItem;
+        public int getIterations() {
+            return this.iterations;
+        }
+
+        public int getIterationsMax() {
+            return this.iterationsMax;
+        }
+    }
     // End of variables declaration//GEN-END:variables
 
 }

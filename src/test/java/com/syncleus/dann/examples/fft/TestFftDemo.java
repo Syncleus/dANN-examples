@@ -18,60 +18,51 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.fft;
 
+import org.fest.swing.edt.*;
 import org.fest.swing.fixture.FrameFixture;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiActionRunner;
 import org.junit.*;
 
-public class TestFftDemo
-{
-	private FrameFixture fftDemoFixture;
+public class TestFftDemo {
+    private FrameFixture fftDemoFixture;
 
-	@BeforeClass
-	public static void setUpOnce()
-	{
-		FailOnThreadViolationRepaintManager.install();
-	}
+    @BeforeClass
+    public static void setUpOnce() {
+        FailOnThreadViolationRepaintManager.install();
+    }
 
 
-	@Before
-	public void onSetUp()
-	{
-		FftDemo fftDemo = GuiActionRunner.execute(new GuiQuery<FftDemo>()
-		{
-			@Override
-			protected FftDemo executeInEDT()
-			{
-				return new FftDemo();
-			}
-		});
+    @Before
+    public void onSetUp() {
+        FftDemo fftDemo = GuiActionRunner.execute(new GuiQuery<FftDemo>() {
+            @Override
+            protected FftDemo executeInEDT() {
+                return new FftDemo();
+            }
+        });
 
-		fftDemoFixture = new FrameFixture(fftDemo);
-		fftDemoFixture.show();
-	}
+        fftDemoFixture = new FrameFixture(fftDemo);
+        fftDemoFixture.show();
+    }
 
-	@After
-	public void tearDown()
-	{
-		fftDemoFixture.cleanUp();
-	}
+    @After
+    public void tearDown() {
+        fftDemoFixture.cleanUp();
+    }
 
-	@Test
-	public void testComponents()
-	{
-		fftDemoFixture.requireVisible();
+    @Test
+    public void testComponents() {
+        fftDemoFixture.requireVisible();
 
-		//start listening
-		fftDemoFixture.button("listenButton").click();
+        //start listening
+        fftDemoFixture.button("listenButton").click();
 
-		//check that its listening
-		fftDemoFixture.button("listenButton").requireText("Stop");
+        //check that its listening
+        fftDemoFixture.button("listenButton").requireText("Stop");
 
-		//stop listening
-		fftDemoFixture.button("listenButton").click();
+        //stop listening
+        fftDemoFixture.button("listenButton").click();
 
-		//check if stopped
-		fftDemoFixture.button("listenButton").requireText("Listen");
-	}
+        //check if stopped
+        fftDemoFixture.button("listenButton").requireText("Listen");
+    }
 }

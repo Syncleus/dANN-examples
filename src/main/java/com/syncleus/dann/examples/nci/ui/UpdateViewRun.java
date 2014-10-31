@@ -21,18 +21,15 @@ package com.syncleus.dann.examples.nci.ui;
 
 import com.syncleus.dann.graph.drawing.hyperassociativemap.visualization.HyperassociativeMapCanvas;
 
-public class UpdateViewRun implements Runnable
-{
-	private final HyperassociativeMapCanvas view;
+public class UpdateViewRun implements Runnable {
+    private final HyperassociativeMapCanvas view;
 
-	public UpdateViewRun(final HyperassociativeMapCanvas view)
-	{
-		this.view = view;
-	}
+    public UpdateViewRun(final HyperassociativeMapCanvas view) {
+        this.view = view;
+    }
 
-	@Override
-	public void run()
-	{
-		this.view.refresh();
-	}
+    @Override
+    public void run() {
+        this.view.refresh();
+    }
 }

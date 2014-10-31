@@ -18,91 +18,80 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.test;
 
-import javax.media.j3d.Canvas3D;
 import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet;
 import com.syncleus.dann.genetics.wavelets.SignalProcessingWavelet.GlobalSignalConcentration;
 import com.syncleus.dann.math.visualization.MathFunctionCanvas;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-public class Test3d extends JFrame
-{
-	private JPanel drawingPanel;
+import javax.media.j3d.Canvas3D;
+import javax.swing.*;
 
-	public Test3d()
-	{
-		this.initComponents();
+public class Test3d extends JFrame {
+    private JPanel drawingPanel;
 
-		final Canvas3D canvas = this.createUniverse();
-		try
-		{
-			this.drawingPanel.add(canvas, java.awt.BorderLayout.CENTER);
-		}
-		catch (ArithmeticException caughtException)
-		{
-			System.out.println("Division by 0!");
-		}
-	}
+    public Test3d() {
+        this.initComponents();
 
-	private Canvas3D createUniverse()
-	{
-		final GlobalSignalConcentration signalX = new GlobalSignalConcentration();
-		final GlobalSignalConcentration signalY = new GlobalSignalConcentration();
-		final GlobalSignalConcentration signalZ = new GlobalSignalConcentration();
-		SignalProcessingWavelet processor = new SignalProcessingWavelet(/*new Cell(),*/signalX, signalZ);
-		for (int index = 0; (index < 500) || (processor.getSignals().size() < 3); index++)
-		{
-			processor = processor.mutate(100000.0, signalX);
-			processor = processor.mutate(100000.0, signalY);
-			processor = processor.mutate(100000.0);
-		}
+        final Canvas3D canvas = this.createUniverse();
+        try {
+            this.drawingPanel.add(canvas, java.awt.BorderLayout.CENTER);
+        }
+        catch (ArithmeticException caughtException) {
+            System.out.println("Division by 0!");
+        }
+    }
 
-		System.out.println("The current equation contains " + processor.getWaveCount() + " waves:");
-		System.out.println(processor.toString());
+    public static void main(final String[] args) {
+        java.awt.EventQueue.invokeLater(
+                                               new Runnable() {
+                                                   @Override
+                                                   public void run() {
+                                                       for (int index = 0; index < 1; index++) {
+                                                           new Test3d().setVisible(true);
+                                                       }
+                                                   }
+                                               });
+    }
 
-		processor.preTick();
-		processor.tick();
+    private Canvas3D createUniverse() {
+        final GlobalSignalConcentration signalX = new GlobalSignalConcentration();
+        final GlobalSignalConcentration signalY = new GlobalSignalConcentration();
+        final GlobalSignalConcentration signalZ = new GlobalSignalConcentration();
+        SignalProcessingWavelet processor = new SignalProcessingWavelet(/*new Cell(),*/signalX, signalZ);
+        for (int index = 0; (index < 500) || (processor.getSignals().size() < 3); index++) {
+            processor = processor.mutate(100000.0, signalX);
+            processor = processor.mutate(100000.0, signalY);
+            processor = processor.mutate(100000.0);
+        }
 
-		final MathFunctionCanvas plotCanvas = new MathFunctionCanvas(
-				processor.getWavelet(),
-				String.valueOf(signalX.getId()),
-				String.valueOf(signalY.getId()),
-				-200.0f,
-				200.0f,
-				-200.0f,
-				200.0f,
-				200);
+        System.out.println("The current equation contains " + processor.getWaveCount() + " waves:");
+        System.out.println(processor.toString());
 
-		return plotCanvas;
-	}
+        processor.preTick();
+        processor.tick();
 
-	private void initComponents()
-	{
-		this.drawingPanel = new javax.swing.JPanel();
+        final MathFunctionCanvas plotCanvas = new MathFunctionCanvas(
+                                                                            processor.getWavelet(),
+                                                                            String.valueOf(signalX.getId()),
+                                                                            String.valueOf(signalY.getId()),
+                                                                            -200.0f,
+                                                                            200.0f,
+                                                                            -200.0f,
+                                                                            200.0f,
+                                                                            200);
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setTitle("Hello Universe");
-		this.drawingPanel.setLayout(new java.awt.BorderLayout());
+        return plotCanvas;
+    }
 
-		this.drawingPanel.setPreferredSize(new java.awt.Dimension(250, 250));
-		this.getContentPane().add(this.drawingPanel, java.awt.BorderLayout.CENTER);
+    private void initComponents() {
+        this.drawingPanel = new javax.swing.JPanel();
 
-		this.pack();
-	}
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Hello Universe");
+        this.drawingPanel.setLayout(new java.awt.BorderLayout());
 
-	public static void main(final String[] args)
-	{
-		java.awt.EventQueue.invokeLater(
-				new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						for (int index = 0; index < 1; index++)
-						{
-							new Test3d().setVisible(true);
-						}
-					}
-				});
-	}
+        this.drawingPanel.setPreferredSize(new java.awt.Dimension(250, 250));
+        this.getContentPane().add(this.drawingPanel, java.awt.BorderLayout.CENTER);
+
+        this.pack();
+    }
 }

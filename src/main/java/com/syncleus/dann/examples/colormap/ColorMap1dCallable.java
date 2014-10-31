@@ -18,121 +18,107 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.colormap;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.concurrent.Callable;
 import com.syncleus.dann.math.Vector;
 import com.syncleus.dann.neural.Synapse;
-import com.syncleus.dann.neural.som.SomInputNeuron;
-import com.syncleus.dann.neural.som.SomNeuron;
-import com.syncleus.dann.neural.som.SomOutputNeuron;
+import com.syncleus.dann.neural.som.*;
 import com.syncleus.dann.neural.som.brain.ExponentialDecaySomBrain;
-import java.awt.Color;
 import org.apache.log4j.Logger;
 
-public final class ColorMap1dCallable implements Callable<Color[]>
-{
-	private volatile int iterations;
-	private volatile double learningRate;
-	private volatile int width;
-	private static final Random RANDOM = new Random();
-	private volatile int progress;
-	private static final Logger LOGGER = Logger.getLogger(ColorMap1dCallable.class);
-	static final int COLOR_CHANNELS = 3;
+import java.awt.*;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.Callable;
 
-	public ColorMap1dCallable(final int iterations, final double learningRate, final int width)
-	{
-		this.iterations = iterations;
-		this.learningRate = learningRate;
-		this.width = width;
-	}
+public final class ColorMap1dCallable implements Callable<Color[]> {
+    static final int COLOR_CHANNELS = 3;
+    private static final Random RANDOM = new Random();
+    private static final Logger LOGGER = Logger.getLogger(ColorMap1dCallable.class);
+    private volatile int iterations;
+    private volatile double learningRate;
+    private volatile int width;
+    private volatile int progress;
 
-	@Override
-	public Color[] call()
-	{
-		try
-		{
-			//initialize brain
-			final ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain
-					= new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(COLOR_CHANNELS, 1, getIterations(), getLearningRate());
+    public ColorMap1dCallable(final int iterations, final double learningRate, final int width) {
+        this.iterations = iterations;
+        this.learningRate = learningRate;
+        this.width = width;
+    }
 
-			//create the output latice
-			for(double x = 0; x < getWidth(); x++)
-				brain.createOutput(new Vector(new double[] {x}));
+    @Override
+    public Color[] call() {
+        try {
+            //initialize brain
+            final ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain
+                    = new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(COLOR_CHANNELS, 1, getIterations(), getLearningRate());
 
-			//run through random training data for all iterations
-			for(int iteration = 0; iteration < getIterations(); iteration++)
-			{
-				this.progress++;
+            //create the output latice
+            for (double x = 0; x < getWidth(); x++)
+                brain.createOutput(new Vector(new double[]{x}));
 
-				for (int ci = 0; ci < COLOR_CHANNELS; ci++)
-					brain.setInput(ci, RANDOM.nextDouble());
+            //run through random training data for all iterations
+            for (int iteration = 0; iteration < getIterations(); iteration++) {
+                this.progress++;
 
-				brain.getBestMatchingUnit(true);
-			}
+                for (int ci = 0; ci < COLOR_CHANNELS; ci++)
+                    brain.setInput(ci, RANDOM.nextDouble());
 
-			//pull the output weight vectors
-			final Map<Vector, double[]> outputWeightVectors = brain.getOutputWeightVectors();
+                brain.getBestMatchingUnit(true);
+            }
 
-			//construct the color array
-			Color[] colorPositions = new Color[getWidth()];
-			for(Entry<Vector, double[]> weightVector : outputWeightVectors.entrySet())
-			{
-				final Vector currentPoint = weightVector.getKey();
-				final double[] currentVector = weightVector.getValue();
+            //pull the output weight vectors
+            final Map<Vector, double[]> outputWeightVectors = brain.getOutputWeightVectors();
 
-				//convert the current Vector to a color.
-				final Color currentColor = new Color((float)currentVector[0], (float)currentVector[1], (float)currentVector[2]);
+            //construct the color array
+            Color[] colorPositions = new Color[getWidth()];
+            for (Entry<Vector, double[]> weightVector : outputWeightVectors.entrySet()) {
+                final Vector currentPoint = weightVector.getKey();
+                final double[] currentVector = weightVector.getValue();
 
-				//add the current color to the colorPositions
-				colorPositions[(int)Math.floor(currentPoint.getCoordinate(1))] = currentColor;
-			}
+                //convert the current Vector to a color.
+                final Color currentColor = new Color((float) currentVector[0], (float) currentVector[1], (float) currentVector[2]);
 
-			//return the color positions
-			return colorPositions;
-		}
-		catch(Exception caught)
-		{
-			LOGGER.error("Exception was caught", caught);
-			throw new RuntimeException("Throwable was caught", caught);
-		}
-		catch(Error caught)
-		{
-			LOGGER.error("Error was caught", caught);
-			throw new Error("Throwable was caught", caught);
-		}
-	}
+                //add the current color to the colorPositions
+                colorPositions[(int) Math.floor(currentPoint.getCoordinate(1))] = currentColor;
+            }
 
-	/**
-	 * @return the iterations
-	 */
-	public int getIterations()
-	{
-		return iterations;
-	}
+            //return the color positions
+            return colorPositions;
+        }
+        catch (Exception caught) {
+            LOGGER.error("Exception was caught", caught);
+            throw new RuntimeException("Throwable was caught", caught);
+        }
+        catch (Error caught) {
+            LOGGER.error("Error was caught", caught);
+            throw new Error("Throwable was caught", caught);
+        }
+    }
 
-	/**
-	 * @return the learningRate
-	 */
-	public double getLearningRate()
-	{
-		return learningRate;
-	}
+    /**
+     * @return the iterations
+     */
+    public int getIterations() {
+        return iterations;
+    }
 
-	/**
-	 * @return the width
-	 */
-	public int getWidth()
-	{
-		return width;
-	}
+    /**
+     * @return the learningRate
+     */
+    public double getLearningRate() {
+        return learningRate;
+    }
 
-	/**
-	 * @return the progress
-	 */
-	public int getProgress()
-	{
-		return progress;
-	}
+    /**
+     * @return the width
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * @return the progress
+     */
+    public int getProgress() {
+        return progress;
+    }
 }

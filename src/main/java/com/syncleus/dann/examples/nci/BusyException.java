@@ -18,15 +18,12 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.nci;
 
-public class BusyException extends Exception
-{
-	public BusyException()
-	{
-		super();
-	}
+public class BusyException extends Exception {
+    public BusyException() {
+        super();
+    }
 
-	public BusyException(final String msg)
-	{
-		super(msg);
-	}
+    public BusyException(final String msg) {
+        super(msg);
+    }
 }

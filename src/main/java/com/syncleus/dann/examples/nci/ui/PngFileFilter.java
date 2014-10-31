@@ -18,14 +18,11 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.nci.ui;
 
-import java.io.File;
-import java.io.FileFilter;
+import java.io.*;
 
-public class PngFileFilter implements FileFilter
-{
-	@Override
-	public boolean accept(final File pathname)
-	{
-		return pathname.getAbsolutePath().toLowerCase().endsWith(".png");
-	}
+public class PngFileFilter implements FileFilter {
+    @Override
+    public boolean accept(final File pathname) {
+        return pathname.getAbsolutePath().toLowerCase().endsWith(".png");
+    }
 }

@@ -21,54 +21,47 @@ package com.syncleus.dann.examples.pathfind;
 import com.syncleus.dann.graph.Weighted;
 import com.syncleus.dann.math.Vector;
 
-public class GridNode extends Vector implements Weighted
-{
-	private double weight;
+public class GridNode extends Vector implements Weighted {
+    private double weight;
 
-	public GridNode(final int x, final int y, final double weight)
-	{
-		super((double)x, (double)y);
-		this.weight = weight;
-	}
+    public GridNode(final int x, final int y, final double weight) {
+        super((double) x, (double) y);
+        this.weight = weight;
+    }
 
-	@Override
-	public double getWeight()
-	{
-		return this.weight;
-	}
+    @Override
+    public double getWeight() {
+        return this.weight;
+    }
 
-	public int getX()
-	{
-		return (int) this.getCoordinate(1);
-	}
+    /**
+     * Sets the weight value associated with this node.
+     *
+     * @param nextWeight the new weight value to set
+     */
+    public void setWeight(final double nextWeight) {
+        this.weight = nextWeight;
+    }
 
-	public int getY()
-	{
-		return (int) this.getCoordinate(2);
-	}
+    public int getX() {
+        return (int) this.getCoordinate(1);
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return (this.getX() * this.getY()) + this.getY();
-	}
+    public int getY() {
+        return (int) this.getCoordinate(2);
+    }
 
-	@Override
-	public boolean equals(final Object compareToObj)
-	{
-		if(!(compareToObj instanceof GridNode))
-			return false;
+    @Override
+    public int hashCode() {
+        return (this.getX() * this.getY()) + this.getY();
+    }
 
-		final GridNode compareTo = (GridNode) compareToObj;
-		return ((compareTo.getX() == this.getX())&&(compareTo.getY() == this.getY()));
-	}
+    @Override
+    public boolean equals(final Object compareToObj) {
+        if (!(compareToObj instanceof GridNode))
+            return false;
 
-	/**
-	 * Sets the weight value associated with this node.
-	 * @param nextWeight the new weight value to set
-	 */
-	public void setWeight(final double nextWeight)
-	{
-		this.weight = nextWeight;
-	}
+        final GridNode compareTo = (GridNode) compareToObj;
+        return ((compareTo.getX() == this.getX()) && (compareTo.getY() == this.getY()));
+    }
 }

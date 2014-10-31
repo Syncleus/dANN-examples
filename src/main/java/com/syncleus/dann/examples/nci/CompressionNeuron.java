@@ -18,8 +18,7 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.nci;
 
-import com.syncleus.dann.neural.Brain;
-import com.syncleus.dann.neural.Synapse;
+import com.syncleus.dann.neural.*;
 import com.syncleus.dann.neural.activation.ActivationFunction;
 import com.syncleus.dann.neural.backprop.AbstractBackpropNeuron;
 
@@ -27,95 +26,85 @@ import com.syncleus.dann.neural.backprop.AbstractBackpropNeuron;
  * @author Jeffrey Phillips Freeman
  * @since 1.0
  */
-public final class CompressionNeuron extends AbstractBackpropNeuron
-{
-	/**
-	 * @since 1.0
-	 */
-	private byte input = 0;
-	/**
-	 * @since 1.0
-	 */
-	private boolean inputSet = false;
+public final class CompressionNeuron extends AbstractBackpropNeuron {
+    /**
+     * @since 1.0
+     */
+    private byte input = 0;
+    /**
+     * @since 1.0
+     */
+    private boolean inputSet = false;
 
-	/**
-	 * Creates a new instance of InputNeuron<BR>
-	 * @since 1.0
-	 */
-	public CompressionNeuron(final Brain brain)
-	{
-		super(brain);
-	}
+    /**
+     * Creates a new instance of InputNeuron<BR>
+     *
+     * @since 1.0
+     */
+    public CompressionNeuron(final Brain brain) {
+        super(brain);
+    }
 
-	/**
-	 * Creates a new instance of InputNeuron<BR>
-	 * @since 1.0
-	 */
-	public CompressionNeuron(final Brain brain, final ActivationFunction activationFunction)
-	{
-		super(brain, activationFunction);
-	}
+    /**
+     * Creates a new instance of InputNeuron<BR>
+     *
+     * @since 1.0
+     */
+    public CompressionNeuron(final Brain brain, final ActivationFunction activationFunction) {
+        super(brain, activationFunction);
+    }
 
-	public CompressionNeuron(final Brain brain, final double learningRate)
-	{
-		super(brain, learningRate);
-	}
+    public CompressionNeuron(final Brain brain, final double learningRate) {
+        super(brain, learningRate);
+    }
 
-	public CompressionNeuron(final Brain brain, final ActivationFunction activationFunction, final double learningRate)
-	{
-		super(brain, activationFunction, learningRate);
-	}
+    public CompressionNeuron(final Brain brain, final ActivationFunction activationFunction, final double learningRate) {
+        super(brain, activationFunction, learningRate);
+    }
 
-	/**
-	 * This method sets the current input on the neuron.<BR>
-	 * @since 1.0
-	 * @param inputToSet The value to set the current input to.
-	 */
-	public void setInput(final byte inputToSet)
-	{
-		this.input = inputToSet;
-		this.inputSet = true;
-	}
+    /**
+     * This method sets the current input on the neuron.<BR>
+     *
+     * @param inputToSet The value to set the current input to.
+     * @since 1.0
+     */
+    public void setInput(final byte inputToSet) {
+        this.input = inputToSet;
+        this.inputSet = true;
+    }
 
-	/**
-	 * @since 1.0
-	 */
-	public void unsetInput()
-	{
-		this.inputSet = false;
-	}
+    /**
+     * @since 1.0
+     */
+    public void unsetInput() {
+        this.inputSet = false;
+    }
 
-	/**
-	 * @since 1.0
-	 */
-	public byte getChannelOutput()
-	{
-		return (byte) Math.ceil(super.getOutput() * 127.5);
-	}
+    /**
+     * @since 1.0
+     */
+    public byte getChannelOutput() {
+        return (byte) Math.ceil(super.getOutput() * 127.5);
+    }
 
-	/**
-	 * @since 1.0
-	 */
-	private double getDoubleInput()
-	{
-		return ((double) this.input) / 127.5;
-	}
+    /**
+     * @since 1.0
+     */
+    private double getDoubleInput() {
+        return ((double) this.input) / 127.5;
+    }
 
-	@Override
-	public void tick()
-	{
-		if (this.inputSet)
-		{
-			// TODO we shouldnt be calling setOutput, try getting rid of the protected in the parent and instead make some abstracts
-			this.setOutput(this.getDoubleInput());
-			for (Synapse current : this.getBrain().getTraversableEdges(this))
-			{
-				current.setInput(this.getOutput());
-			}
-		}
-		else
-		{
-			super.tick();
-		}
-	}
+    @Override
+    public void tick() {
+        if (this.inputSet) {
+            // TODO we shouldnt be calling setOutput, try getting rid of the protected in the parent and instead make some abstracts
+            this.setOutput(this.getDoubleInput());
+            for (Synapse current : this.getBrain().getTraversableEdges(this)) {
+                current.setInput(this.getOutput());
+            }
+        }
+        else {
+            super.tick();
+        }
+    }
 }

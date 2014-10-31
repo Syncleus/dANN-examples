@@ -18,81 +18,72 @@
  ******************************************************************************/
 package com.syncleus.dann.examples.tsp;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ThreadPoolExecutor;
-import com.syncleus.dann.genetics.AbstractGeneticAlgorithmPopulation;
-import com.syncleus.dann.genetics.GeneticAlgorithmChromosome;
+import com.syncleus.dann.genetics.*;
 import com.syncleus.dann.math.Vector;
 
-public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopulation
-{
-	private final Vector[] cities;
+import java.util.*;
+import java.util.concurrent.ThreadPoolExecutor;
 
-	public TravellingSalesmanPopulation(final Vector[] cities, final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage)
-	{
-		super(mutationDeviation, crossoverPercentage, dieOffPercentage);
+public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopulation {
+    private final Vector[] cities;
 
-		if(cities == null)
-			throw new IllegalArgumentException("cities can not be null");
-		if(cities.length < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
-			throw new IllegalArgumentException("cities must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
+    public TravellingSalesmanPopulation(final Vector[] cities, final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage) {
+        super(mutationDeviation, crossoverPercentage, dieOffPercentage);
 
-		this.cities = cities.clone();
-	}
+        if (cities == null)
+            throw new IllegalArgumentException("cities can not be null");
+        if (cities.length < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
+            throw new IllegalArgumentException("cities must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
 
-	public TravellingSalesmanPopulation(final Vector[] cities, final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage, final ThreadPoolExecutor threadExecutor)
-	{
-		super(mutationDeviation, crossoverPercentage, dieOffPercentage, threadExecutor);
+        this.cities = cities.clone();
+    }
 
-		if(cities == null)
-			throw new IllegalArgumentException("cities can not be null");
-		if(cities.length < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
-			throw new IllegalArgumentException("cities must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
+    public TravellingSalesmanPopulation(final Vector[] cities, final double mutationDeviation, final double crossoverPercentage, final double dieOffPercentage, final ThreadPoolExecutor threadExecutor) {
+        super(mutationDeviation, crossoverPercentage, dieOffPercentage, threadExecutor);
 
-		this.cities = cities.clone();
-	}
+        if (cities == null)
+            throw new IllegalArgumentException("cities can not be null");
+        if (cities.length < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
+            throw new IllegalArgumentException("cities must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
 
-	public void initializePopulation(final int populationSize)
-	{
-		if(populationSize < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
-			throw new IllegalArgumentException("populationSize must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
+        this.cities = cities.clone();
+    }
 
-		this.addAll(initialChromosomes(cities.length, populationSize));
-	}
+    private static Set<GeneticAlgorithmChromosome> initialChromosomes(final int cityCount, final int populationSize) {
+        if (populationSize < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
+            throw new IllegalArgumentException("populationSize must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
+        if (cityCount < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
+            throw new IllegalArgumentException("cityCount must be atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES);
 
-	@Override
-	protected TravellingSalesmanFitnessFunction packageChromosome(final GeneticAlgorithmChromosome chromosome)
-	{
-		if(!(chromosome instanceof TravellingSalesmanChromosome))
-			throw new IllegalArgumentException("Chromosome must be a TravellingSalesmanChromosome");
+        final HashSet<GeneticAlgorithmChromosome> returnValue = new HashSet<GeneticAlgorithmChromosome>();
+        while (returnValue.size() < populationSize)
+            returnValue.add(new TravellingSalesmanChromosome(cityCount));
+        return returnValue;
+    }
 
-		return new TravellingSalesmanFitnessFunction((TravellingSalesmanChromosome)chromosome, this.cities);
-	}
+    public void initializePopulation(final int populationSize) {
+        if (populationSize < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
+            throw new IllegalArgumentException("populationSize must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
 
-	private static Set<GeneticAlgorithmChromosome> initialChromosomes(final int cityCount, final int populationSize)
-	{
-		if(populationSize < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
-			throw new IllegalArgumentException("populationSize must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
-		if(cityCount < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
-			throw new IllegalArgumentException("cityCount must be atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES);
+        this.addAll(initialChromosomes(cities.length, populationSize));
+    }
 
-		final HashSet<GeneticAlgorithmChromosome> returnValue = new HashSet<GeneticAlgorithmChromosome>();
-		while(returnValue.size() < populationSize)
-			returnValue.add(new TravellingSalesmanChromosome(cityCount));
-		return returnValue;
-	}
+    @Override
+    protected TravellingSalesmanFitnessFunction packageChromosome(final GeneticAlgorithmChromosome chromosome) {
+        if (!(chromosome instanceof TravellingSalesmanChromosome))
+            throw new IllegalArgumentException("Chromosome must be a TravellingSalesmanChromosome");
 
-	@Override
-	public final TravellingSalesmanChromosome getWinner()
-	{
-		final GeneticAlgorithmChromosome winner = super.getWinner();
-		assert(winner instanceof TravellingSalesmanChromosome);
-		return (TravellingSalesmanChromosome) winner;
-	}
+        return new TravellingSalesmanFitnessFunction((TravellingSalesmanChromosome) chromosome, this.cities);
+    }
 
-	public Vector[] getCities()
-	{
-		return cities.clone();
-	}
+    @Override
+    public final TravellingSalesmanChromosome getWinner() {
+        final GeneticAlgorithmChromosome winner = super.getWinner();
+        assert (winner instanceof TravellingSalesmanChromosome);
+        return (TravellingSalesmanChromosome) winner;
+    }
+
+    public Vector[] getCities() {
+        return cities.clone();
+    }
 }
