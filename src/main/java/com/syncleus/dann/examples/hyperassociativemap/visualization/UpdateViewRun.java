@@ -30,6 +30,7 @@ public class UpdateViewRun implements Runnable {
         this.map = map;
     }
 
+    @Override
     public void run() {
         if (!this.map.isAligned()) {
             this.map.align();

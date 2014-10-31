@@ -235,6 +235,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener {
 
         this.evolveDisplayButton.setText("Evolve & Display");
         this.evolveDisplayButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TravellingSalesmanDemo.this.evolveDisplayButtonActionPerformed(evt);
             }
@@ -248,6 +249,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener {
 
         this.quitMenuItem.setText("Quit");
         this.quitMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 TravellingSalesmanDemo.this.quitMenuItemMouseReleased(evt);
             }

@@ -105,6 +105,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
     public static void main(final String[] args) {
         try {
             java.awt.EventQueue.invokeAndWait(new Runnable() {
+                @Override
                 public void run() {
                     try {
                         new NciDemo().setVisible(true);
@@ -176,6 +177,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
 
         this.trainingDirectorySelect.setText("...");
         this.trainingDirectorySelect.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NciDemo.this.trainingDirectorySelectActionPerformed(evt);
             }
@@ -187,6 +189,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
 
         this.originalImageSelect.setText("...");
         this.originalImageSelect.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NciDemo.this.originalImageSelectActionPerformed(evt);
             }
@@ -197,6 +200,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
         this.trainButton.setText("Train");
         this.trainButton.setEnabled(false);
         this.trainButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NciDemo.this.trainButtonActionPerformed(evt);
             }
@@ -207,6 +211,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
         this.processButton.setText("Process");
         this.processButton.setEnabled(false);
         this.processButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NciDemo.this.processButtonActionPerformed(evt);
             }
@@ -223,6 +228,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
         this.stopButton.setText("Stop");
         this.stopButton.setEnabled(false);
         this.stopButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NciDemo.this.stopButtonActionPerformed(evt);
             }
@@ -232,23 +238,28 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
 
         this.quitMenuItem1.setText("Quit");
         this.quitMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 NciDemo.this.quitMenuItemMouseReleased(evt);
             }
         });
         this.quitMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NciDemo.this.quitMenuItem1ActionPerformed(evt);
             }
         });
         this.quitMenuItem1.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+            @Override
             public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
                 NciDemo.this.quitMenuItemMenuKeyPressed(evt);
             }
 
+            @Override
             public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
             }
 
+            @Override
             public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
             }
         });
@@ -261,18 +272,22 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
         this.brainViewMenu.setText("3D Brain View");
         this.brainViewMenu.setEnabled(false);
         this.brainViewMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 NciDemo.this.brainViewMenuMouseReleased(evt);
             }
         });
         this.brainViewMenu.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+            @Override
             public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
                 NciDemo.this.brainViewMenuMenuKeyPressed(evt);
             }
 
+            @Override
             public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
             }
 
+            @Override
             public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
             }
         });
@@ -284,18 +299,22 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
 
         this.aboutMenuItem1.setText("About");
         this.aboutMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 NciDemo.this.aboutMenuItemMouseReleased(evt);
             }
         });
         this.aboutMenuItem1.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+            @Override
             public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
                 NciDemo.this.aboutMenuItemMenuKeyPressed(evt);
             }
 
+            @Override
             public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
             }
 
+            @Override
             public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
             }
         });
@@ -541,6 +560,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
         about.setVisible(true);
     }
 
+    @Override
     public void brainFinishedBuffering() {
         try {
             this.brainVisual = new HyperassociativeMapCanvas(this.brainRunner.getBrainMap());
@@ -554,6 +574,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
         }
     }
 
+    @Override
     public void brainSampleProcessed(final BufferedImage finalImage) {
         this.processing = false;
         this.progress.setValue(100);
@@ -568,6 +589,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
         this.statusLabel.setText("Ready!");
     }
 
+    @Override
     public void brainTrainingComplete() {
         this.trainingRemaining = 0;
         this.progress.setValue(100);

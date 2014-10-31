@@ -238,6 +238,7 @@ public class ColorMapDemo extends JFrame implements ActionListener {
         this.trainDisplayButton.setText("Train & Display");
         this.trainDisplayButton.setName("trainDisplayButton"); // NOI18N
         this.trainDisplayButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ColorMapDemo.this.trainDisplayButtonActionPerformed(evt);
             }
@@ -249,6 +250,7 @@ public class ColorMapDemo extends JFrame implements ActionListener {
 
         this.exitMenuItem.setText("Exit");
         this.exitMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 ColorMapDemo.this.exitMenuItemMouseReleased(evt);
             }
@@ -261,6 +263,7 @@ public class ColorMapDemo extends JFrame implements ActionListener {
 
         this.aboutMenuItem.setText("About");
         this.aboutMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 ColorMapDemo.this.aboutMenuItemMouseReleased(evt);
             }

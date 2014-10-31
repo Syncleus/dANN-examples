@@ -173,6 +173,7 @@ public class FftDemo extends JFrame implements ActionListener {
         this.listenButton.setText("Listen");
         this.listenButton.setName("listenButton"); // NOI18N
         this.listenButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FftDemo.this.listenButtonActionPerformed(evt);
             }
@@ -229,6 +230,7 @@ public class FftDemo extends JFrame implements ActionListener {
 
         this.exitMenuItem.setText("Exit");
         this.exitMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 FftDemo.this.exitMenuItemMouseReleased(evt);
             }

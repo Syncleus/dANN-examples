@@ -138,6 +138,7 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
      * @param node the node to find the edges surrounding it
      * @return a list of all edges surrounding a specific grid node
      */
+    @Override
     public Set<SimpleWeightedUndirectedEdge<GridNode>> getAdjacentEdges(final GridNode node) {
         return Collections.unmodifiableSet(this.neighborEdges.get(node));
     }

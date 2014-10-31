@@ -49,6 +49,7 @@ public class AboutDialog extends JDialog {
         this.jButton1.setText("OK");
         this.jButton1.setName("ok button"); // NOI18N
         this.jButton1.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AboutDialog.this.jButton1ActionPerformed(evt);
             }
