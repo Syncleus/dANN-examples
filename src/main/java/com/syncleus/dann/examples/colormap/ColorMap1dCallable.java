@@ -49,14 +49,14 @@ public final class ColorMap1dCallable implements Callable<Color[]> {
         try {
             //initialize brain
             final ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain
-                    = new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(COLOR_CHANNELS, 1, getIterations(), getLearningRate());
+                    = new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(COLOR_CHANNELS, 1, this.getIterations(), this.getLearningRate());
 
             //create the output latice
-            for (double x = 0; x < getWidth(); x++)
+            for (double x = 0; x < this.getWidth(); x++)
                 brain.createOutput(new Vector(new double[]{x}));
 
             //run through random training data for all iterations
-            for (int iteration = 0; iteration < getIterations(); iteration++) {
+            for (int iteration = 0; iteration < this.getIterations(); iteration++) {
                 this.progress++;
 
                 for (int ci = 0; ci < COLOR_CHANNELS; ci++)
@@ -69,7 +69,7 @@ public final class ColorMap1dCallable implements Callable<Color[]> {
             final Map<Vector, double[]> outputWeightVectors = brain.getOutputWeightVectors();
 
             //construct the color array
-            Color[] colorPositions = new Color[getWidth()];
+            Color[] colorPositions = new Color[this.getWidth()];
             for (Entry<Vector, double[]> weightVector : outputWeightVectors.entrySet()) {
                 final Vector currentPoint = weightVector.getKey();
                 final double[] currentVector = weightVector.getValue();
@@ -98,27 +98,27 @@ public final class ColorMap1dCallable implements Callable<Color[]> {
      * @return the iterations
      */
     public int getIterations() {
-        return iterations;
+        return this.iterations;
     }
 
     /**
      * @return the learningRate
      */
     public double getLearningRate() {
-        return learningRate;
+        return this.learningRate;
     }
 
     /**
      * @return the width
      */
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
     /**
      * @return the progress
      */
     public int getProgress() {
-        return progress;
+        return this.progress;
     }
 }

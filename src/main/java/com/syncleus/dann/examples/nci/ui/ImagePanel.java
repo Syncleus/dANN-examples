@@ -24,7 +24,7 @@ public class ImagePanel extends javax.swing.JPanel {
     private Image image = null;
 
     public ImagePanel() {
-        initComponents();
+        this.initComponents();
     }
 
     public void setImage(final Image newImage) {

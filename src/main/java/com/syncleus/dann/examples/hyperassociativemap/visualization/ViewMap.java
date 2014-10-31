@@ -35,22 +35,22 @@ public class ViewMap extends JFrame implements ActionListener {
     public ViewMap() {
         // With only 1 thread, we would get a dead-lock when
         // the view-update-thread is waiting for the alignment.
-        executor = Executors.newFixedThreadPool(Math.max(2, Runtime.getRuntime().availableProcessors()));
-        associativeMap = new LayeredHyperassociativeMap(8, executor);
+        this.executor = Executors.newFixedThreadPool(Math.max(2, Runtime.getRuntime().availableProcessors()));
+        this.associativeMap = new LayeredHyperassociativeMap(8, this.executor);
 
         HyperassociativeMapCanvas myMapVisual = null;
         try {
-            myMapVisual = new HyperassociativeMapCanvas(associativeMap, NODE_RADIUS);
-            initComponents();
+            myMapVisual = new HyperassociativeMapCanvas(this.associativeMap, NODE_RADIUS);
+            this.initComponents();
 
-            lastRun = new FutureTask<Void>(new UpdateViewRun(myMapVisual, associativeMap), null);
-            executor.execute(lastRun);
+            this.lastRun = new FutureTask<Void>(new UpdateViewRun(myMapVisual, this.associativeMap), null);
+            this.executor.execute(this.lastRun);
 
             myMapVisual.setFocusTraversalKeysEnabled(false);
-            AssociativeMapKeyAdapter keyAdapter = new AssociativeMapKeyAdapter(associativeMap);
+            AssociativeMapKeyAdapter keyAdapter = new AssociativeMapKeyAdapter(this.associativeMap);
             myMapVisual.addKeyListener(keyAdapter);
             myMapVisual.getCanvas3D().addKeyListener(keyAdapter);
-            addKeyListener(keyAdapter);
+            this.addKeyListener(keyAdapter);
 
             new Timer(100, this).start();
 
@@ -61,22 +61,22 @@ public class ViewMap extends JFrame implements ActionListener {
         }
         catch (ComponentUnavailableException exc) {
             myMapVisual = null;
-            add(exc.newPanel());
+            this.add(exc.newPanel());
         }
-        mapVisual = myMapVisual;
-        if (mapVisual != null) {
-            add(mapVisual);
+        this.mapVisual = myMapVisual;
+        if (this.mapVisual != null) {
+            this.add(this.mapVisual);
         }
 
-        addWindowListener(new WindowAdapter() {
+        this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent event) {
-                executor.shutdown();
+                ViewMap.this.executor.shutdown();
             }
         });
-        setFocusTraversalKeysEnabled(false);
+        this.setFocusTraversalKeysEnabled(false);
 
-        setSize(800, 600);
+        this.setSize(800, 600);
     }
 
     private static boolean checkClasses() {
@@ -120,26 +120,26 @@ public class ViewMap extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(final ActionEvent evt) {
-        if ((lastRun != null) && !lastRun.isDone()) {
+        if ((this.lastRun != null) && !this.lastRun.isDone()) {
             return;
         }
 
-        if (!isVisible()) {
+        if (!this.isVisible()) {
             return;
         }
 
-        lastRun = new FutureTask<Void>(new UpdateViewRun(mapVisual, associativeMap), null);
-        executor.execute(lastRun);
+        this.lastRun = new FutureTask<Void>(new UpdateViewRun(this.mapVisual, this.associativeMap), null);
+        this.executor.execute(this.lastRun);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        this.setResizable(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this.getContentPane());
+        this.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                                          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                  .addGap(0, 400, Short.MAX_VALUE)
@@ -149,7 +149,7 @@ public class ViewMap extends JFrame implements ActionListener {
                                                .addGap(0, 300, Short.MAX_VALUE)
         );
 
-        pack();
+        this.pack();
     }//GEN-END:initComponents
 
     private static class AssociativeMapKeyAdapter extends KeyAdapter {
@@ -162,32 +162,32 @@ public class ViewMap extends JFrame implements ActionListener {
         @Override
         public void keyPressed(final KeyEvent evt) {
             if (evt.getKeyCode() == KeyEvent.VK_R) {
-                associativeMap.reset();
+                this.associativeMap.reset();
             }
             if (evt.getKeyCode() == KeyEvent.VK_L) {
-                associativeMap.resetLearning();
+                this.associativeMap.resetLearning();
             }
             else if (evt.getKeyCode() == KeyEvent.VK_UP) {
-                double equilibDist = associativeMap.getEquilibriumDistance();
+                double equilibDist = this.associativeMap.getEquilibriumDistance();
                 if (equilibDist < 1.0) {
                     equilibDist *= 1.1;
                 }
                 else {
                     equilibDist += 1.0;
                 }
-                associativeMap.setEquilibriumDistance(equilibDist);
-                associativeMap.resetLearning();
+                this.associativeMap.setEquilibriumDistance(equilibDist);
+                this.associativeMap.resetLearning();
             }
             else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
-                double equilibDist = associativeMap.getEquilibriumDistance();
+                double equilibDist = this.associativeMap.getEquilibriumDistance();
                 if (equilibDist < 2.0) {
                     equilibDist *= 0.9;
                 }
                 else {
                     equilibDist -= 1.0;
                 }
-                associativeMap.setEquilibriumDistance(equilibDist);
-                associativeMap.resetLearning();
+                this.associativeMap.setEquilibriumDistance(equilibDist);
+                this.associativeMap.resetLearning();
             }
         }
     }

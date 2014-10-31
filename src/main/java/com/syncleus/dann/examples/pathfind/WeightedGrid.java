@@ -48,33 +48,33 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
         //construct nodes
         for (int y = 0; y < nodeWeights.length; y++) {
             for (int x = 0; x < nodeWeights[0].length; x++) {
-                nodes[y][x] = new GridNode(x, y, nodeWeights[y][x]);
-                this.nodeSet.add(nodes[y][x]);
-                this.neighborEdges.put(nodes[y][x], new HashSet<SimpleWeightedUndirectedEdge<GridNode>>());
-                this.neighborNodes.put(nodes[y][x], new HashSet<GridNode>());
+                this.nodes[y][x] = new GridNode(x, y, nodeWeights[y][x]);
+                this.nodeSet.add(this.nodes[y][x]);
+                this.neighborEdges.put(this.nodes[y][x], new HashSet<SimpleWeightedUndirectedEdge<GridNode>>());
+                this.neighborNodes.put(this.nodes[y][x], new HashSet<GridNode>());
             }
         }
 
         //connect nodes
-        for (int y = 0; y < nodes.length; y++) {
-            for (int x = 0; x < nodes[0].length; x++) {
+        for (int y = 0; y < this.nodes.length; y++) {
+            for (int x = 0; x < this.nodes[0].length; x++) {
                 //connect to the right
-                if (x < nodes[0].length - 1) {
-                    final SimpleWeightedUndirectedEdge<GridNode> newEdge = new SimpleWeightedUndirectedEdge<GridNode>(nodes[y][x], nodes[y][x + 1], 0);
+                if (x < this.nodes[0].length - 1) {
+                    final SimpleWeightedUndirectedEdge<GridNode> newEdge = new SimpleWeightedUndirectedEdge<GridNode>(this.nodes[y][x], this.nodes[y][x + 1], 0);
                     this.edges.add(newEdge);
-                    this.neighborEdges.get(nodes[y][x]).add(newEdge);
-                    this.neighborEdges.get(nodes[y][x + 1]).add(newEdge);
-                    this.neighborNodes.get(nodes[y][x]).add(nodes[y][x + 1]);
-                    this.neighborNodes.get(nodes[y][x + 1]).add(nodes[y][x]);
+                    this.neighborEdges.get(this.nodes[y][x]).add(newEdge);
+                    this.neighborEdges.get(this.nodes[y][x + 1]).add(newEdge);
+                    this.neighborNodes.get(this.nodes[y][x]).add(this.nodes[y][x + 1]);
+                    this.neighborNodes.get(this.nodes[y][x + 1]).add(this.nodes[y][x]);
                 }
                 //connect to the bottom
-                if (y < nodes.length - 1) {
-                    final SimpleWeightedUndirectedEdge<GridNode> newEdge = new SimpleWeightedUndirectedEdge<GridNode>(nodes[y][x], nodes[y + 1][x], 0);
+                if (y < this.nodes.length - 1) {
+                    final SimpleWeightedUndirectedEdge<GridNode> newEdge = new SimpleWeightedUndirectedEdge<GridNode>(this.nodes[y][x], this.nodes[y + 1][x], 0);
                     this.edges.add(newEdge);
-                    this.neighborEdges.get(nodes[y][x]).add(newEdge);
-                    this.neighborEdges.get(nodes[y + 1][x]).add(newEdge);
-                    this.neighborNodes.get(nodes[y][x]).add(nodes[y + 1][x]);
-                    this.neighborNodes.get(nodes[y + 1][x]).add(nodes[y][x]);
+                    this.neighborEdges.get(this.nodes[y][x]).add(newEdge);
+                    this.neighborEdges.get(this.nodes[y + 1][x]).add(newEdge);
+                    this.neighborNodes.get(this.nodes[y][x]).add(this.nodes[y + 1][x]);
+                    this.neighborNodes.get(this.nodes[y + 1][x]).add(this.nodes[y][x]);
                 }
             }
         }
@@ -86,7 +86,7 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
      * @return the width of the grid (number of nodes horizontal)
      */
     public int getWidth() {
-        return nodes[0].length;
+        return this.nodes[0].length;
     }
 
     /**
@@ -95,7 +95,7 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
      * @return the height of the grid (number of nodes vertical)
      */
     public int getHeight() {
-        return nodes.length;
+        return this.nodes.length;
     }
 
     /**
@@ -106,7 +106,7 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
      * @return the node at (x,y) or null if non-existent
      */
     public GridNode getNode(final int x, final int y) {
-        if ((x >= nodes[0].length) || (y >= nodes.length)) {
+        if ((x >= this.nodes[0].length) || (y >= this.nodes.length)) {
             throw new IllegalArgumentException("coordinates are out of bounds");
         }
         return this.nodes[y][x];
@@ -235,10 +235,10 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
      * @param weight the weight value to set
      */
     public void setAll(final double weight) {
-        for (GridNode gn : getNodes()) {
+        for (GridNode gn : this.getNodes()) {
             gn.setWeight(weight);
         }
-        for (SimpleWeightedUndirectedEdge wbe : getEdges()) {
+        for (SimpleWeightedUndirectedEdge wbe : this.getEdges()) {
             wbe.setWeight(weight);
         }
     }
@@ -259,8 +259,8 @@ public class WeightedGrid extends AbstractBidirectedAdjacencyGraph<GridNode, Sim
             return null;
         }
 
-        final GridNode gridNode = getNode(firstX, firstY);
-        for (SimpleWeightedUndirectedEdge<GridNode> edge : getAdjacentEdges(gridNode)) {
+        final GridNode gridNode = this.getNode(firstX, firstY);
+        for (SimpleWeightedUndirectedEdge<GridNode> edge : this.getAdjacentEdges(gridNode)) {
             final GridNode left = edge.getLeftNode();
             final GridNode right = edge.getRightNode();
             if ((left.getX() == secondX) && (left.getY() == secondY)) {

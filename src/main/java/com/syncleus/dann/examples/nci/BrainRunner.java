@@ -68,10 +68,10 @@ public class BrainRunner implements Runnable {
     }
 
     public int getSampleProgress() {
-        if (sampleTotal == 0) {
+        if (this.sampleTotal == 0) {
             return 100;
         }
-        return ((sampleTotal - sampleRemaining) * 100) / sampleTotal;
+        return ((this.sampleTotal - this.sampleRemaining) * 100) / this.sampleTotal;
     }
 
     public void setSampleImage(final File sampleFile) {
@@ -116,8 +116,8 @@ public class BrainRunner implements Runnable {
             executor = Executors.newFixedThreadPool(1);
 
             this.brain = new NciBrain(this.compression, this.xSize, this.ySize, this.extraConnectivity);
-            this.brainMap = new LayeredBrainHyperassociativeMap(brain, 3);
-            this.setTrainingImages(trainingFiles);
+            this.brainMap = new LayeredBrainHyperassociativeMap(this.brain, 3);
+            this.setTrainingImages(this.trainingFiles);
 
             this.listener.brainFinishedBuffering();
             while (this.keepRunning) {
@@ -125,16 +125,16 @@ public class BrainRunner implements Runnable {
                 if (this.sampleFile != null) {
                     this.brain.setLearning(false);
 
-                    this.sampleImage = ImageIO.read(sampleFile);
+                    this.sampleImage = ImageIO.read(this.sampleFile);
 
                     final ArrayBlockingQueue<FutureTask<BufferedImage>> processingSampleSegments = new ArrayBlockingQueue<FutureTask<BufferedImage>>(12000, true);
 
                     this.sampleTotal = 0;
                     stopProcessing:
-                    for (int currentY = 0; currentY < this.sampleImage.getHeight(); currentY += ySize) {
-                        for (int currentX = 0; currentX < this.sampleImage.getWidth(); currentX += xSize) {
-                            final int blockWidth = this.sampleImage.getWidth() - currentX < xSize ? this.sampleImage.getWidth() - currentX : xSize;
-                            final int blockHeight = this.sampleImage.getHeight() - currentY < ySize ? this.sampleImage.getHeight() - currentY : ySize;
+                    for (int currentY = 0; currentY < this.sampleImage.getHeight(); currentY += this.ySize) {
+                        for (int currentX = 0; currentX < this.sampleImage.getWidth(); currentX += this.xSize) {
+                            final int blockWidth = this.sampleImage.getWidth() - currentX < this.xSize ? this.sampleImage.getWidth() - currentX : this.xSize;
+                            final int blockHeight = this.sampleImage.getHeight() - currentY < this.ySize ? this.sampleImage.getHeight() - currentY : this.ySize;
                             final BufferedImage currentSegment = this.sampleImage.getSubimage(currentX, currentY, blockWidth, blockHeight);
 
                             final SampleRun sampleRun = new SampleRun(this.brain, currentSegment);
@@ -204,7 +204,7 @@ public class BrainRunner implements Runnable {
                                 this.trainingRemaining = 0;
                             }
                         }
-                        final TrainRun trainRun = new TrainRun(this.brain, this.getRandomTrainingBlock(xSize, ySize));
+                        final TrainRun trainRun = new TrainRun(this.brain, this.getRandomTrainingBlock(this.xSize, this.ySize));
                         final FutureTask<Void> trainTask = new FutureTask<Void>(trainRun, null);
 
                         trainingSegments.add(trainTask);

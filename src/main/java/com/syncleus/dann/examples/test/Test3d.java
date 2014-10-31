@@ -85,8 +85,8 @@ public class Test3d extends JFrame {
     private void initComponents() {
         this.drawingPanel = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Hello Universe");
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        this.setTitle("Hello Universe");
         this.drawingPanel.setLayout(new java.awt.BorderLayout());
 
         this.drawingPanel.setPreferredSize(new java.awt.Dimension(250, 250));

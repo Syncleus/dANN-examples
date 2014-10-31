@@ -50,11 +50,11 @@ public class ColorMap2dCallable implements Callable<Color[][]> {
         try {
             //initialize brain
             final ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>> brain
-                    = new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(ColorMap1dCallable.COLOR_CHANNELS, 2, getIterations(), getLearningRate());
+                    = new ExponentialDecaySomBrain<SomInputNeuron, SomOutputNeuron, SomNeuron, Synapse<SomNeuron>>(ColorMap1dCallable.COLOR_CHANNELS, 2, this.getIterations(), this.getLearningRate());
 
             //create the output latice
-            for (double x = 0; x < getWidth(); x++)
-                for (double y = 0; y < getHeight(); y++)
+            for (double x = 0; x < this.getWidth(); x++)
+                for (double y = 0; y < this.getHeight(); y++)
                     brain.createOutput(new Vector(new double[]{x, y}));
 
             //makes sure all the weights are randomly distributed within the
@@ -63,7 +63,7 @@ public class ColorMap2dCallable implements Callable<Color[][]> {
                 synapse.setWeight(RANDOM.nextDouble());
 
             //run through random training data
-            for (int iteration = 0; iteration < getIterations(); iteration++) {
+            for (int iteration = 0; iteration < this.getIterations(); iteration++) {
                 this.progress++;
 
                 for (int ci = 0; ci < ColorMap1dCallable.COLOR_CHANNELS; ci++)
@@ -76,7 +76,7 @@ public class ColorMap2dCallable implements Callable<Color[][]> {
             final Map<Vector, double[]> outputWeightVectors = brain.getOutputWeightVectors();
 
             //construct the color array
-            Color[][] colorPositions = new Color[getWidth()][getHeight()];
+            Color[][] colorPositions = new Color[this.getWidth()][this.getHeight()];
             for (Entry<Vector, double[]> weightVector : outputWeightVectors.entrySet()) {
                 final Vector currentPoint = weightVector.getKey();
                 final double[] currentVector = weightVector.getValue();
@@ -118,34 +118,34 @@ public class ColorMap2dCallable implements Callable<Color[][]> {
      * @return the iterations
      */
     public int getIterations() {
-        return iterations;
+        return this.iterations;
     }
 
     /**
      * @return the learningRate
      */
     public double getLearningRate() {
-        return learningRate;
+        return this.learningRate;
     }
 
     /**
      * @return the width
      */
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
     /**
      * @return the height
      */
     public int getHeight() {
-        return height;
+        return this.height;
     }
 
     /**
      * @return the progress
      */
     public int getProgress() {
-        return progress;
+        return this.progress;
     }
 }

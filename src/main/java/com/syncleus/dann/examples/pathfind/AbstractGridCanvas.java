@@ -71,15 +71,15 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
         this.nodeSize = initialNodeSize;
         this.edgeSize = initialEdgeSize;
         this.path = initialPath;
-        this.pathThickness = Math.max(1, nodeSize / PATH_FRACTION);
-        this.selectedThickness = Math.max(1, Math.min(edgeSize, nodeSize) / BORDER_FRACTION);
+        this.pathThickness = Math.max(1, this.nodeSize / PATH_FRACTION);
+        this.selectedThickness = Math.max(1, Math.min(this.edgeSize, this.nodeSize) / BORDER_FRACTION);
 
-        final int preferredWidth = grid.getWidth() * nodeSize + (grid.getWidth() + 1) * edgeSize;
-        final int preferredHeight = grid.getHeight() * nodeSize + (grid.getHeight() + 1) * edgeSize;
-        setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+        final int preferredWidth = this.grid.getWidth() * this.nodeSize + (this.grid.getWidth() + 1) * this.edgeSize;
+        final int preferredHeight = this.grid.getHeight() * this.nodeSize + (this.grid.getHeight() + 1) * this.edgeSize;
+        this.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
 
-        addMouseListener(this);
-        addMouseMotionListener(this);
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
     }
 
     @Override
@@ -90,76 +90,76 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 
         int px = 0;
         int py = 0;
-        for (int y = 0; y < grid.getHeight(); y++) {
+        for (int y = 0; y < this.grid.getHeight(); y++) {
             px = 0;
-            for (int x = 0; x < grid.getWidth(); x++) {
-                final GridNode gridNode = grid.getNode(x, y);
+            for (int x = 0; x < this.grid.getWidth(); x++) {
+                final GridNode gridNode = this.grid.getNode(x, y);
 
                 if (y != 0) {
-                    final GridNode toNode = grid.getNode(x, y - 1);
+                    final GridNode toNode = this.grid.getNode(x, y - 1);
 
                     //draw filled rect for edge
-                    final WeightedBidirectedEdge<GridNode> upEdge = grid.getEdgeBetween(x, y, x, y - 1);
-                    graphics2D.setColor(getEdgeColor(upEdge));
-                    graphics2D.fillRect(px + edgeSize, py, nodeSize, edgeSize);
+                    final WeightedBidirectedEdge<GridNode> upEdge = this.grid.getEdgeBetween(x, y, x, y - 1);
+                    graphics2D.setColor(this.getEdgeColor(upEdge));
+                    graphics2D.fillRect(px + this.edgeSize, py, this.nodeSize, this.edgeSize);
 
-                    if ((touchedEdge != null) && (touchedEdge.getRightNode() == gridNode) && (touchedEdge.getLeftNode() == toNode)) {
+                    if ((this.touchedEdge != null) && (this.touchedEdge.getRightNode() == gridNode) && (this.touchedEdge.getLeftNode() == toNode)) {
                         //draw border of selected edge
-                        graphics2D.setStroke(new BasicStroke(selectedThickness));
+                        graphics2D.setStroke(new BasicStroke(this.selectedThickness));
                         graphics2D.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
-                        graphics2D.drawRect(px + edgeSize, py, nodeSize, edgeSize);
+                        graphics2D.drawRect(px + this.edgeSize, py, this.nodeSize, this.edgeSize);
                     }
                 }
 
                 if (x != 0) {
-                    final GridNode toNode = grid.getNode(x - 1, y);
+                    final GridNode toNode = this.grid.getNode(x - 1, y);
 
                     //draw filled rect for edge
-                    final WeightedBidirectedEdge<GridNode> rightEdge = grid.getEdgeBetween(x, y, x - 1, y);
-                    graphics2D.setColor(getEdgeColor(rightEdge));
-                    graphics2D.fillRect(px, py + edgeSize, edgeSize, nodeSize);
+                    final WeightedBidirectedEdge<GridNode> rightEdge = this.grid.getEdgeBetween(x, y, x - 1, y);
+                    graphics2D.setColor(this.getEdgeColor(rightEdge));
+                    graphics2D.fillRect(px, py + this.edgeSize, this.edgeSize, this.nodeSize);
 
-                    if ((touchedEdge != null) && (touchedEdge.getRightNode() == gridNode) && (touchedEdge.getLeftNode() == toNode)) {
+                    if ((this.touchedEdge != null) && (this.touchedEdge.getRightNode() == gridNode) && (this.touchedEdge.getLeftNode() == toNode)) {
                         //draw border of selected edge
-                        graphics2D.setStroke(new BasicStroke(selectedThickness));
+                        graphics2D.setStroke(new BasicStroke(this.selectedThickness));
                         graphics2D.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
-                        graphics2D.drawRect(px, py + edgeSize, edgeSize, nodeSize);
+                        graphics2D.drawRect(px, py + this.edgeSize, this.edgeSize, this.nodeSize);
                     }
                 }
 
-                graphics2D.setColor(getNodeColor(gridNode));
-                graphics2D.fillRect(px + edgeSize, py + edgeSize, nodeSize, nodeSize);
+                graphics2D.setColor(this.getNodeColor(gridNode));
+                graphics2D.fillRect(px + this.edgeSize, py + this.edgeSize, this.nodeSize, this.nodeSize);
 
-                if (gridNode == touchedNode) {
-                    graphics2D.setStroke(new BasicStroke(selectedThickness));
+                if (gridNode == this.touchedNode) {
+                    graphics2D.setStroke(new BasicStroke(this.selectedThickness));
                     graphics2D.setColor(/*getTouchedNodeBorderColor()*/Color.ORANGE);
-                    graphics2D.drawRect(px + edgeSize, py + edgeSize, nodeSize, nodeSize);
+                    graphics2D.drawRect(px + this.edgeSize, py + this.edgeSize, this.nodeSize, this.nodeSize);
                 }
 
-                px += nodeSize + edgeSize;
+                px += this.nodeSize + this.edgeSize;
             }
-            py += nodeSize + edgeSize;
+            py += this.nodeSize + this.edgeSize;
         }
 
-        if (path != null) {
+        if (this.path != null) {
             graphics2D.setColor(PATH_COLOR);
 
-            graphics2D.setStroke(new BasicStroke(pathThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            graphics2D.setStroke(new BasicStroke(this.pathThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
-            final int centerOffset = (edgeSize + nodeSize / 2);
+            final int centerOffset = (this.edgeSize + this.nodeSize / 2);
 
-            for (BidirectedEdge<GridNode> edge : path) {
+            for (BidirectedEdge<GridNode> edge : this.path) {
                 final int lastX = edge.getLeftNode().getX();
                 final int lastY = edge.getLeftNode().getY();
 
                 final int curX = edge.getRightNode().getX();
                 final int curY = edge.getRightNode().getY();
 
-                final int curPX = getNodePosition(curX) + centerOffset;
-                final int curPY = getNodePosition(curY) + centerOffset;
+                final int curPX = this.getNodePosition(curX) + centerOffset;
+                final int curPY = this.getNodePosition(curY) + centerOffset;
 
-                final int lastPX = getNodePosition(lastX) + centerOffset;
-                final int lastPY = getNodePosition(lastY) + centerOffset;
+                final int lastPX = this.getNodePosition(lastX) + centerOffset;
+                final int lastPY = this.getNodePosition(lastY) + centerOffset;
 
                 graphics2D.drawLine(lastPX, lastPY, curPX, curPY);
             }
@@ -189,7 +189,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      * @return pixel coordinate of a given grid position, which may be outside of the grid's bounds
      */
     private int getNodePosition(final int coordinate) {
-        return coordinate * (nodeSize + edgeSize);
+        return coordinate * (this.nodeSize + this.edgeSize);
     }
 
     /**
@@ -199,7 +199,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      * @return grid coordinate of a given pixel position, which may be outside of the grid's bounds
      */
     protected int getNodePositionPixel(final int x) {
-        return (int) Math.floor(((float) x) / ((float) (nodeSize + edgeSize)));
+        return (int) Math.floor(((float) x) / ((float) (this.nodeSize + this.edgeSize)));
     }
 
     /**
@@ -210,38 +210,38 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      * @return the edge corresponding to pixel (px, py), or null if no edge was drawn there
      */
     public SimpleWeightedUndirectedEdge<GridNode> getTouchedEdge(final int px, final int py) {
-        final int nx = getNodePositionPixel(px);
-        final int ny = getNodePositionPixel(py);
+        final int nx = this.getNodePositionPixel(px);
+        final int ny = this.getNodePositionPixel(py);
 
-        if (nx * (nodeSize + edgeSize) > px + edgeSize) {
+        if (nx * (this.nodeSize + this.edgeSize) > px + this.edgeSize) {
             return null;
         }
 
-        if (ny * (nodeSize + edgeSize) > py + edgeSize) {
+        if (ny * (this.nodeSize + this.edgeSize) > py + this.edgeSize) {
             return null;
         }
 
-        if (Math.abs((px - nx * (nodeSize + edgeSize)) - (py - ny * (nodeSize + edgeSize))) < edgeSize) {
+        if (Math.abs((px - nx * (this.nodeSize + this.edgeSize)) - (py - ny * (this.nodeSize + this.edgeSize))) < this.edgeSize) {
             return null;
         }
 
-        final boolean upOrLeft = (px - nx * (nodeSize + edgeSize) > py - ny * (nodeSize + edgeSize)) ? true : false;
+        final boolean upOrLeft = (px - nx * (this.nodeSize + this.edgeSize) > py - ny * (this.nodeSize + this.edgeSize)) ? true : false;
 
         if ((nx >= (upOrLeft ? 0 : 1)) && (ny >= (!upOrLeft ? 0 : 1))
-                    && (nx < grid.getWidth()) && (ny < grid.getHeight())) {
+                    && (nx < this.grid.getWidth()) && (ny < this.grid.getHeight())) {
             final List<SimpleWeightedUndirectedEdge<GridNode>> thisEdges;
             final List<SimpleWeightedUndirectedEdge<GridNode>> otherEdges;
-            thisEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx, ny)));
+            thisEdges = new LinkedList(this.grid.getAdjacentEdges(this.grid.getNode(nx, ny)));
             //System.err.println(nx + " " + ny + " : " + thisEdges);
 
             if (upOrLeft) {
                 //up
-                otherEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx, ny - 1)));
+                otherEdges = new LinkedList(this.grid.getAdjacentEdges(this.grid.getNode(nx, ny - 1)));
                 //System.err.println(nx + " " + (ny-1) + " : " + otherEdges);
             }
             else {
                 //left
-                otherEdges = new LinkedList(grid.getAdjacentEdges(grid.getNode(nx - 1, ny)));
+                otherEdges = new LinkedList(this.grid.getAdjacentEdges(this.grid.getNode(nx - 1, ny)));
                 //System.err.println((nx-1) + " " + ny + " : " + otherEdges);
             }
 
@@ -272,18 +272,18 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      * @return the node corresponding to pixel (px, py), or null if no node was drawn there
      */
     public GridNode getTouchedNode(final int px, final int py) {
-        final int nx = getNodePositionPixel(px);
-        final int ny = getNodePositionPixel(py);
+        final int nx = this.getNodePositionPixel(px);
+        final int ny = this.getNodePositionPixel(py);
 
-        if (nx * (nodeSize + edgeSize) + edgeSize > px) {
+        if (nx * (this.nodeSize + this.edgeSize) + this.edgeSize > px) {
             return null;
         }
-        if (ny * (nodeSize + edgeSize) + edgeSize > py) {
+        if (ny * (this.nodeSize + this.edgeSize) + this.edgeSize > py) {
             return null;
         }
 
-        if ((nx >= 0) && (ny >= 0) && (nx < grid.getWidth()) && (ny < grid.getHeight())) {
-            return grid.getNode(nx, ny);
+        if ((nx >= 0) && (ny >= 0) && (nx < this.grid.getWidth()) && (ny < this.grid.getHeight())) {
+            return this.grid.getNode(nx, ny);
         }
 
         return null;
@@ -316,7 +316,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 
     @Override
     public void mouseDragged(final MouseEvent evt) {
-        updateMouseMoved(evt);
+        this.updateMouseMoved(evt);
     }
 
     /**
@@ -326,9 +326,9 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      * @param evt mouse event to update according to
      */
     protected void updateMouseMoved(final MouseEvent evt) {
-        final GridNode tNode = getTouchedNode(evt.getX(), evt.getY());
+        final GridNode tNode = this.getTouchedNode(evt.getX(), evt.getY());
 
-        final SimpleWeightedUndirectedEdge<GridNode> tEdge = getTouchedEdge(evt.getX(), evt.getY());
+        final SimpleWeightedUndirectedEdge<GridNode> tEdge = this.getTouchedEdge(evt.getX(), evt.getY());
 
         this.touchedNode = null;
         this.touchedEdge = null;
@@ -342,12 +342,12 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
 
         //System.out.println("touchedNode: " + touchedNode + " , touchedEdge: " + touchedEdge);
 
-        repaint();
+        this.repaint();
     }
 
     @Override
     public void mouseMoved(final MouseEvent evt) {
-        updateMouseMoved(evt);
+        this.updateMouseMoved(evt);
     }
 
     /**
@@ -358,7 +358,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      */
     void setPath(final List<SimpleWeightedUndirectedEdge<GridNode>> nextPath) {
         this.path = nextPath;
-        repaint();
+        this.repaint();
     }
 
     /**
@@ -367,7 +367,7 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      * @return currently touched edge, or null if none is touched
      */
     public SimpleWeightedUndirectedEdge<GridNode> getTouchedEdge() {
-        return touchedEdge;
+        return this.touchedEdge;
     }
 
     /**
@@ -376,6 +376,6 @@ public abstract class AbstractGridCanvas extends JPanel implements MouseListener
      * @return currently touched GridNode, or null if none is touched
      */
     public GridNode getTouchedNode() {
-        return touchedNode;
+        return this.touchedNode;
     }
 }

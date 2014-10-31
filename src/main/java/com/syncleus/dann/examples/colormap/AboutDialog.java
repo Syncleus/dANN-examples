@@ -30,79 +30,79 @@ public class AboutDialog extends JDialog {
     private javax.swing.JTextArea jTextArea1;
     public AboutDialog(final Frame parent, final boolean modal) {
         super(parent, modal);
-        initComponents();
+        this.initComponents();
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        this.jButton1 = new javax.swing.JButton();
+        this.jLabel1 = new javax.swing.JLabel();
+        this.jLabel2 = new javax.swing.JLabel();
+        this.jScrollPane1 = new javax.swing.JScrollPane();
+        this.jTextArea1 = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("About");
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.setTitle("About");
 
-        jButton1.setText("OK");
-        jButton1.setName("ok button"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        this.jButton1.setText("OK");
+        this.jButton1.setName("ok button"); // NOI18N
+        this.jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                AboutDialog.this.jButton1ActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Syncleus, Inc.");
+        this.jLabel1.setText("Syncleus, Inc.");
 
-        jLabel2.setText("SOM Color Map Demo");
+        this.jLabel2.setText("SOM Color Map Demo");
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setHorizontalScrollBar(null);
+        this.jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        this.jScrollPane1.setHorizontalScrollBar(null);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setEditable(false);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Instructions:\n\nFirst select the number of iterations to train train the som. Next select the\ninitial learning rate for training. Finally choose 1D or 2D output lattice.\n\nNow when you click \"Train & Display\" it will train a new SOM and render the\noutput lattice colors. If the SOM was successful colors should be displayed as\nsmoothly blended colors in 1D or 2D. If the colors do not render properly\nexperiment with different values.");
-        jTextArea1.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(jTextArea1);
+        this.jTextArea1.setColumns(20);
+        this.jTextArea1.setEditable(false);
+        this.jTextArea1.setRows(5);
+        this.jTextArea1.setText("Instructions:\n\nFirst select the number of iterations to train train the som. Next select the\ninitial learning rate for training. Finally choose 1D or 2D output lattice.\n\nNow when you click \"Train & Display\" it will train a new SOM and render the\noutput lattice colors. If the SOM was successful colors should be displayed as\nsmoothly blended colors in 1D or 2D. If the colors do not render properly\nexperiment with different values.");
+        this.jTextArea1.setWrapStyleWord(true);
+        this.jScrollPane1.setViewportView(this.jTextArea1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this.getContentPane());
+        this.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                                          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                  .addGroup(layout.createSequentialGroup()
                                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                      .addGroup(layout.createSequentialGroup()
                                                                                                        .addContainerGap()
-                                                                                                       .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))
+                                                                                                       .addComponent(this.jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))
                                                                                      .addGroup(layout.createSequentialGroup()
                                                                                                        .addGap(170, 170, 170)
-                                                                                                       .addComponent(jLabel2))
+                                                                                                       .addComponent(this.jLabel2))
                                                                                      .addGroup(layout.createSequentialGroup()
                                                                                                        .addGap(203, 203, 203)
-                                                                                                       .addComponent(jButton1))
+                                                                                                       .addComponent(this.jButton1))
                                                                                      .addGroup(layout.createSequentialGroup()
                                                                                                        .addGap(190, 190, 190)
-                                                                                                       .addComponent(jLabel1)))
+                                                                                                       .addComponent(this.jLabel1)))
                                                                    .addContainerGap())
         );
         layout.setVerticalGroup(
                                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                .addGroup(layout.createSequentialGroup()
                                                                  .addContainerGap()
-                                                                 .addComponent(jLabel1)
+                                                                 .addComponent(this.jLabel1)
                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                 .addComponent(jLabel2)
+                                                                 .addComponent(this.jLabel2)
                                                                  .addGap(11, 11, 11)
-                                                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                 .addComponent(this.jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                 .addComponent(jButton1)
+                                                                 .addComponent(this.jButton1)
                                                                  .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pack();
+        this.pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

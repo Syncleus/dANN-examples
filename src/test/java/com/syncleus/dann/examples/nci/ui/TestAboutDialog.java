@@ -41,19 +41,19 @@ public class TestAboutDialog {
             }
         });
 
-        aboutFixture = new DialogFixture(aboutDialog);
-        aboutFixture.show();
+        this.aboutFixture = new DialogFixture(aboutDialog);
+        this.aboutFixture.show();
     }
 
     @After
     public void tearDown() {
-        aboutFixture.cleanUp();
+        this.aboutFixture.cleanUp();
     }
 
     @Test
     public void testDisplays() {
-        aboutFixture.requireVisible();
-        aboutFixture.button("ok button").click();
-        aboutFixture.requireNotVisible();
+        this.aboutFixture.requireVisible();
+        this.aboutFixture.button("ok button").click();
+        this.aboutFixture.requireNotVisible();
     }
 }

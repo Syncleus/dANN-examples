@@ -63,7 +63,7 @@ public class PathFindDemoPanel extends JPanel {
     public PathFindDemoPanel(final int width) {
         super(new BorderLayout());
 
-        reinit(width);
+        this.reinit(width);
     }
 
     /**
@@ -134,24 +134,24 @@ public class PathFindDemoPanel extends JPanel {
      *                  (re-)initialize.
      */
     protected void reinit(final int nextWidth) {
-        removeAll();
+        this.removeAll();
 
         final int width = nextWidth;
         final int height = nextWidth;
 
         final double[][] gridWeights = new double[height][width];
-        grid = new WeightedGrid(gridWeights);
-        grid.setAll(INITIAL_GRID_WEIGHT);
+        this.grid = new WeightedGrid(gridWeights);
+        this.grid.setAll(INITIAL_GRID_WEIGHT);
 
-        startNode = grid.getNode(0, 0);
-        endNode = grid.getNode(width - 1, height - 1);
+        this.startNode = this.grid.getNode(0, 0);
+        this.endNode = this.grid.getNode(width - 1, height - 1);
 
-        updatePath();
+        this.updatePath();
 
-        controlPanel = new PathFindControlPanel(this);
-        add(controlPanel, BorderLayout.NORTH);
+        this.controlPanel = new PathFindControlPanel(this);
+        this.add(this.controlPanel, BorderLayout.NORTH);
 
-        gridCanvas = new AbstractGridCanvas(grid, path, DEFAULT_NODE_SIZE, DEFAULT_EDGE_SIZE) {
+        this.gridCanvas = new AbstractGridCanvas(PathFindDemoPanel.this.grid, PathFindDemoPanel.this.path, DEFAULT_NODE_SIZE, DEFAULT_EDGE_SIZE) {
             private boolean mouseDown = false;
 
             @Override
@@ -165,16 +165,16 @@ public class PathFindDemoPanel extends JPanel {
             }
 
             protected void paintCells() {
-                final int selectedIndex = controlPanel.getSelectedIndex();
+                final int selectedIndex = PathFindDemoPanel.this.controlPanel.getSelectedIndex();
 
-                if (mouseDown && (selectedIndex == 0)) {
-                    if (getTouchedNode() != null) {
-                        getTouchedNode().setWeight(paintWeight);
-                        updatePath();
+                if (this.mouseDown && (selectedIndex == 0)) {
+                    if (this.getTouchedNode() != null) {
+                        this.getTouchedNode().setWeight(PathFindDemoPanel.this.paintWeight);
+                        PathFindDemoPanel.this.updatePath();
                     }
-                    else if (getTouchedEdge() != null) {
-                        getTouchedEdge().setWeight(paintWeight);
-                        updatePath();
+                    else if (this.getTouchedEdge() != null) {
+                        this.getTouchedEdge().setWeight(PathFindDemoPanel.this.paintWeight);
+                        PathFindDemoPanel.this.updatePath();
                     }
                 }
 
@@ -195,44 +195,44 @@ public class PathFindDemoPanel extends JPanel {
             @Override
             public void mousePressed(final MouseEvent evt) {
                 super.mousePressed(evt);
-                mouseDown = true;
+                this.mouseDown = true;
             }
 
             @Override
             public void mouseReleased(final MouseEvent evt) {
                 super.mouseReleased(evt);
-                mouseDown = false;
+                this.mouseDown = false;
             }
 
             @Override
             public void mouseClicked(final MouseEvent evt) {
-                final int selectedIndex = controlPanel.getSelectedIndex();
+                final int selectedIndex = PathFindDemoPanel.this.controlPanel.getSelectedIndex();
 
-                final GridNode touchedNode = getTouchedNode();
+                final GridNode touchedNode = this.getTouchedNode();
 
                 //starting position
                 if ((selectedIndex == 1) && (touchedNode != null)) {
-                    if (getTouchedNode() != endNode) {
-                        startNode = touchedNode;
-                        updatePath();
+                    if (this.getTouchedNode() != PathFindDemoPanel.this.endNode) {
+                        PathFindDemoPanel.this.startNode = touchedNode;
+                        PathFindDemoPanel.this.updatePath();
                     }
                     else {
                         warnDifferentLocations();
                     }
                 } //ending position
                 else if ((selectedIndex == 2) && (touchedNode != null)) {
-                    if (touchedNode != startNode) {
-                        endNode = touchedNode;
-                        updatePath();
+                    if (touchedNode != PathFindDemoPanel.this.startNode) {
+                        PathFindDemoPanel.this.endNode = touchedNode;
+                        PathFindDemoPanel.this.updatePath();
                     }
                     else {
                         warnDifferentLocations();
                     }
                 } //paint the map
 
-                mouseDown = true;
+                this.mouseDown = true;
                 paintCells();
-                mouseDown = false;
+                this.mouseDown = false;
             }
 
             private void warnDifferentLocations() {
@@ -240,7 +240,7 @@ public class PathFindDemoPanel extends JPanel {
             }
         };
 
-        add(new JScrollPane(gridCanvas), BorderLayout.CENTER);
+        this.add(new JScrollPane(this.gridCanvas), BorderLayout.CENTER);
     }
 
     /**
@@ -248,10 +248,10 @@ public class PathFindDemoPanel extends JPanel {
      * AStarPathFinder parameters are changed.
      */
     protected void updatePath() {
-        final AstarPathFinder<GridNode, SimpleWeightedUndirectedEdge<GridNode>> pathFinder = new AstarPathFinder<GridNode, SimpleWeightedUndirectedEdge<GridNode>>(grid, new DistanceHeuristic());
-        path = pathFinder.getBestPath(startNode, endNode);
-        if (gridCanvas != null) {
-            gridCanvas.setPath(path);
+        final AstarPathFinder<GridNode, SimpleWeightedUndirectedEdge<GridNode>> pathFinder = new AstarPathFinder<GridNode, SimpleWeightedUndirectedEdge<GridNode>>(this.grid, new DistanceHeuristic());
+        this.path = pathFinder.getBestPath(this.startNode, this.endNode);
+        if (this.gridCanvas != null) {
+            this.gridCanvas.setPath(this.path);
         }
     }
 
@@ -286,7 +286,7 @@ public class PathFindDemoPanel extends JPanel {
         public void actionPerformed(final ActionEvent evt) {
             if (evt.getSource() instanceof PaintButton) {
                 final PaintButton button = (PaintButton) evt.getSource();
-                pathFindDemoPanel.paintWeight = button.getWeight();
+                this.pathFindDemoPanel.paintWeight = button.getWeight();
             }
         }
     }
@@ -298,21 +298,21 @@ public class PathFindDemoPanel extends JPanel {
         public PaintButton(final double drawWeight) {
             super("  ");
             this.weight = drawWeight;
-            setForeground(getColor(weight));
+            this.setForeground(getColor(this.weight));
         }
 
         @Override
         public void paint(final Graphics graphics) {
             super.paint(graphics);
             final Graphics2D graphics2D = (Graphics2D) graphics;
-            graphics2D.setColor(getColor(weight));
+            graphics2D.setColor(getColor(this.weight));
             graphics2D.fillRect(BUTTON_BORDER_SIZE, BUTTON_BORDER_SIZE,
-                                       getWidth() - BUTTON_BORDER_SIZE * 2,
-                                       getHeight() - BUTTON_BORDER_SIZE * 2);
+                                       this.getWidth() - BUTTON_BORDER_SIZE * 2,
+                                       this.getHeight() - BUTTON_BORDER_SIZE * 2);
         }
 
         public double getWeight() {
-            return weight;
+            return this.weight;
         }
     }
 
@@ -330,22 +330,22 @@ public class PathFindDemoPanel extends JPanel {
             for (double d : paintWeights) {
                 final PaintButton button = new PaintButton(d);
                 button.addActionListener(paintButtonActionListener);
-                paintButtonsGroup.add(button);
-                paintButtons.add(button);
-                add(button);
+                this.paintButtonsGroup.add(button);
+                this.paintButtons.add(button);
+                this.add(button);
             }
         }
 
         public List<PaintButton> getPaintButtons() {
-            return paintButtons;
+            return this.paintButtons;
         }
     }
 
     private static class PathFindControlPanel extends JTabbedPane {
         public PathFindControlPanel(final PathFindDemoPanel pathFindDemoPanel) {
-            addTab("Edit", new DrawingPanel(PAINT_WEIGHTS, pathFindDemoPanel));
-            addTab("Start Position", new JLabel("Click a start position"));
-            addTab("Stop Position", new JLabel("Click a stop position"));
+            this.addTab("Edit", new DrawingPanel(PAINT_WEIGHTS, pathFindDemoPanel));
+            this.addTab("Start Position", new JLabel("Click a start position"));
+            this.addTab("Stop Position", new JLabel("Click a stop position"));
             //addTab("Settings", new SettingsPanel());
         }
     }

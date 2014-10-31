@@ -81,7 +81,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
             LOGGER.warn("Could not set the UI to native look and feel", caught);
         }
 
-        initComponents();
+        this.initComponents();
 
         this.add(this.originalImagePanel);
         final int currentX = this.separator.getX() + 5;
@@ -146,104 +146,104 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        trainingDirectoryText = new javax.swing.JTextField();
-        trainingDirectorySelect = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        originalImageSelect = new javax.swing.JButton();
-        originalImageText = new javax.swing.JTextField();
-        trainButton = new javax.swing.JButton();
-        trainingCylcesInput = new javax.swing.JSpinner();
-        processButton = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        separator = new javax.swing.JSeparator();
-        statusLabel = new javax.swing.JLabel();
-        progress = new javax.swing.JProgressBar();
-        stopButton = new javax.swing.JButton();
-        jMenuBar2 = new javax.swing.JMenuBar();
-        fileMenu1 = new javax.swing.JMenu();
-        quitMenuItem1 = new javax.swing.JMenuItem();
-        toolsMenu = new javax.swing.JMenu();
-        brainViewMenu = new javax.swing.JMenuItem();
-        helpMenu1 = new javax.swing.JMenu();
-        aboutMenuItem1 = new javax.swing.JMenuItem();
+        this.trainingDirectoryText = new javax.swing.JTextField();
+        this.trainingDirectorySelect = new javax.swing.JButton();
+        this.jLabel1 = new javax.swing.JLabel();
+        this.jLabel2 = new javax.swing.JLabel();
+        this.originalImageSelect = new javax.swing.JButton();
+        this.originalImageText = new javax.swing.JTextField();
+        this.trainButton = new javax.swing.JButton();
+        this.trainingCylcesInput = new javax.swing.JSpinner();
+        this.processButton = new javax.swing.JButton();
+        this.jLabel5 = new javax.swing.JLabel();
+        this.separator = new javax.swing.JSeparator();
+        this.statusLabel = new javax.swing.JLabel();
+        this.progress = new javax.swing.JProgressBar();
+        this.stopButton = new javax.swing.JButton();
+        this.jMenuBar2 = new javax.swing.JMenuBar();
+        this.fileMenu1 = new javax.swing.JMenu();
+        this.quitMenuItem1 = new javax.swing.JMenuItem();
+        this.toolsMenu = new javax.swing.JMenu();
+        this.brainViewMenu = new javax.swing.JMenuItem();
+        this.helpMenu1 = new javax.swing.JMenu();
+        this.aboutMenuItem1 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("NCI Demo");
-        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        this.setTitle("NCI Demo");
+        this.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        trainingDirectoryText.setEditable(false);
+        this.trainingDirectoryText.setEditable(false);
 
-        trainingDirectorySelect.setText("...");
-        trainingDirectorySelect.addActionListener(new java.awt.event.ActionListener() {
+        this.trainingDirectorySelect.setText("...");
+        this.trainingDirectorySelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                trainingDirectorySelectActionPerformed(evt);
+                NciDemo.this.trainingDirectorySelectActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Training Images");
+        this.jLabel1.setText("Training Images");
 
-        jLabel2.setText("Original Image(s)");
+        this.jLabel2.setText("Original Image(s)");
 
-        originalImageSelect.setText("...");
-        originalImageSelect.addActionListener(new java.awt.event.ActionListener() {
+        this.originalImageSelect.setText("...");
+        this.originalImageSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                originalImageSelectActionPerformed(evt);
+                NciDemo.this.originalImageSelectActionPerformed(evt);
             }
         });
 
-        originalImageText.setEditable(false);
+        this.originalImageText.setEditable(false);
 
-        trainButton.setText("Train");
-        trainButton.setEnabled(false);
-        trainButton.addActionListener(new java.awt.event.ActionListener() {
+        this.trainButton.setText("Train");
+        this.trainButton.setEnabled(false);
+        this.trainButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                trainButtonActionPerformed(evt);
+                NciDemo.this.trainButtonActionPerformed(evt);
             }
         });
 
-        trainingCylcesInput.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(10000), Integer.valueOf(1), null, Integer.valueOf(1000)));
+        this.trainingCylcesInput.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(10000), Integer.valueOf(1), null, Integer.valueOf(1000)));
 
-        processButton.setText("Process");
-        processButton.setEnabled(false);
-        processButton.addActionListener(new java.awt.event.ActionListener() {
+        this.processButton.setText("Process");
+        this.processButton.setEnabled(false);
+        this.processButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                processButtonActionPerformed(evt);
+                NciDemo.this.processButtonActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Training Cycles");
+        this.jLabel5.setText("Training Cycles");
 
-        separator.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        this.separator.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        statusLabel.setText("Please make selections!");
+        this.statusLabel.setText("Please make selections!");
 
-        progress.setStringPainted(true);
+        this.progress.setStringPainted(true);
 
-        stopButton.setText("Stop");
-        stopButton.setEnabled(false);
-        stopButton.addActionListener(new java.awt.event.ActionListener() {
+        this.stopButton.setText("Stop");
+        this.stopButton.setEnabled(false);
+        this.stopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopButtonActionPerformed(evt);
+                NciDemo.this.stopButtonActionPerformed(evt);
             }
         });
 
-        fileMenu1.setText("File");
+        this.fileMenu1.setText("File");
 
-        quitMenuItem1.setText("Quit");
-        quitMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+        this.quitMenuItem1.setText("Quit");
+        this.quitMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                quitMenuItemMouseReleased(evt);
+                NciDemo.this.quitMenuItemMouseReleased(evt);
             }
         });
-        quitMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        this.quitMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quitMenuItem1ActionPerformed(evt);
+                NciDemo.this.quitMenuItem1ActionPerformed(evt);
             }
         });
-        quitMenuItem1.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+        this.quitMenuItem1.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
             public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
-                quitMenuItemMenuKeyPressed(evt);
+                NciDemo.this.quitMenuItemMenuKeyPressed(evt);
             }
 
             public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
@@ -252,22 +252,22 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
             public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
             }
         });
-        fileMenu1.add(quitMenuItem1);
+        this.fileMenu1.add(this.quitMenuItem1);
 
-        jMenuBar2.add(fileMenu1);
+        this.jMenuBar2.add(this.fileMenu1);
 
-        toolsMenu.setText("Tools");
+        this.toolsMenu.setText("Tools");
 
-        brainViewMenu.setText("3D Brain View");
-        brainViewMenu.setEnabled(false);
-        brainViewMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+        this.brainViewMenu.setText("3D Brain View");
+        this.brainViewMenu.setEnabled(false);
+        this.brainViewMenu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                brainViewMenuMouseReleased(evt);
+                NciDemo.this.brainViewMenuMouseReleased(evt);
             }
         });
-        brainViewMenu.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+        this.brainViewMenu.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
             public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
-                brainViewMenuMenuKeyPressed(evt);
+                NciDemo.this.brainViewMenuMenuKeyPressed(evt);
             }
 
             public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
@@ -276,21 +276,21 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
             public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
             }
         });
-        toolsMenu.add(brainViewMenu);
+        this.toolsMenu.add(this.brainViewMenu);
 
-        jMenuBar2.add(toolsMenu);
+        this.jMenuBar2.add(this.toolsMenu);
 
-        helpMenu1.setText("Help");
+        this.helpMenu1.setText("Help");
 
-        aboutMenuItem1.setText("About");
-        aboutMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+        this.aboutMenuItem1.setText("About");
+        this.aboutMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                aboutMenuItemMouseReleased(evt);
+                NciDemo.this.aboutMenuItemMouseReleased(evt);
             }
         });
-        aboutMenuItem1.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
+        this.aboutMenuItem1.addMenuKeyListener(new javax.swing.event.MenuKeyListener() {
             public void menuKeyPressed(javax.swing.event.MenuKeyEvent evt) {
-                aboutMenuItemMenuKeyPressed(evt);
+                NciDemo.this.aboutMenuItemMenuKeyPressed(evt);
             }
 
             public void menuKeyReleased(javax.swing.event.MenuKeyEvent evt) {
@@ -299,47 +299,47 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
             public void menuKeyTyped(javax.swing.event.MenuKeyEvent evt) {
             }
         });
-        helpMenu1.add(aboutMenuItem1);
+        this.helpMenu1.add(this.aboutMenuItem1);
 
-        jMenuBar2.add(helpMenu1);
+        this.jMenuBar2.add(this.helpMenu1);
 
-        setJMenuBar(jMenuBar2);
+        this.setJMenuBar(this.jMenuBar2);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this.getContentPane());
+        this.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                                          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                  .addGroup(layout.createSequentialGroup()
                                                                    .addContainerGap()
                                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                     .addComponent(jLabel2)
-                                                                                     .addComponent(jLabel1)
-                                                                                     .addComponent(statusLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                                                                                     .addComponent(this.jLabel2)
+                                                                                     .addComponent(this.jLabel1)
+                                                                                     .addComponent(this.statusLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                                                                                      .addGroup(layout.createSequentialGroup()
                                                                                                        .addGap(27, 27, 27)
-                                                                                                       .addComponent(jLabel5)
+                                                                                                       .addComponent(this.jLabel5)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(trainingCylcesInput, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                       .addComponent(this.trainingCylcesInput, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                      .addGroup(layout.createSequentialGroup()
                                                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                                                                         .addComponent(trainingDirectoryText, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                         .addComponent(originalImageText, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))
+                                                                                                                         .addComponent(this.trainingDirectoryText, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                         .addComponent(this.originalImageText, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                                         .addComponent(originalImageSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                         .addComponent(trainingDirectorySelect, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                                                                         .addComponent(this.originalImageSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                         .addComponent(this.trainingDirectorySelect, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                                                      .addGroup(layout.createSequentialGroup()
                                                                                                        .addGap(12, 12, 12)
                                                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                                                                         .addComponent(progress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                                                         .addComponent(this.progress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                                                                          .addGroup(layout.createSequentialGroup()
-                                                                                                                                           .addComponent(trainButton)
+                                                                                                                                           .addComponent(this.trainButton)
                                                                                                                                            .addGap(18, 18, 18)
-                                                                                                                                           .addComponent(processButton)
+                                                                                                                                           .addComponent(this.processButton)
                                                                                                                                            .addGap(18, 18, 18)
-                                                                                                                                           .addComponent(stopButton)))))
+                                                                                                                                           .addComponent(this.stopButton)))))
                                                                    .addGap(18, 18, 18)
-                                                                   .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                   .addComponent(this.separator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                    .addGap(10000, 10000, 10000))
         );
         layout.setVerticalGroup(
@@ -347,36 +347,36 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                                                                              .addContainerGap()
                                                                                                              .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                                                               .addComponent(separator, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
+                                                                                                                               .addComponent(this.separator, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
                                                                                                                                .addGroup(layout.createSequentialGroup()
-                                                                                                                                                 .addComponent(jLabel1)
+                                                                                                                                                 .addComponent(this.jLabel1)
                                                                                                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                                                                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                                                                                                   .addComponent(trainingDirectoryText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                                                                   .addComponent(trainingDirectorySelect))
+                                                                                                                                                                   .addComponent(this.trainingDirectoryText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                   .addComponent(this.trainingDirectorySelect))
                                                                                                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                                                 .addComponent(jLabel2)
+                                                                                                                                                 .addComponent(this.jLabel2)
                                                                                                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                                                                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                                                                                                   .addComponent(originalImageText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                                                                   .addComponent(originalImageSelect))
+                                                                                                                                                                   .addComponent(this.originalImageText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                   .addComponent(this.originalImageSelect))
                                                                                                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 470, Short.MAX_VALUE)
-                                                                                                                                                 .addComponent(statusLabel)
+                                                                                                                                                 .addComponent(this.statusLabel)
                                                                                                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                                                 .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                 .addComponent(this.progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                                                                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                                                                                                   .addComponent(jLabel5)
-                                                                                                                                                                   .addComponent(trainingCylcesInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                                                                                   .addComponent(this.jLabel5)
+                                                                                                                                                                   .addComponent(this.trainingCylcesInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                                                                                  .addGap(26, 26, 26)
                                                                                                                                                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                                                                                                   .addComponent(processButton)
-                                                                                                                                                                   .addComponent(stopButton)
-                                                                                                                                                                   .addComponent(trainButton))))
+                                                                                                                                                                   .addComponent(this.processButton)
+                                                                                                                                                                   .addComponent(this.stopButton)
+                                                                                                                                                                   .addComponent(this.trainButton))))
                                                                                                              .addContainerGap())
         );
 
-        pack();
+        this.pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void quitMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quitMenuItemMouseReleased
@@ -394,11 +394,11 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
     }//GEN-LAST:event_quitMenuItemMenuKeyPressed
 
     private void aboutMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aboutMenuItemMouseReleased
-        displayAbout();
+        this.displayAbout();
     }//GEN-LAST:event_aboutMenuItemMouseReleased
 
     private void aboutMenuItemMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_aboutMenuItemMenuKeyPressed
-        displayAbout();
+        this.displayAbout();
     }//GEN-LAST:event_aboutMenuItemMenuKeyPressed
 
     private void originalImageSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originalImageSelectActionPerformed
@@ -432,7 +432,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
             this.trainingDirectoryText.setText(chooser.getSelectedFile().getAbsolutePath());
             this.trainingDirectory = chooser.getSelectedFile();
 
-            final File[] trainingFiles = trainingDirectory.listFiles(new PngFileFilter());
+            final File[] trainingFiles = this.trainingDirectory.listFiles(new PngFileFilter());
             if (trainingFiles.length <= 0) {
                 this.trainingDirectory = null;
                 this.trainingDirectoryText.setText("");
@@ -469,7 +469,7 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
     }//GEN-LAST:event_trainButtonActionPerformed
 
     private void processButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processButtonActionPerformed
-        if (this.processing || (finalImage == null) || (originalImage == null)) {
+        if (this.processing || (this.finalImage == null) || (this.originalImage == null)) {
             return;
         }
 
@@ -489,16 +489,16 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
     }//GEN-LAST:event_stopButtonActionPerformed
 
     public void showBrainView() {
-        if (brainVisual == null) {
+        if (this.brainVisual == null) {
             final JDialog errorDialog = new JDialog();
-            errorDialog.add(errorPanel);
+            errorDialog.add(this.errorPanel);
             errorDialog.setVisible(true);
         }
         else {
             this.brainVisual.refresh();
 
             if (this.viewBrain == null) {
-                this.viewBrain = new ViewBrain(this, brainVisual);
+                this.viewBrain = new ViewBrain(this, this.brainVisual);
             }
 
             this.viewBrain.setVisible(true);
@@ -506,11 +506,11 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
     }
 
     private void brainViewMenuMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_brainViewMenuMenuKeyPressed
-        showBrainView();
+        this.showBrainView();
     }//GEN-LAST:event_brainViewMenuMenuKeyPressed
 
     private void brainViewMenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brainViewMenuMouseReleased
-        showBrainView();
+        this.showBrainView();
     }//GEN-LAST:event_brainViewMenuMouseReleased
 
     private void quitMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItem1ActionPerformed
@@ -526,14 +526,14 @@ public class NciDemo extends JFrame implements ActionListener, BrainListener {
         }
 
         try {
-            originalImage = ImageIO.read(this.originalImageLocation);
+            this.originalImage = ImageIO.read(this.originalImageLocation);
         }
         catch (IOException caught) {
             LOGGER.warn("IO Exception when reading image", caught);
             return;
         }
         this.originalImagePanel.setImage(this.originalImage);
-        this.finalImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+        this.finalImage = new BufferedImage(this.originalImage.getWidth(), this.originalImage.getHeight(), BufferedImage.TYPE_INT_RGB);
     }
 
     private void displayAbout() {

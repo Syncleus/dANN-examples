@@ -62,7 +62,7 @@ public class ColorMapDemo extends JFrame implements ActionListener {
             LOGGER.warn("Could not set the UI to native look and feel", caught);
         }
 
-        initComponents();
+        this.initComponents();
 
         this.iterationsSpinner.setValue(INITIAL_ITERATIONS);
         this.iterationsSpinner.setModel(this.iterationsModel);
@@ -75,7 +75,7 @@ public class ColorMapDemo extends JFrame implements ActionListener {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent event) {
-                executor.shutdown();
+                ColorMapDemo.this.executor.shutdown();
             }
         });
     }
@@ -205,95 +205,95 @@ public class ColorMapDemo extends JFrame implements ActionListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        iterationsSpinner = new javax.swing.JSpinner();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        learningRateSpinner = new javax.swing.JSpinner();
-        jLabel3 = new javax.swing.JLabel();
-        dimentionalityComboBox = new javax.swing.JComboBox();
-        trainDisplayButton = new javax.swing.JButton();
-        progressBar = new javax.swing.JProgressBar();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        exitMenuItem = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        this.iterationsSpinner = new javax.swing.JSpinner();
+        this.jLabel1 = new javax.swing.JLabel();
+        this.jLabel2 = new javax.swing.JLabel();
+        this.learningRateSpinner = new javax.swing.JSpinner();
+        this.jLabel3 = new javax.swing.JLabel();
+        this.dimentionalityComboBox = new javax.swing.JComboBox();
+        this.trainDisplayButton = new javax.swing.JButton();
+        this.progressBar = new javax.swing.JProgressBar();
+        this.jMenuBar1 = new javax.swing.JMenuBar();
+        this.jMenu1 = new javax.swing.JMenu();
+        this.exitMenuItem = new javax.swing.JMenuItem();
+        this.jMenu2 = new javax.swing.JMenu();
+        this.aboutMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SOM Color Map Demo");
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        this.setTitle("SOM Color Map Demo");
 
-        iterationsSpinner.setName("iterationsSpinner"); // NOI18N
+        this.iterationsSpinner.setName("iterationsSpinner"); // NOI18N
 
-        jLabel1.setText("Training Iterations:");
+        this.jLabel1.setText("Training Iterations:");
 
-        jLabel2.setText("Learning Rate:");
+        this.jLabel2.setText("Learning Rate:");
 
-        learningRateSpinner.setName("learningRateSpinner"); // NOI18N
+        this.learningRateSpinner.setName("learningRateSpinner"); // NOI18N
 
-        jLabel3.setText("Dimentionality:");
+        this.jLabel3.setText("Dimentionality:");
 
-        dimentionalityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"1D", "2D"}));
-        dimentionalityComboBox.setName("dimentionalityComboBox"); // NOI18N
+        this.dimentionalityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"1D", "2D"}));
+        this.dimentionalityComboBox.setName("dimentionalityComboBox"); // NOI18N
 
-        trainDisplayButton.setText("Train & Display");
-        trainDisplayButton.setName("trainDisplayButton"); // NOI18N
-        trainDisplayButton.addActionListener(new java.awt.event.ActionListener() {
+        this.trainDisplayButton.setText("Train & Display");
+        this.trainDisplayButton.setName("trainDisplayButton"); // NOI18N
+        this.trainDisplayButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                trainDisplayButtonActionPerformed(evt);
+                ColorMapDemo.this.trainDisplayButtonActionPerformed(evt);
             }
         });
 
-        progressBar.setStringPainted(true);
+        this.progressBar.setStringPainted(true);
 
-        jMenu1.setText("File");
+        this.jMenu1.setText("File");
 
-        exitMenuItem.setText("Exit");
-        exitMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+        this.exitMenuItem.setText("Exit");
+        this.exitMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                exitMenuItemMouseReleased(evt);
+                ColorMapDemo.this.exitMenuItemMouseReleased(evt);
             }
         });
-        jMenu1.add(exitMenuItem);
+        this.jMenu1.add(this.exitMenuItem);
 
-        jMenuBar1.add(jMenu1);
+        this.jMenuBar1.add(this.jMenu1);
 
-        jMenu2.setText("Help");
+        this.jMenu2.setText("Help");
 
-        aboutMenuItem.setText("About");
-        aboutMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+        this.aboutMenuItem.setText("About");
+        this.aboutMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                aboutMenuItemMouseReleased(evt);
+                ColorMapDemo.this.aboutMenuItemMouseReleased(evt);
             }
         });
-        jMenu2.add(aboutMenuItem);
+        this.jMenu2.add(this.aboutMenuItem);
 
-        jMenuBar1.add(jMenu2);
+        this.jMenuBar1.add(this.jMenu2);
 
-        setJMenuBar(jMenuBar1);
+        this.setJMenuBar(this.jMenuBar1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this.getContentPane());
+        this.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                                          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                  .addGroup(layout.createSequentialGroup()
                                                                    .addContainerGap()
                                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                      .addGroup(layout.createSequentialGroup()
-                                                                                                       .addComponent(jLabel1)
+                                                                                                       .addComponent(this.jLabel1)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(iterationsSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                                                                                                       .addComponent(this.iterationsSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(jLabel2)
+                                                                                                       .addComponent(this.jLabel2)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(learningRateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addComponent(this.learningRateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(jLabel3)
+                                                                                                       .addComponent(this.jLabel3)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(dimentionalityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                       .addComponent(this.dimentionalityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                                                                                                   .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                                                                                                                                                   .addComponent(this.progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
                                                                                                                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                                                   .addComponent(trainDisplayButton)))
+                                                                                                                                                   .addComponent(this.trainDisplayButton)))
                                                                    .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -301,20 +301,20 @@ public class ColorMapDemo extends JFrame implements ActionListener {
                                                .addGroup(layout.createSequentialGroup()
                                                                  .addContainerGap()
                                                                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                   .addComponent(jLabel3)
-                                                                                   .addComponent(dimentionalityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                   .addComponent(jLabel1)
-                                                                                   .addComponent(iterationsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                   .addComponent(learningRateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                   .addComponent(jLabel2))
+                                                                                   .addComponent(this.jLabel3)
+                                                                                   .addComponent(this.dimentionalityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(this.jLabel1)
+                                                                                   .addComponent(this.iterationsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(this.learningRateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(this.jLabel2))
                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                                   .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                   .addComponent(trainDisplayButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                                   .addComponent(this.progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                   .addComponent(this.trainDisplayButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                                  .addContainerGap(219, Short.MAX_VALUE))
         );
 
-        pack();
+        this.pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemMouseReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_exitMenuItemMouseReleased
@@ -337,7 +337,7 @@ public class ColorMapDemo extends JFrame implements ActionListener {
             this.future2d = null;
 
             this.callable1d = new ColorMap1dCallable(iterations, learningRate, 500);
-            this.future1d = executor.submit(this.callable1d);
+            this.future1d = this.executor.submit(this.callable1d);
         }
         else {
             if (this.future1d != null)
@@ -349,7 +349,7 @@ public class ColorMapDemo extends JFrame implements ActionListener {
             this.future1d = null;
 
             this.callable2d = new ColorMap2dCallable(iterations, learningRate, 50, 50);
-            this.future2d = executor.submit(this.callable2d);
+            this.future2d = this.executor.submit(this.callable2d);
         }
 
         this.progressTimer.start();

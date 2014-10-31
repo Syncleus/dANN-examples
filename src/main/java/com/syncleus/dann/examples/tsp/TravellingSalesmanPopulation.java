@@ -65,7 +65,7 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
         if (populationSize < TravellingSalesmanFitnessFunction.MINIMUM_CITIES)
             throw new IllegalArgumentException("populationSize must have atleast " + TravellingSalesmanFitnessFunction.MINIMUM_CITIES + " elements");
 
-        this.addAll(initialChromosomes(cities.length, populationSize));
+        this.addAll(initialChromosomes(this.cities.length, populationSize));
     }
 
     @Override
@@ -84,6 +84,6 @@ public class TravellingSalesmanPopulation extends AbstractGeneticAlgorithmPopula
     }
 
     public Vector[] getCities() {
-        return cities.clone();
+        return this.cities.clone();
     }
 }

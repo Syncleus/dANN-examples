@@ -79,7 +79,7 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener {
             LOGGER.warn("Could not set the UI to native look and feel", caught);
         }
 
-        initComponents();
+        this.initComponents();
 
         this.citiesSpinner.setModel(this.citiesModel);
         this.mutabilitySpinner.setModel(this.mutabilityModel);
@@ -200,106 +200,106 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        citiesLabel = new javax.swing.JLabel();
-        citiesSpinner = new javax.swing.JSpinner();
-        populationLabel = new javax.swing.JLabel();
-        populationSpinner = new javax.swing.JSpinner();
-        mutabilityLabel = new javax.swing.JLabel();
-        mutabilitySpinner = new javax.swing.JSpinner();
-        crossoverLabel = new javax.swing.JLabel();
-        crossoverSpinner = new javax.swing.JSpinner();
-        dieOffLabel = new javax.swing.JLabel();
-        dieOffSpinner = new javax.swing.JSpinner();
-        evolveDisplayButton = new javax.swing.JButton();
-        progressBar = new javax.swing.JProgressBar();
-        generationsLabel = new javax.swing.JLabel();
-        generationsSpinner = new javax.swing.JSpinner();
-        menuBar = new javax.swing.JMenuBar();
-        fileMenuItem = new javax.swing.JMenu();
-        quitMenuItem = new javax.swing.JMenuItem();
-        helpMenuItem = new javax.swing.JMenu();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        this.citiesLabel = new javax.swing.JLabel();
+        this.citiesSpinner = new javax.swing.JSpinner();
+        this.populationLabel = new javax.swing.JLabel();
+        this.populationSpinner = new javax.swing.JSpinner();
+        this.mutabilityLabel = new javax.swing.JLabel();
+        this.mutabilitySpinner = new javax.swing.JSpinner();
+        this.crossoverLabel = new javax.swing.JLabel();
+        this.crossoverSpinner = new javax.swing.JSpinner();
+        this.dieOffLabel = new javax.swing.JLabel();
+        this.dieOffSpinner = new javax.swing.JSpinner();
+        this.evolveDisplayButton = new javax.swing.JButton();
+        this.progressBar = new javax.swing.JProgressBar();
+        this.generationsLabel = new javax.swing.JLabel();
+        this.generationsSpinner = new javax.swing.JSpinner();
+        this.menuBar = new javax.swing.JMenuBar();
+        this.fileMenuItem = new javax.swing.JMenu();
+        this.quitMenuItem = new javax.swing.JMenuItem();
+        this.helpMenuItem = new javax.swing.JMenu();
+        this.aboutMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Travelling Salesman Demo");
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        this.setTitle("Travelling Salesman Demo");
 
-        citiesLabel.setText("Cities:");
+        this.citiesLabel.setText("Cities:");
 
-        populationLabel.setText("Population:");
+        this.populationLabel.setText("Population:");
 
-        mutabilityLabel.setText("Mutability:");
+        this.mutabilityLabel.setText("Mutability:");
 
-        crossoverLabel.setText("Crossover:");
+        this.crossoverLabel.setText("Crossover:");
 
-        dieOffLabel.setText("Die Off:");
+        this.dieOffLabel.setText("Die Off:");
 
-        evolveDisplayButton.setText("Evolve & Display");
-        evolveDisplayButton.addActionListener(new java.awt.event.ActionListener() {
+        this.evolveDisplayButton.setText("Evolve & Display");
+        this.evolveDisplayButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                evolveDisplayButtonActionPerformed(evt);
+                TravellingSalesmanDemo.this.evolveDisplayButtonActionPerformed(evt);
             }
         });
 
-        progressBar.setStringPainted(true);
+        this.progressBar.setStringPainted(true);
 
-        generationsLabel.setText("Generations:");
+        this.generationsLabel.setText("Generations:");
 
-        fileMenuItem.setText("File");
+        this.fileMenuItem.setText("File");
 
-        quitMenuItem.setText("Quit");
-        quitMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+        this.quitMenuItem.setText("Quit");
+        this.quitMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                quitMenuItemMouseReleased(evt);
+                TravellingSalesmanDemo.this.quitMenuItemMouseReleased(evt);
             }
         });
-        fileMenuItem.add(quitMenuItem);
+        this.fileMenuItem.add(this.quitMenuItem);
 
-        menuBar.add(fileMenuItem);
+        this.menuBar.add(this.fileMenuItem);
 
-        helpMenuItem.setText("Help");
+        this.helpMenuItem.setText("Help");
 
-        aboutMenuItem.setText("About");
-        helpMenuItem.add(aboutMenuItem);
+        this.aboutMenuItem.setText("About");
+        this.helpMenuItem.add(this.aboutMenuItem);
 
-        menuBar.add(helpMenuItem);
+        this.menuBar.add(this.helpMenuItem);
 
-        setJMenuBar(menuBar);
+        this.setJMenuBar(this.menuBar);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this.getContentPane());
+        this.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                                          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                  .addGroup(layout.createSequentialGroup()
                                                                    .addContainerGap()
                                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                      .addGroup(layout.createSequentialGroup()
-                                                                                                       .addComponent(citiesLabel)
+                                                                                                       .addComponent(this.citiesLabel)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(citiesSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addComponent(this.citiesSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(populationLabel)
+                                                                                                       .addComponent(this.populationLabel)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(populationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addComponent(this.populationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(mutabilityLabel)
+                                                                                                       .addComponent(this.mutabilityLabel)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(mutabilitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addComponent(this.mutabilitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(crossoverLabel)
+                                                                                                       .addComponent(this.crossoverLabel)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(crossoverSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addComponent(this.crossoverSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(dieOffLabel)
+                                                                                                       .addComponent(this.dieOffLabel)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                       .addComponent(this.dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(generationsLabel)
+                                                                                                       .addComponent(this.generationsLabel)
                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                       .addComponent(generationsSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
+                                                                                                       .addComponent(this.generationsSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
                                                                                      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                                                                                                   .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+                                                                                                                                                   .addComponent(this.progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
                                                                                                                                                    .addGap(10, 10, 10)
-                                                                                                                                                   .addComponent(evolveDisplayButton)))
+                                                                                                                                                   .addComponent(this.evolveDisplayButton)))
                                                                    .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -307,26 +307,26 @@ public class TravellingSalesmanDemo extends JFrame implements ActionListener {
                                                .addGroup(layout.createSequentialGroup()
                                                                  .addContainerGap()
                                                                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                   .addComponent(citiesLabel)
-                                                                                   .addComponent(citiesSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                   .addComponent(populationLabel)
-                                                                                   .addComponent(populationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                   .addComponent(mutabilityLabel)
-                                                                                   .addComponent(mutabilitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                   .addComponent(crossoverLabel)
-                                                                                   .addComponent(crossoverSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                   .addComponent(dieOffLabel)
-                                                                                   .addComponent(dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                   .addComponent(generationsLabel)
-                                                                                   .addComponent(generationsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                   .addComponent(this.citiesLabel)
+                                                                                   .addComponent(this.citiesSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(this.populationLabel)
+                                                                                   .addComponent(this.populationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(this.mutabilityLabel)
+                                                                                   .addComponent(this.mutabilitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(this.crossoverLabel)
+                                                                                   .addComponent(this.crossoverSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(this.dieOffLabel)
+                                                                                   .addComponent(this.dieOffSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(this.generationsLabel)
+                                                                                   .addComponent(this.generationsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                   .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                   .addComponent(evolveDisplayButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                                   .addComponent(this.progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                   .addComponent(this.evolveDisplayButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                                  .addContainerGap(520, Short.MAX_VALUE))
         );
 
-        pack();
+        this.pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void quitMenuItemMouseReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_quitMenuItemMouseReleased

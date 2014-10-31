@@ -40,29 +40,29 @@ public class TestFftDemo {
             }
         });
 
-        fftDemoFixture = new FrameFixture(fftDemo);
-        fftDemoFixture.show();
+        this.fftDemoFixture = new FrameFixture(fftDemo);
+        this.fftDemoFixture.show();
     }
 
     @After
     public void tearDown() {
-        fftDemoFixture.cleanUp();
+        this.fftDemoFixture.cleanUp();
     }
 
     @Test
     public void testComponents() {
-        fftDemoFixture.requireVisible();
+        this.fftDemoFixture.requireVisible();
 
         //start listening
-        fftDemoFixture.button("listenButton").click();
+        this.fftDemoFixture.button("listenButton").click();
 
         //check that its listening
-        fftDemoFixture.button("listenButton").requireText("Stop");
+        this.fftDemoFixture.button("listenButton").requireText("Stop");
 
         //stop listening
-        fftDemoFixture.button("listenButton").click();
+        this.fftDemoFixture.button("listenButton").click();
 
         //check if stopped
-        fftDemoFixture.button("listenButton").requireText("Listen");
+        this.fftDemoFixture.button("listenButton").requireText("Listen");
     }
 }

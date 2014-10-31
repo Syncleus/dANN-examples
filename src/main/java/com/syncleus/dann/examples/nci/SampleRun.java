@@ -37,7 +37,7 @@ public class SampleRun implements Callable<BufferedImage> {
     public BufferedImage call() {
         try {
             this.brain.setLearning(false);
-            return this.brain.uncompress(this.brain.compress(sampleImage));
+            return this.brain.uncompress(this.brain.compress(this.sampleImage));
         }
         catch (Exception caught) {
             LOGGER.error("Exception was caught", caught);

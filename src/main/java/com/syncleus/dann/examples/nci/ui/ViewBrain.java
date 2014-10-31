@@ -33,7 +33,7 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener {
     public ViewBrain(final Frame parent, final HyperassociativeMapCanvas brainVisual) {
         super(parent, false);
 
-        initComponents();
+        this.initComponents();
 
         this.brainVisual = brainVisual;
 
@@ -92,10 +92,10 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setResizable(false);
+        this.setResizable(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this.getContentPane());
+        this.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                                          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                  .addGap(0, 400, Short.MAX_VALUE)
@@ -105,7 +105,7 @@ public class ViewBrain extends JDialog implements ActionListener, KeyListener {
                                                .addGap(0, 300, Short.MAX_VALUE)
         );
 
-        pack();
+        this.pack();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

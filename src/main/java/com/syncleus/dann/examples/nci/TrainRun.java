@@ -36,7 +36,7 @@ public class TrainRun implements Runnable {
     public void run() {
         try {
             this.brain.setLearning(true);
-            this.brain.test(trainImage);
+            this.brain.test(this.trainImage);
         }
         catch (Exception caught) {
             LOGGER.error("Exception was caught", caught);
