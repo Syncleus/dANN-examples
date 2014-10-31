@@ -32,7 +32,7 @@
 
     <scm>
         <connection>scm:git:http://gerrit.syncleus.com/dANN-examples</connection>
-        <developerConnection>scm:git:ssh://gerrit.syncleus.com/dANN-examples</developerConnection>
+        <developerConnection>scm:git:ssh://gerrit.syncleus.com:29418/dANN-examples</developerConnection>
     </scm>
 
     <ciManagement>
