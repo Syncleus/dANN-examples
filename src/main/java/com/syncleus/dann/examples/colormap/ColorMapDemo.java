@@ -54,6 +54,7 @@ public class ColorMapDemo extends JFrame implements ActionListener {
     private javax.swing.JSpinner learningRateSpinner;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JButton trainDisplayButton;
+
     public ColorMapDemo() {
         this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         try {
