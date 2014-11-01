@@ -22,17 +22,23 @@ import org.fest.swing.edt.*;
 import org.fest.swing.fixture.DialogFixture;
 import org.junit.*;
 
+import java.awt.*;
+
 public class TestAboutDialog {
     private DialogFixture aboutFixture;
 
     @BeforeClass
     public static void setUpOnce() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         FailOnThreadViolationRepaintManager.install();
     }
 
 
     @Before
     public void onSetUp() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         AboutDialog aboutDialog = GuiActionRunner.execute(new GuiQuery<AboutDialog>() {
             @Override
             protected AboutDialog executeInEDT() {
@@ -46,11 +52,15 @@ public class TestAboutDialog {
 
     @After
     public void tearDown() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.aboutFixture.cleanUp();
     }
 
     @Test
     public void testDisplays() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.aboutFixture.requireVisible();
         this.aboutFixture.button("ok button").click();
         this.aboutFixture.requireNotVisible();

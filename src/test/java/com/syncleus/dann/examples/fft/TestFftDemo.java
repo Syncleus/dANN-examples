@@ -23,6 +23,7 @@ import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.timing.Timeout;
 import org.junit.*;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class TestFftDemo {
@@ -30,12 +31,16 @@ public class TestFftDemo {
 
     @BeforeClass
     public static void setUpOnce() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         FailOnThreadViolationRepaintManager.install();
     }
 
 
     @Before
     public void onSetUp() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         FftDemo fftDemo = GuiActionRunner.execute(new GuiQuery<FftDemo>() {
             @Override
             protected FftDemo executeInEDT() {
@@ -49,11 +54,15 @@ public class TestFftDemo {
 
     @After
     public void tearDown() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.fftDemoFixture.cleanUp();
     }
 
     @Test
     public void testComponents() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.fftDemoFixture.requireVisible();
 
         this.fftDemoFixture.button("listenButton").requireText("Listen");

@@ -24,17 +24,23 @@ import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.timing.Timeout;
 import org.junit.*;
 
+import java.awt.*;
+
 public class TestColorMapDemo {
     private FrameFixture colorMapDemoFixture;
 
     @BeforeClass
     public static void setUpOnce() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         FailOnThreadViolationRepaintManager.install();
     }
 
 
     @Before
     public void onSetUp() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         ColorMapDemo colorMapDemo = GuiActionRunner.execute(new GuiQuery<ColorMapDemo>() {
             @Override
             protected ColorMapDemo executeInEDT() {
@@ -48,11 +54,15 @@ public class TestColorMapDemo {
 
     @After
     public void tearDown() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.colorMapDemoFixture.cleanUp();
     }
 
     @Test
     public void testComponents() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.colorMapDemoFixture.requireVisible();
 
         //test the spinner
@@ -93,6 +103,8 @@ public class TestColorMapDemo {
 
     @Test(expected = UnexpectedException.class)
     public void testIterationsMinimum() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("1000");
         this.colorMapDemoFixture.spinner("iterationsSpinner").requireValue(1000);
         this.colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("0");
@@ -100,6 +112,8 @@ public class TestColorMapDemo {
 
     @Test(expected = UnexpectedException.class)
     public void testIterationsMaximum() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("1000");
         this.colorMapDemoFixture.spinner("iterationsSpinner").requireValue(1000);
         this.colorMapDemoFixture.spinner("iterationsSpinner").enterTextAndCommit("100000");
@@ -107,6 +121,8 @@ public class TestColorMapDemo {
 
     @Test(expected = UnexpectedException.class)
     public void testLearningRateMinimum() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.colorMapDemoFixture.spinner("learningRateSpinner").enterTextAndCommit("0.5");
         this.colorMapDemoFixture.spinner("learningRateSpinner").requireValue(0.5);
         this.colorMapDemoFixture.spinner("learningRateSpinner").enterTextAndCommit("0");
@@ -114,6 +130,8 @@ public class TestColorMapDemo {
 
     @Test(expected = UnexpectedException.class)
     public void testLearningRateMaximum() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.colorMapDemoFixture.spinner("learningRateSpinner").enterTextAndCommit("0.5");
         this.colorMapDemoFixture.spinner("learningRateSpinner").requireValue(0.5);
         this.colorMapDemoFixture.spinner("learningRateSpinner").enterTextAndCommit("1.001");
@@ -121,6 +139,8 @@ public class TestColorMapDemo {
 
     @Test
     public void testTrainingDisplay() {
+        Assume.assumeTrue(!GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance());
+
         this.colorMapDemoFixture.requireVisible();
 
         //train and display for various parameters
