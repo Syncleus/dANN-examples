@@ -76,6 +76,7 @@ public class FftDemo extends JFrame implements ActionListener {
     private javax.swing.JMenu helpMenuItem;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JButton listenButton;
+
     public FftDemo() {
         this.initComponents();
 
@@ -114,6 +115,8 @@ public class FftDemo extends JFrame implements ActionListener {
         this.targetDataLine = myTargetDataLine;
 
         this.transformer = new CooleyTukeyFastFourierTransformer(1024, 8000);
+
+        this.listenButton.setEnabled(true);
     }
 
     private static AudioFormat createAudioFormat() {
@@ -173,6 +176,7 @@ public class FftDemo extends JFrame implements ActionListener {
 
         this.listenButton.setText("Listen");
         this.listenButton.setName("listenButton"); // NOI18N
+        this.listenButton.setEnabled(false);
         this.listenButton.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {

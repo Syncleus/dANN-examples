@@ -20,7 +20,10 @@ package com.syncleus.dann.examples.fft;
 
 import org.fest.swing.edt.*;
 import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.timing.Timeout;
 import org.junit.*;
+
+import java.io.IOException;
 
 public class TestFftDemo {
     private FrameFixture fftDemoFixture;
@@ -52,6 +55,19 @@ public class TestFftDemo {
     @Test
     public void testComponents() {
         this.fftDemoFixture.requireVisible();
+
+        this.fftDemoFixture.button("listenButton").requireText("Listen");
+        this.fftDemoFixture.button("listenButton").requireEnabled(Timeout.timeout(30000));
+        this.fftDemoFixture.requireEnabled(Timeout.timeout(30000));
+
+
+        try {
+            Thread.sleep(500);
+        }
+        catch(final InterruptedException caughtException) {
+            throw new IllegalStateException("Sleep unexpectidly interrupted", caughtException);
+        }
+
 
         //start listening
         this.fftDemoFixture.button("listenButton").click();
