@@ -1,17 +1,17 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.syncleus.dann</groupId>
+        <groupId>com.syncleus</groupId>
         <artifactId>dann</artifactId>
         <version>2.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <packaging>jar</packaging>
 
+    <groupId>com.syncleus</groupId>
     <artifactId>dann-examples</artifactId>
+    <version>2.0-SNAPSHOT</version>
     <name>dANN Example Projects</name>
     <description>Artificial Intelligence and Artificial Genetics library - Example Projects</description>
     <url>http://wiki.syncleus.com/index.php/DANN</url>
@@ -36,7 +36,7 @@
     <scm>
         <connection>scm:git:http://gerrit.syncleus.com/dANN-examples</connection>
         <developerConnection>scm:git:ssh://gerrit.syncleus.com:29418/dANN-examples</developerConnection>
-    </scm>
+  </scm>
 
     <ciManagement>
         <system>jenkins</system>
@@ -104,6 +104,11 @@
 
     <repositories>
         <repository>
+            <id>freehep-maven</id>
+            <name>Maven FreeHEP</name>
+            <url>http://java.freehep.org/maven2</url>
+        </repository>
+        <repository>
             <id>syncleus.releases</id>
             <name>Syncleus Maven Release Repository</name>
             <url>http://repo.syncleus.com/repository/releases/</url>
@@ -135,11 +140,6 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </repository>
-        <repository>
-            <id>freehep-maven</id>
-            <name>Maven FreeHEP</name>
-            <url>http://java.freehep.org/maven2</url>
         </repository>
     </repositories>
 
@@ -189,7 +189,7 @@
                         <argument>-ea</argument>
                         <argument>-Xmx512m</argument>
                         <argument>-classpath</argument>
-                        <classpath/>
+                        <classpath />
                         <argument>com.syncleus.dann.examples.Main</argument>
                     </arguments>
                 </configuration>
